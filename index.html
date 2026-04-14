@@ -1,0 +1,3366 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Khalid — Freelance Tech Specialist offering web development, mobile apps, UI/UX design, and digital marketing services.">
+    <meta name="author" content="Khalid">
+    <meta name="keywords" content="web development, mobile apps, UI/UX design, digital marketing, freelance developer, Khalid">
+    <meta name="theme-color" content="#1a1a2e">
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Khalid | Tech Services & Digital Solutions">
+    <meta property="og:description" content="Freelance tech specialist — web development, mobile apps, UI/UX design, and digital marketing.">
+    <meta property="og:image" content="/icons/icon-512.svg">
+    <meta property="og:url" content="">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Khalid | Tech Services & Digital Solutions">
+    <meta name="twitter:description" content="Freelance tech specialist — web development, mobile apps, UI/UX design, and digital marketing.">
+    <meta name="twitter:image" content="/icons/icon-512.svg">
+    <title>Khalid | Tech Services & Digital Solutions</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231a1a2e'/><text x='50' y='68' font-size='60' font-weight='900' fill='%23e94560' text-anchor='middle' font-family='Arial'>K</text></svg>">
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Khalid">
+    <link rel="apple-touch-icon" href="/icons/icon-192.svg">
+    <!-- Google Fonts (Inter + Cairo for Arabic) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* ============================================
+           CSS Custom Properties
+           ============================================ */
+        :root {
+            --primary: #1a1a2e;
+            --primary-mid: #16213e;
+            --primary-light: #0f3460;
+            --accent: #e94560;
+            --accent-gold: #f0a500;
+            --white: #ffffff;
+            --bg-page: #ffffff;
+            --light-bg: #f8f9fa;
+            --text-dark: #2d2d2d;
+            --text-muted: #6c757d;
+            --text-light: #adb5bd;
+            --border-light: #e9ecef;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 8px 40px rgba(0, 0, 0, 0.15);
+            --radius: 12px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font: 'Inter', sans-serif;
+        }
+
+        /* ============================================
+           Dark Mode
+           ============================================ */
+        [data-theme="dark"] {
+            --bg-page: #121220;
+            --light-bg: #1a1a2e;
+            --text-dark: #e8e8e8;
+            --text-muted: #a0a0b0;
+            --text-light: #707080;
+            --border-light: #2a2a40;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 8px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        [data-theme="dark"] .service-card,
+        [data-theme="dark"] .pricing-card,
+        [data-theme="dark"] .contact-form {
+            background: #1e1e32;
+        }
+
+        [data-theme="dark"] .navbar.scrolled {
+            background: rgba(18, 18, 32, 0.95);
+        }
+
+        [data-theme="dark"] .testimonial-arrow {
+            background: #1e1e32;
+        }
+
+        [data-theme="dark"] .social-link {
+            background: #1e1e32;
+        }
+
+        [data-theme="dark"] .map-placeholder {
+            background: #1e1e32;
+        }
+
+        [data-theme="dark"] .filter-btn {
+            background: #1e1e32;
+        }
+
+        [data-theme="dark"] .form-group input,
+        [data-theme="dark"] .form-group textarea {
+            background: #1a1a2e;
+            color: #e8e8e8;
+        }
+
+        [data-theme="dark"] .form-group input:focus,
+        [data-theme="dark"] .form-group textarea:focus {
+            background: #1e1e32;
+        }
+
+        [data-theme="dark"] .footer {
+            background: #0d0d1a;
+        }
+
+        [data-theme="dark"] .btn-dark {
+            background: #2a2a40;
+        }
+
+        [data-theme="dark"] .btn-dark:hover {
+            background: #3a3a55;
+        }
+
+        [data-theme="dark"] .btn-outline:hover {
+            background: #e8e8e8;
+            color: #121220;
+        }
+
+        [data-theme="dark"] .section-title h2,
+        [data-theme="dark"] .about-content h2,
+        [data-theme="dark"] .contact-info h3,
+        [data-theme="dark"] .service-card h3,
+        [data-theme="dark"] .pricing-card h3,
+        [data-theme="dark"] .pricing-card .price,
+        [data-theme="dark"] .skill-header span,
+        [data-theme="dark"] .contact-detail-text h4,
+        [data-theme="dark"] .testimonial-name,
+        [data-theme="dark"] .form-group label {
+            color: #e8e8e8;
+        }
+
+        .contact-detail-text a,
+        .footer-contact a {
+            color: var(--accent);
+            transition: color var(--transition), opacity var(--transition);
+        }
+
+        .contact-detail-text a:hover,
+        .footer-contact a:hover {
+            opacity: 0.85;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        /* Dark mode toggle (navbar is always dark — do not use --white; it flips in site dark theme) */
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        [data-theme="dark"] .theme-toggle {
+            color: rgba(255, 255, 255, 0.95);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* ============================================
+           RTL / Arabic Support
+           ============================================ */
+        html[dir="rtl"] {
+            --font: 'Cairo', sans-serif;
+        }
+
+        html[dir="rtl"] body {
+            font-family: var(--font);
+        }
+
+        html[dir="rtl"] .service-link i,
+        html[dir="rtl"] .btn i {
+            transform: scaleX(-1);
+        }
+
+        html[dir="rtl"] .contact-detail {
+            flex-direction: row;
+            text-align: right;
+        }
+
+        html[dir="rtl"] .contact-detail-text {
+            text-align: right;
+        }
+
+        html[dir="rtl"] .contact-info h3,
+        html[dir="rtl"] .contact-info > p {
+            text-align: right;
+        }
+
+        html[dir="rtl"] .contact-grid {
+            direction: rtl;
+        }
+
+        html[dir="rtl"] .pricing-features li {
+            flex-direction: row;
+            text-align: right;
+        }
+
+        html[dir="rtl"] .pricing-features {
+            text-align: right;
+        }
+
+        html[dir="rtl"] .footer-contact li {
+            flex-direction: row;
+            text-align: right;
+        }
+
+        html[dir="rtl"] .map-placeholder i {
+            margin-right: 0;
+            margin-left: 8px;
+        }
+
+        html[dir="rtl"] .experience-badge {
+            right: auto;
+            left: -20px;
+        }
+
+        html[dir="rtl"] .social-links {
+            justify-content: flex-end;
+        }
+
+        html[dir="rtl"] .form-group label {
+            text-align: right;
+        }
+
+        html[dir="rtl"] .form-group input,
+        html[dir="rtl"] .form-group textarea {
+            text-align: right;
+        }
+
+        /* ============================================
+           Reset & Base
+           ============================================ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body {
+            font-family: var(--font);
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background: var(--bg-page);
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: color var(--transition);
+        }
+
+        ul { list-style: none; }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ============================================
+           Scroll Animations
+           ============================================ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* ============================================
+           Section Titles
+           ============================================ */
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .section-title p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .section-title .underline {
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-gold));
+            border-radius: 2px;
+            margin: 16px auto 0;
+        }
+
+        /* ============================================
+           Buttons
+           ============================================ */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-family: var(--font);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all var(--transition);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), #c73a52);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(233, 69, 96, 0.5);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .btn-outline:hover {
+            background: var(--white);
+            color: var(--primary);
+            border-color: var(--white);
+        }
+
+        .btn-dark {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-dark:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        /* ============================================
+           1. Navigation Bar
+           ============================================ */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: all var(--transition);
+        }
+
+        .navbar.scrolled {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 12px 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--white);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            font-weight: 500;
+            position: relative;
+            padding: 4px 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: auto;
+            right: auto;
+            inset-inline-start: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--white);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            padding: 10px 24px !important;
+            background: var(--accent);
+            color: var(--white) !important;
+            border-radius: 50px;
+            font-weight: 600 !important;
+        }
+
+        .nav-cta::after { display: none !important; }
+
+        .nav-cta:hover {
+            background: #c73a52;
+            transform: translateY(-1px);
+        }
+
+        /* Language Toggle */
+        .lang-toggle {
+            background: rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            padding: 6px 16px;
+            font-family: var(--font);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .lang-toggle:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Hamburger */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 4px;
+            background: none;
+            border: none;
+        }
+
+        .hamburger span {
+            width: 28px;
+            height: 2.5px;
+            background: var(--white);
+            border-radius: 2px;
+            transition: all var(--transition);
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* Mobile menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 26, 46, 0.98);
+            z-index: 999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            opacity: 0;
+            visibility: hidden;
+            display: flex;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .mobile-menu.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu a {
+            color: var(--white);
+            font-size: 1.3rem;
+            font-weight: 500;
+            padding: 8px 0;
+        }
+
+        .mobile-menu a:hover {
+            color: var(--accent);
+        }
+
+        /* ============================================
+           2. Hero Section
+           ============================================ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-mid) 50%, var(--primary-light) 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 120px 0 80px;
+        }
+
+        /* Geometric background patterns */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 800px;
+            height: 800px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(233, 69, 96, 0.08) 0%, transparent 70%);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(240, 165, 0, 0.06) 0%, transparent 70%);
+            animation: float 10s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, -30px); }
+        }
+
+        .hero-particles {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--white);
+            line-height: 1.15;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .hero-content h1 span {
+            color: var(--accent);
+            background: linear-gradient(135deg, var(--accent), var(--accent-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 36px;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Stats bar */
+        .stats-bar {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 700px;
+            margin: 60px auto 0;
+            padding: 30px 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 4px;
+        }
+
+        /* ============================================
+           3. Services Section
+           ============================================ */
+        .services {
+            padding: 100px 0;
+            background: var(--bg-page);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .service-card {
+            padding: 40px 30px;
+            border-radius: var(--radius);
+            background: var(--white);
+            border: 1px solid var(--border-light);
+            transition: all var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-gold));
+            transform: scaleX(0);
+            transition: transform var(--transition);
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+            border-color: transparent;
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(233, 69, 96, 0.1), rgba(240, 165, 0, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            color: var(--accent);
+        }
+
+        .service-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .service-card p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .service-link {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .service-link:hover {
+            gap: 10px;
+        }
+
+        /* ============================================
+           4. About Section
+           ============================================ */
+        .about {
+            padding: 100px 0;
+            background: var(--light-bg);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-image {
+            position: relative;
+        }
+
+        .about-image-wrapper {
+            width: 100%;
+            aspect-ratio: 4/5;
+            border-radius: var(--radius);
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-image-wrapper i {
+            font-size: 6rem;
+            color: rgba(255, 255, 255, 0.15);
+        }
+
+        .about-image-wrapper::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 50%, rgba(233, 69, 96, 0.1));
+        }
+
+        .experience-badge {
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--accent), #c73a52);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            box-shadow: 0 4px 20px rgba(233, 69, 96, 0.4);
+        }
+
+        .experience-badge .number {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .experience-badge .text {
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .about-content h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .about-content > p {
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            font-size: 1rem;
+        }
+
+        /* Skill Bars */
+        .skills {
+            margin-top: 30px;
+        }
+
+        .skill-item {
+            margin-bottom: 18px;
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .skill-header span {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .skill-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--border-light);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .skill-fill {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-gold));
+            width: 0;
+            transition: width 1.5s ease;
+        }
+
+        .btn-cv {
+            margin-top: 30px;
+        }
+
+        /* ============================================
+           5. Portfolio Section
+           ============================================ */
+        .portfolio {
+            padding: 100px 0;
+            background: var(--bg-page);
+        }
+
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 24px;
+            border-radius: 50px;
+            border: 1px solid var(--border-light);
+            background: var(--white);
+            font-family: var(--font);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--accent);
+            color: var(--white);
+            border-color: var(--accent);
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .portfolio-item {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            aspect-ratio: 3/2;
+            cursor: pointer;
+        }
+
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(26, 26, 46, 0.9), transparent);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 24px;
+            opacity: 0;
+            transition: opacity var(--transition);
+        }
+
+        .portfolio-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+        }
+
+        .portfolio-overlay h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+
+        .portfolio-overlay span {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 12px;
+        }
+
+        .portfolio-overlay a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .portfolio-overlay a:hover {
+            color: var(--accent-gold);
+        }
+
+        .portfolio-item.hidden {
+            display: none;
+        }
+
+        /* ============================================
+           6. Testimonials Section
+           ============================================ */
+        .testimonials {
+            padding: 100px 0;
+            background: var(--light-bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonials::before {
+            content: '\201C';
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 20rem;
+            color: rgba(233, 69, 96, 0.04);
+            font-family: Georgia, serif;
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        .testimonial-slider {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .testimonial-slide {
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .testimonial-slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .testimonial-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: rgba(255, 255, 255, 0.3);
+            border: 3px solid var(--accent);
+        }
+
+        .testimonial-text {
+            font-size: 1.15rem;
+            color: var(--text-dark);
+            line-height: 1.8;
+            font-style: italic;
+            margin-bottom: 24px;
+        }
+
+        .testimonial-name {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .testimonial-role {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .testimonial-stars {
+            color: var(--accent-gold);
+            margin-bottom: 16px;
+            font-size: 1rem;
+        }
+
+        .testimonial-nav {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 36px;
+            align-items: center;
+        }
+
+        .testimonial-arrow {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid var(--border-light);
+            background: var(--white);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            transition: all var(--transition);
+        }
+
+        .testimonial-arrow:hover {
+            background: var(--accent);
+            color: var(--white);
+            border-color: var(--accent);
+        }
+
+        .testimonial-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .testimonial-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: none;
+            background: var(--border-light);
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .testimonial-dot.active {
+            background: var(--accent);
+            width: 28px;
+            border-radius: 5px;
+        }
+
+        /* ============================================
+           7. Pricing Section
+           ============================================ */
+        .pricing {
+            padding: 100px 0;
+            background: var(--bg-page);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            align-items: center;
+        }
+
+        .pricing-card {
+            padding: 40px 32px;
+            border-radius: var(--radius);
+            background: var(--white);
+            border: 1px solid var(--border-light);
+            text-align: center;
+            transition: all var(--transition);
+            position: relative;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .pricing-card.featured {
+            border: 2px solid var(--accent);
+            padding: 52px 32px;
+            box-shadow: var(--shadow-hover);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--accent), var(--accent-gold));
+            color: var(--white);
+            padding: 6px 20px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pricing-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .pricing-card .price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .pricing-card .price span {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .pricing-card .price-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 28px;
+        }
+
+        .pricing-features {
+            text-align: left;
+            margin-bottom: 32px;
+        }
+
+        .pricing-features li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            font-size: 0.92rem;
+            color: var(--text-dark);
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-features li i {
+            color: var(--accent);
+            font-size: 0.85rem;
+            width: 16px;
+        }
+
+        .pricing-features li.disabled {
+            color: var(--text-light);
+        }
+
+        .pricing-features li.disabled i {
+            color: var(--text-light);
+        }
+
+        .pricing-card .btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* ============================================
+           8. Contact Section
+           ============================================ */
+        .contact {
+            padding: 100px 0;
+            background: var(--light-bg);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+
+        .contact-info h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+
+        .contact-info > p {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .contact-detail-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(233, 69, 96, 0.1), rgba(240, 165, 0, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .contact-detail-text h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .contact-detail-text p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .social-link {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--white);
+            border: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: var(--text-muted);
+            transition: all var(--transition);
+        }
+
+        .social-link:hover {
+            background: var(--accent);
+            color: var(--white);
+            border-color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        /* Contact Form */
+        .contact-form {
+            background: var(--white);
+            padding: 40px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            font-family: var(--font);
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            transition: border-color var(--transition);
+            background: var(--light-bg);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: var(--white);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-group .error-text {
+            font-size: 0.8rem;
+            color: var(--accent);
+            margin-top: 4px;
+            display: none;
+        }
+
+        .form-group.error input,
+        .form-group.error textarea {
+            border-color: var(--accent);
+        }
+
+        .form-group.error .error-text {
+            display: block;
+        }
+
+        .contact-form .btn {
+            width: 100%;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        /* Map placeholder */
+        .map-placeholder {
+            margin-top: 30px;
+            height: 200px;
+            border-radius: var(--radius);
+            background: var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .map-placeholder i {
+            margin-right: 8px;
+        }
+
+        /* ============================================
+           9. Footer
+           ============================================ */
+        .footer {
+            background: var(--primary);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 60px 0 0;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 40px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .footer-brand h3 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 12px;
+        }
+
+        .footer-brand h3 span {
+            color: var(--accent);
+        }
+
+        .footer-brand p {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .footer h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 20px;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            font-size: 0.9rem;
+            transition: color var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .footer-contact li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+        }
+
+        .footer-contact i {
+            color: var(--accent);
+            width: 16px;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 0;
+            font-size: 0.85rem;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 12px;
+        }
+
+        .footer-social a {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            transition: all var(--transition);
+        }
+
+        .footer-social a:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--white);
+        }
+
+        /* WhatsApp Float */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #25d366;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            z-index: 500;
+            transition: all var(--transition);
+            animation: pulse-wa 2s infinite;
+        }
+
+        .whatsapp-float:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.5);
+            color: #fff;
+        }
+
+        @keyframes pulse-wa {
+            0%, 100% { box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); }
+            50% { box-shadow: 0 4px 25px rgba(37, 211, 102, 0.6); }
+        }
+
+        /* Back to Top */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--white);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all var(--transition);
+            z-index: 500;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(233, 69, 96, 0.5);
+        }
+
+        /* ============================================
+           Responsive Design
+           ============================================ */
+        @media (max-width: 1024px) {
+            .hero-content h1 { font-size: 2.8rem; }
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+            .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+            .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+            .pricing-card.featured { grid-column: span 2; max-width: 400px; margin: 0 auto; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+
+            .hero-content h1 { font-size: 2.2rem; }
+            .hero-content p { font-size: 1rem; }
+
+            .stats-bar {
+                grid-template-columns: repeat(3, 1fr);
+                padding: 20px;
+                gap: 12px;
+            }
+            .stat-number { font-size: 1.6rem; }
+            .stat-label { font-size: 0.75rem; }
+
+            .section-title h2 { font-size: 2rem; }
+
+            .services-grid { grid-template-columns: 1fr; }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .about-image { max-width: 400px; margin: 0 auto; }
+
+            .portfolio-grid { grid-template-columns: 1fr; }
+
+            .pricing-grid { grid-template-columns: 1fr; }
+            .pricing-card.featured { grid-column: span 1; max-width: 100%; }
+
+            .contact-grid { grid-template-columns: 1fr; }
+
+            .footer-grid { grid-template-columns: 1fr; }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 { font-size: 1.8rem; }
+            .hero-buttons { flex-direction: column; align-items: center; }
+            .contact-form { padding: 24px; }
+        }
+
+        /* ============================================
+           Toast / Notification
+           ============================================ */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--primary);
+            color: var(--white);
+            padding: 16px 28px;
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+            font-weight: 500;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ============================================
+           Preloader
+           ============================================ */
+        .preloader {
+            position: fixed;
+            inset: 0;
+            background: var(--primary);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .preloader-logo {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--white);
+            font-family: var(--font);
+        }
+
+        .preloader-logo span {
+            color: var(--accent);
+        }
+
+        .preloader-bar {
+            width: 200px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .preloader-bar::after {
+            content: '';
+            display: block;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-gold));
+            border-radius: 3px;
+            animation: preload 1s ease-in-out infinite;
+        }
+
+        @keyframes preload {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(350%); }
+        }
+
+        /* ============================================
+           FAQ Section
+           ============================================ */
+        .faq {
+            padding: 100px 0;
+            background: var(--white);
+        }
+
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: all var(--transition);
+        }
+
+        .faq-item:hover {
+            border-color: var(--accent);
+        }
+
+        .faq-question {
+            width: 100%;
+            padding: 20px 24px;
+            background: none;
+            border: none;
+            font-family: var(--font);
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            text-align: left;
+        }
+
+        html[dir="rtl"] .faq-question {
+            text-align: right;
+        }
+
+        .faq-question i {
+            font-size: 0.85rem;
+            color: var(--accent);
+            transition: transform var(--transition);
+            flex-shrink: 0;
+        }
+
+        .faq-item.open .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+        }
+
+        .faq-answer-inner {
+            padding: 0 24px 20px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 300px;
+        }
+
+        [data-theme="dark"] .faq-question {
+            color: #e8e8e8;
+        }
+
+        [data-theme="dark"] .faq-item {
+            background: #1e1e32;
+        }
+
+        /* ============================================
+           Typing animation
+           ============================================ */
+        .typed-cursor {
+            display: inline-block;
+            width: 3px;
+            background: var(--accent);
+            margin-left: 4px;
+            animation: blink 0.7s infinite;
+            vertical-align: baseline;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* ============================================
+           PWA Install Prompt
+           ============================================ */
+        .pwa-install-banner {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(200px);
+            background: var(--primary);
+            color: #fff;
+            padding: 16px 24px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            max-width: 420px;
+            width: 90%;
+        }
+        .pwa-install-banner.show {
+            transform: translateX(-50%) translateY(0);
+        }
+        .pwa-install-banner .pwa-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+        .pwa-install-banner .pwa-text {
+            flex: 1;
+        }
+        .pwa-install-banner .pwa-text h4 {
+            margin: 0 0 4px;
+            font-size: 15px;
+            font-weight: 700;
+        }
+        .pwa-install-banner .pwa-text p {
+            margin: 0;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        .pwa-install-banner .pwa-actions {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        .pwa-install-banner .pwa-btn {
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .pwa-install-banner .pwa-btn-install {
+            background: var(--accent);
+            color: #fff;
+        }
+        .pwa-install-banner .pwa-btn-install:hover {
+            background: #d63a52;
+        }
+        .pwa-install-banner .pwa-btn-close {
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+        }
+        .pwa-install-banner .pwa-btn-close:hover {
+            background: rgba(255,255,255,0.25);
+        }
+
+        @media (max-width: 480px) {
+            .pwa-install-banner {
+                bottom: 80px;
+                flex-wrap: wrap;
+                padding: 14px 16px;
+            }
+        }
+    </style>
+    <script>
+        (function () {
+            try {
+                var stored = localStorage.getItem('theme');
+                if (stored === 'dark') {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                } else if (stored === 'light') {
+                    document.documentElement.removeAttribute('data-theme');
+                } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                }
+            } catch (e) { /* ignore */ }
+        })();
+    </script>
+</head>
+<body>
+
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-logo">K<span>.</span></div>
+        <div class="preloader-bar"></div>
+    </div>
+
+    <!-- ============================================
+         Navigation Bar
+         ============================================ -->
+    <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+        <div class="container">
+            <a href="#home" class="nav-logo">K<span>.</span></a>
+            <div class="nav-links" id="navLinks">
+                <a href="#home" data-i18n="nav_home">Home</a>
+                <a href="#services" data-i18n="nav_services">Services</a>
+                <a href="#about" data-i18n="nav_about">About</a>
+                <a href="#portfolio" data-i18n="nav_portfolio">Portfolio</a>
+                <a href="#testimonials" data-i18n="nav_testimonials">Testimonials</a>
+                <a href="#pricing" data-i18n="nav_pricing">Pricing</a>
+                <a href="#faq" data-i18n="nav_faq">FAQ</a>
+                <a href="#contact" data-i18n="nav_contact">Contact</a>
+                <a href="#contact" class="nav-cta" data-i18n="nav_quote">Get a Quote</a>
+            </div>
+            <div class="nav-actions">
+                <button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch to dark mode">
+                    <i class="fas fa-moon" id="themeIcon" aria-hidden="true"></i>
+                </button>
+                <button class="lang-toggle" id="langToggle" aria-label="Switch language">
+                    <i class="fas fa-globe"></i> <span id="langLabel">AR</span>
+                </button>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile navigation">
+        <a href="#home" class="mobile-link" data-i18n="nav_home">Home</a>
+        <a href="#services" class="mobile-link" data-i18n="nav_services">Services</a>
+        <a href="#about" class="mobile-link" data-i18n="nav_about">About</a>
+        <a href="#portfolio" class="mobile-link" data-i18n="nav_portfolio">Portfolio</a>
+        <a href="#testimonials" class="mobile-link" data-i18n="nav_testimonials">Testimonials</a>
+        <a href="#pricing" class="mobile-link" data-i18n="nav_pricing">Pricing</a>
+        <a href="#faq" class="mobile-link" data-i18n="nav_faq">FAQ</a>
+        <a href="#contact" class="mobile-link" data-i18n="nav_contact">Contact</a>
+        <a href="#contact" class="btn btn-primary mobile-link" data-i18n="nav_quote">Get a Quote</a>
+    </div>
+
+    <!-- ============================================
+         Hero Section
+         ============================================ -->
+    <section class="hero" id="home">
+        <div class="hero-particles" id="particles" aria-hidden="true"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1 data-i18n="hero_title">Turning Your Ideas Into <span>Powerful Digital Solutions</span></h1>
+                <p data-i18n="hero_desc">I'm Khalid — a freelance tech specialist helping businesses build, grow, and thrive online. From custom websites to full-scale applications, I deliver results that matter.</p>
+                <div class="hero-buttons">
+                    <a href="#services" class="btn btn-primary" data-i18n="hero_btn_services">Explore My Services <i class="fas fa-arrow-right"></i></a>
+                    <a href="#contact" class="btn btn-outline" data-i18n="hero_btn_talk">Let's Talk <i class="fas fa-comments"></i></a>
+                </div>
+            </div>
+            <div class="stats-bar" id="statsBar">
+                <div class="stat-item">
+                    <div class="stat-number" data-target="150">0</div>
+                    <div class="stat-label" data-i18n="stat_projects">Projects Completed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="120">0</div>
+                    <div class="stat-label" data-i18n="stat_clients">Happy Clients</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="7">0</div>
+                    <div class="stat-label" data-i18n="stat_years">Years of Experience</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         Services Section
+         ============================================ -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-title reveal">
+                <h2 data-i18n="services_title">What I Offer</h2>
+                <p data-i18n="services_desc">Comprehensive tech services tailored to help your business succeed in the digital world.</p>
+                <div class="underline"></div>
+            </div>
+            <div class="services-grid">
+                <div class="service-card reveal">
+                    <div class="service-icon"><i class="fas fa-laptop-code"></i></div>
+                    <h3 data-i18n="service1_title">Web Design & Development</h3>
+                    <p data-i18n="service1_desc">Custom-built websites that are fast, responsive, and optimized for conversions. From landing pages to complex web applications.</p>
+                    <a href="#contact" class="service-link" data-i18n="learn_more">Learn More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-icon"><i class="fas fa-mobile-alt"></i></div>
+                    <h3 data-i18n="service2_title">Mobile App Development</h3>
+                    <p data-i18n="service2_desc">Native and cross-platform mobile applications for iOS and Android that deliver seamless user experiences.</p>
+                    <a href="#contact" class="service-link" data-i18n="learn_more">Learn More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-icon"><i class="fas fa-headset"></i></div>
+                    <h3 data-i18n="service3_title">Technical Support & Maintenance</h3>
+                    <p data-i18n="service3_desc">Reliable ongoing support, troubleshooting, and system maintenance to keep your digital infrastructure running smoothly.</p>
+                    <a href="#contact" class="service-link" data-i18n="learn_more">Learn More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-icon"><i class="fas fa-palette"></i></div>
+                    <h3 data-i18n="service4_title">UI/UX Design</h3>
+                    <p data-i18n="service4_desc">User-centered designs that look stunning and feel intuitive. Research-driven interfaces that boost engagement and retention.</p>
+                    <a href="#contact" class="service-link" data-i18n="learn_more">Learn More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-icon"><i class="fas fa-server"></i></div>
+                    <h3 data-i18n="service5_title">Hosting & Server Management</h3>
+                    <p data-i18n="service5_desc">Secure, scalable hosting solutions and server administration. Cloud setup, migration, and performance optimization.</p>
+                    <a href="#contact" class="service-link" data-i18n="learn_more">Learn More <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3 data-i18n="service6_title">SEO & Digital Marketing</h3>
+                    <p data-i18n="service6_desc">Data-driven SEO strategies and digital marketing campaigns that increase visibility, traffic, and revenue.</p>
+                    <a href="#contact" class="service-link" data-i18n="learn_more">Learn More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         About Section
+         ============================================ -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-image reveal-left">
+                    <div class="about-image-wrapper">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="experience-badge">
+                        <span class="number">7+</span>
+                        <span class="text" data-i18n="badge_exp">Years<br>Experience</span>
+                    </div>
+                </div>
+                <div class="about-content reveal-right">
+                    <h2 data-i18n="about_title">Building Digital Excellence, One Project at a Time</h2>
+                    <p data-i18n="about_p1">I'm Khalid, a passionate tech professional with over seven years of experience delivering high-quality digital solutions. I specialize in web development, mobile apps, and IT infrastructure — helping startups and established businesses alike achieve their goals through technology.</p>
+                    <p data-i18n="about_p2">My approach combines clean code, modern design principles, and a deep understanding of what users need. Every project I take on is treated with the same dedication — whether it's a simple website or a full-stack enterprise application.</p>
+
+                    <div class="skills" id="skillsSection">
+                        <div class="skill-item">
+                            <div class="skill-header"><span>HTML / CSS</span><span>95%</span></div>
+                            <div class="skill-bar"><div class="skill-fill" data-width="95"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-header"><span>JavaScript</span><span>90%</span></div>
+                            <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-header"><span>React</span><span>85%</span></div>
+                            <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-header"><span>Node.js</span><span>80%</span></div>
+                            <div class="skill-bar"><div class="skill-fill" data-width="80"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-header"><span data-i18n="skill_uiux">UI/UX Design</span><span>88%</span></div>
+                            <div class="skill-bar"><div class="skill-fill" data-width="88"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-header"><span data-i18n="skill_devops">DevOps</span><span>75%</span></div>
+                            <div class="skill-bar"><div class="skill-fill" data-width="75"></div></div>
+                        </div>
+                    </div>
+
+                    <a href="#contact" class="btn btn-primary btn-cv"><i class="fas fa-download"></i> <span data-i18n="download_cv">Download My CV</span></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         Portfolio Section
+         ============================================ -->
+    <section class="portfolio" id="portfolio">
+        <div class="container">
+            <div class="section-title reveal">
+                <h2 data-i18n="portfolio_title">My Work</h2>
+                <p data-i18n="portfolio_desc">A selection of recent projects showcasing my skills across web, mobile, and design.</p>
+                <div class="underline"></div>
+            </div>
+
+            <div class="filter-tabs reveal">
+                <button class="filter-btn active" data-filter="all" data-i18n="filter_all">All</button>
+                <button class="filter-btn" data-filter="websites" data-i18n="filter_websites">Websites</button>
+                <button class="filter-btn" data-filter="apps" data-i18n="filter_apps">Apps</button>
+                <button class="filter-btn" data-filter="designs" data-i18n="filter_designs">Designs</button>
+            </div>
+
+            <div class="portfolio-grid">
+                <div class="portfolio-item reveal" data-category="websites">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400'%3E%3Crect width='600' height='400' fill='%231a1a2e'/%3E%3Ctext x='300' y='190' text-anchor='middle' fill='%23e94560' font-size='40' font-family='Arial' font-weight='700'%3E🛒%3C/text%3E%3Ctext x='300' y='240' text-anchor='middle' fill='%23fff' font-size='22' font-family='Arial'%3EE-Commerce Platform%3C/text%3E%3C/svg%3E" alt="E-Commerce platform project">
+                    <div class="portfolio-overlay">
+                        <h3 data-i18n="project1_title">ShopWave E-Commerce</h3>
+                        <span data-i18n="project1_cat">Full-Stack Web Application</span>
+                        <a href="#contact" data-i18n="view_project">View Project <i class="fas fa-external-link-alt"></i></a>
+                    </div>
+                </div>
+                <div class="portfolio-item reveal" data-category="apps">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400'%3E%3Crect width='600' height='400' fill='%230f3460'/%3E%3Ctext x='300' y='190' text-anchor='middle' fill='%2300d2ff' font-size='40' font-family='Arial' font-weight='700'%3E📱%3C/text%3E%3Ctext x='300' y='240' text-anchor='middle' fill='%23fff' font-size='22' font-family='Arial'%3EFitness App%3C/text%3E%3C/svg%3E" alt="Fitness tracking app project">
+                    <div class="portfolio-overlay">
+                        <h3 data-i18n="project2_title">FitTrack Pro</h3>
+                        <span data-i18n="project2_cat">iOS & Android App</span>
+                        <a href="#contact" data-i18n="view_project">View Project <i class="fas fa-external-link-alt"></i></a>
+                    </div>
+                </div>
+                <div class="portfolio-item reveal" data-category="designs">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400'%3E%3Crect width='600' height='400' fill='%2316213e'/%3E%3Ctext x='300' y='190' text-anchor='middle' fill='%23f0a500' font-size='40' font-family='Arial' font-weight='700'%3E🎨%3C/text%3E%3Ctext x='300' y='240' text-anchor='middle' fill='%23fff' font-size='22' font-family='Arial'%3EBrand Identity%3C/text%3E%3C/svg%3E" alt="Brand identity design project">
+                    <div class="portfolio-overlay">
+                        <h3 data-i18n="project3_title">Luxe Brand Identity</h3>
+                        <span data-i18n="project3_cat">UI/UX & Branding</span>
+                        <a href="#contact" data-i18n="view_project">View Project <i class="fas fa-external-link-alt"></i></a>
+                    </div>
+                </div>
+                <div class="portfolio-item reveal" data-category="websites">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400'%3E%3Crect width='600' height='400' fill='%23e94560'/%3E%3Ctext x='300' y='190' text-anchor='middle' fill='%23fff' font-size='40' font-family='Arial' font-weight='700'%3E📊%3C/text%3E%3Ctext x='300' y='240' text-anchor='middle' fill='%23fff' font-size='22' font-family='Arial'%3ESaaS Dashboard%3C/text%3E%3C/svg%3E" alt="SaaS dashboard project">
+                    <div class="portfolio-overlay">
+                        <h3 data-i18n="project4_title">CloudMetrics Dashboard</h3>
+                        <span data-i18n="project4_cat">SaaS Web Application</span>
+                        <a href="#contact" data-i18n="view_project">View Project <i class="fas fa-external-link-alt"></i></a>
+                    </div>
+                </div>
+                <div class="portfolio-item reveal" data-category="apps">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400'%3E%3Crect width='600' height='400' fill='%23f0a500'/%3E%3Ctext x='300' y='190' text-anchor='middle' fill='%23fff' font-size='40' font-family='Arial' font-weight='700'%3E🚀%3C/text%3E%3Ctext x='300' y='240' text-anchor='middle' fill='%23fff' font-size='22' font-family='Arial'%3EDelivery App%3C/text%3E%3C/svg%3E" alt="Delivery service app project">
+                    <div class="portfolio-overlay">
+                        <h3 data-i18n="project5_title">QuickDrop Delivery</h3>
+                        <span data-i18n="project5_cat">Cross-Platform Mobile App</span>
+                        <a href="#contact" data-i18n="view_project">View Project <i class="fas fa-external-link-alt"></i></a>
+                    </div>
+                </div>
+                <div class="portfolio-item reveal" data-category="designs">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400'%3E%3Crect width='600' height='400' fill='%231a1a2e'/%3E%3Ctext x='300' y='190' text-anchor='middle' fill='%23e94560' font-size='40' font-family='Arial' font-weight='700'%3E🍽️%3C/text%3E%3Ctext x='300' y='240' text-anchor='middle' fill='%23fff' font-size='22' font-family='Arial'%3ERestaurant Website%3C/text%3E%3C/svg%3E" alt="Restaurant website redesign project">
+                    <div class="portfolio-overlay">
+                        <h3 data-i18n="project6_title">Savora Restaurant</h3>
+                        <span data-i18n="project6_cat">Website Redesign</span>
+                        <a href="#contact" data-i18n="view_project">View Project <i class="fas fa-external-link-alt"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         Testimonials Section
+         ============================================ -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-title reveal">
+                <h2 data-i18n="testimonials_title">What Clients Say</h2>
+                <p data-i18n="testimonials_desc">Real feedback from real clients who trusted me with their projects.</p>
+                <div class="underline"></div>
+            </div>
+
+            <div class="testimonial-slider reveal">
+                <div class="testimonial-slide active">
+                    <div class="testimonial-avatar"><i class="fas fa-user"></i></div>
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text" data-i18n="testimonial1_text">"Khalid transformed our outdated website into a modern, high-converting platform. Our online sales increased by 40% within three months of launch. His attention to detail and technical expertise are truly outstanding."</p>
+                    <h4 class="testimonial-name" data-i18n="testimonial1_name">Sarah Mitchell</h4>
+                    <span class="testimonial-role" data-i18n="testimonial1_role">CEO, ShopWave Inc.</span>
+                </div>
+                <div class="testimonial-slide">
+                    <div class="testimonial-avatar"><i class="fas fa-user"></i></div>
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text" data-i18n="testimonial2_text">"Working with Khalid on our mobile app was a seamless experience. He understood our vision from day one and delivered a product that exceeded our expectations. The app has a 4.8-star rating on both stores."</p>
+                    <h4 class="testimonial-name" data-i18n="testimonial2_name">James Rodriguez</h4>
+                    <span class="testimonial-role" data-i18n="testimonial2_role">Founder, FitTrack Pro</span>
+                </div>
+                <div class="testimonial-slide">
+                    <div class="testimonial-avatar"><i class="fas fa-user"></i></div>
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text" data-i18n="testimonial3_text">"Khalid doesn't just build websites — he builds solutions. His strategic approach to our SEO and digital presence helped us rank on the first page of Google for our key terms within six months."</p>
+                    <h4 class="testimonial-name" data-i18n="testimonial3_name">Amira Hassan</h4>
+                    <span class="testimonial-role" data-i18n="testimonial3_role">Marketing Director, TechNova</span>
+                </div>
+                <div class="testimonial-slide">
+                    <div class="testimonial-avatar"><i class="fas fa-user"></i></div>
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p class="testimonial-text" data-i18n="testimonial4_text">"We needed a reliable tech partner for ongoing server management and support. Khalid has been exceptional — zero downtime in over a year, and his response time is always under an hour. Highly recommended."</p>
+                    <h4 class="testimonial-name" data-i18n="testimonial4_name">David Chen</h4>
+                    <span class="testimonial-role" data-i18n="testimonial4_role">CTO, DataPulse Systems</span>
+                </div>
+                <div class="testimonial-slide">
+                    <div class="testimonial-avatar"><i class="fas fa-user"></i></div>
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text" data-i18n="testimonial5_text">"The UI/UX redesign Khalid delivered for our SaaS platform reduced our churn rate by 25%. He has an incredible eye for design and a deep understanding of user behavior. A true professional."</p>
+                    <h4 class="testimonial-name" data-i18n="testimonial5_name">Elena Petrova</h4>
+                    <span class="testimonial-role" data-i18n="testimonial5_role">Product Manager, CloudMetrics</span>
+                </div>
+
+                <div class="testimonial-nav">
+                    <button class="testimonial-arrow" id="prevTestimonial" aria-label="Previous testimonial"><i class="fas fa-chevron-left"></i></button>
+                    <div class="testimonial-dots" id="testimonialDots"></div>
+                    <button class="testimonial-arrow" id="nextTestimonial" aria-label="Next testimonial"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         Pricing Section
+         ============================================ -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-title reveal">
+                <h2 data-i18n="pricing_title">Pricing Plans</h2>
+                <p data-i18n="pricing_desc">Transparent pricing designed to fit businesses of every size and stage.</p>
+                <div class="underline"></div>
+            </div>
+
+            <div class="pricing-grid">
+                <div class="pricing-card reveal">
+                    <h3 data-i18n="plan1_name">Starter</h3>
+                    <div class="price">$499<span data-i18n="per_project">/project</span></div>
+                    <p class="price-desc" data-i18n="plan1_desc">Perfect for small businesses getting started</p>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> <span data-i18n="plan1_f1">Responsive Website (up to 5 pages)</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="plan1_f2">Basic SEO Setup</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="plan1_f3">Contact Form Integration</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="plan1_f4">Mobile-Friendly Design</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="plan1_f5">1 Month of Support</span></li>
+                        <li class="disabled"><i class="fas fa-times"></i> <span data-i18n="plan1_f6">Custom Functionality</span></li>
+                        <li class="disabled"><i class="fas fa-times"></i> <span data-i18n="plan1_f7">Priority Support</span></li>
+                    </ul>
+                    <a href="#contact" class="btn btn-dark" data-i18n="order_now">Order Now</a>
+                </div>
+
+                <div class="pricing-card featured reveal">
+                    <div class="pricing-badge" data-i18n="most_popular">Most Popular</div>
+                    <h3 data-i18n="plan2_name">Professional</h3>
+                    <div class="price">$1,299<span data-i18n="per_project">/project</span></div>
+                    <p class="price-desc" data-i18n="plan2_desc">For growing businesses that need more power</p>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> <span data-i18n="plan2_f1">Responsive Website (up to 15 pages)</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="plan2_f2">Advanced SEO & Analytics</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="plan2_f3">CMS Integration</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="plan2_f4">Custom Functionality</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="plan2_f5">E-Commerce Ready</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="plan2_f6">3 Months of Support</span></li>
+                        <li class="disabled"><i class="fas fa-times"></i> <span data-i18n="plan2_f7">Dedicated Account Manager</span></li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary" data-i18n="order_now">Order Now</a>
+                </div>
+
+                <div class="pricing-card reveal">
+                    <h3 data-i18n="plan3_name">Enterprise</h3>
+                    <div class="price">$3,499<span data-i18n="per_project">/project</span></div>
+                    <p class="price-desc" data-i18n="plan3_desc">Full-scale solutions for established organizations</p>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> <span data-i18n="plan3_f1">Unlimited Pages & Features</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="plan3_f2">Full SEO & Marketing Suite</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="plan3_f3">Custom Web Application</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="plan3_f4">API Integrations</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="plan3_f5">Server Setup & Management</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="plan3_f6">12 Months of Priority Support</span></li>
+                        <li><i class="fas fa-check"></i> <span data-i18n="plan3_f7">Dedicated Account Manager</span></li>
+                    </ul>
+                    <a href="#contact" class="btn btn-dark" data-i18n="order_now">Order Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         FAQ Section
+         ============================================ -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <div class="section-title reveal">
+                <h2 data-i18n="faq_title">Frequently Asked Questions</h2>
+                <p data-i18n="faq_desc">Find answers to common questions about my services and process.</p>
+                <div class="underline"></div>
+            </div>
+
+            <div class="faq-list">
+                <div class="faq-item reveal">
+                    <button class="faq-question" aria-expanded="false">
+                        <span data-i18n="faq1_q">What services do you offer?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p data-i18n="faq1_a">I offer a wide range of digital services including web design & development, mobile app development, UI/UX design, technical support & maintenance, hosting & server management, and SEO & digital marketing.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal">
+                    <button class="faq-question" aria-expanded="false">
+                        <span data-i18n="faq2_q">How long does a typical project take?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p data-i18n="faq2_a">Project timelines vary depending on complexity. A simple website takes 1-2 weeks, while a full web application or mobile app can take 4-12 weeks. I'll provide a detailed timeline after understanding your requirements.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal">
+                    <button class="faq-question" aria-expanded="false">
+                        <span data-i18n="faq3_q">Do you offer ongoing support after project delivery?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p data-i18n="faq3_a">Yes! All my plans include a support period. I also offer extended maintenance packages to keep your project running smoothly, including updates, security patches, and performance optimization.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal">
+                    <button class="faq-question" aria-expanded="false">
+                        <span data-i18n="faq4_q">What is your payment process?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p data-i18n="faq4_a">I typically require a 50% upfront deposit to begin work, with the remaining 50% due upon project completion. For larger projects, we can arrange milestone-based payments.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal">
+                    <button class="faq-question" aria-expanded="false">
+                        <span data-i18n="faq5_q">Can you work with my existing website or app?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p data-i18n="faq5_a">Absolutely! I can redesign, optimize, or add new features to your existing website or application. I'll first conduct a thorough review and then suggest the best approach forward.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item reveal">
+                    <button class="faq-question" aria-expanded="false">
+                        <span data-i18n="faq6_q">How do we communicate during the project?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p data-i18n="faq6_a">I stay in touch via WhatsApp, email, or your preferred communication tool. You'll receive regular progress updates and can review the work at each milestone before we move forward.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         Contact Section
+         ============================================ -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-title reveal">
+                <h2 data-i18n="contact_title">Get In Touch</h2>
+                <p data-i18n="contact_desc">Have a project in mind? Let's discuss how I can help bring your vision to life.</p>
+                <div class="underline"></div>
+            </div>
+
+            <div class="contact-grid">
+                <div class="contact-info reveal-left">
+                    <h3 data-i18n="contact_subtitle">Let's Start a Conversation</h3>
+                    <p data-i18n="contact_text">Whether you need a website, an app, or ongoing technical support, I'm here to help. Reach out and let's explore how we can work together.</p>
+
+                    <div class="contact-detail">
+                        <div class="contact-detail-icon"><i class="fas fa-phone"></i></div>
+                        <div class="contact-detail-text">
+                            <h4 data-i18n="contact_phone">Phone</h4>
+                            <p><a href="tel:+966509182112">0509182112</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-detail">
+                        <div class="contact-detail-icon"><i class="fas fa-envelope"></i></div>
+                        <div class="contact-detail-text">
+                            <h4 data-i18n="contact_email">Email</h4>
+                            <p><a href="mailto:khalidtrrk@gmail.com">khalidtrrk@gmail.com</a></p>
+                        </div>
+                    </div>
+                    <div class="contact-detail">
+                        <div class="contact-detail-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div class="contact-detail-text">
+                            <h4 data-i18n="contact_location">Location</h4>
+                            <p data-i18n="contact_location_val">Available Worldwide (Remote)</p>
+                        </div>
+                    </div>
+
+                    <div class="social-links">
+                        <a href="https://wa.me/966509182112" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <a href="mailto:khalidtrrk@gmail.com" class="social-link" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                    </div>
+
+                    <div class="map-placeholder">
+                        <i class="fas fa-map"></i> <span data-i18n="map_placeholder">Google Map Placeholder — Embed your map here</span>
+                    </div>
+                </div>
+
+                <div class="contact-form reveal-right" id="contactForm">
+                    <form id="form" novalidate>
+                        <div class="form-group">
+                            <label for="name" data-i18n="form_name">Full Name</label>
+                            <input type="text" id="name" name="name" autocomplete="name" data-i18n-placeholder="form_name_ph" placeholder="John Doe" required>
+                            <span class="error-text" data-i18n="error_name">Please enter your name.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" data-i18n="form_email">Email Address</label>
+                            <input type="email" id="email" name="email" autocomplete="email" data-i18n-placeholder="form_email_ph" placeholder="john@example.com" required>
+                            <span class="error-text" data-i18n="error_email">Please enter a valid email address.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject" data-i18n="form_subject">Subject</label>
+                            <input type="text" id="subject" name="subject" data-i18n-placeholder="form_subject_ph" placeholder="Project Inquiry" required>
+                            <span class="error-text" data-i18n="error_subject">Please enter a subject.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="message" data-i18n="form_message">Message</label>
+                            <textarea id="message" name="message" data-i18n-placeholder="form_message_ph" placeholder="Tell me about your project..." required></textarea>
+                            <span class="error-text" data-i18n="error_message">Please enter your message.</span>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> <span data-i18n="form_send">Send Message</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         Footer
+         ============================================ -->
+    <footer class="footer" id="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3>K<span>.</span></h3>
+                    <p data-i18n="footer_desc">Delivering premium digital solutions that help businesses grow and succeed. Let's build something remarkable together.</p>
+                    <div class="footer-social">
+                        <a href="https://wa.me/966509182112" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <a href="mailto:khalidtrrk@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 data-i18n="footer_links">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home" data-i18n="nav_home">Home</a></li>
+                        <li><a href="#services" data-i18n="nav_services">Services</a></li>
+                        <li><a href="#about" data-i18n="nav_about">About</a></li>
+                        <li><a href="#portfolio" data-i18n="nav_portfolio">Portfolio</a></li>
+                        <li><a href="#pricing" data-i18n="nav_pricing">Pricing</a></li>
+                        <li><a href="#faq" data-i18n="nav_faq">FAQ</a></li>
+                        <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 data-i18n="footer_contact">Contact Info</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-phone"></i> <a href="tel:+966509182112">0509182112</a></li>
+                        <li><i class="fas fa-envelope"></i> <a href="mailto:khalidtrrk@gmail.com">khalidtrrk@gmail.com</a></li>
+                        <li><i class="fas fa-map-marker-alt"></i> <span data-i18n="footer_location">Available Worldwide</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="footer_copy">&copy; 2026 Khalid. All Rights Reserved.</p>
+                <div class="footer-social">
+                    <a href="https://wa.me/966509182112" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="mailto:khalidtrrk@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/966509182112" target="_blank" rel="noopener noreferrer" class="whatsapp-float" aria-label="WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- PWA Install Banner -->
+    <div class="pwa-install-banner" id="pwaInstallBanner">
+        <div class="pwa-icon">K</div>
+        <div class="pwa-text">
+            <h4 data-i18n="pwa_install_title">Install Khalid App</h4>
+            <p data-i18n="pwa_install_desc">Add to home screen for quick access</p>
+        </div>
+        <div class="pwa-actions">
+            <button class="pwa-btn pwa-btn-install" id="pwaInstallBtn" data-i18n="pwa_install_btn">Install</button>
+            <button class="pwa-btn pwa-btn-close" id="pwaCloseBtn" data-i18n="pwa_close_btn">✕</button>
+        </div>
+    </div>
+
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ============================================
+         JavaScript
+         ============================================ -->
+    <script>
+        /* ============================================
+           Translations
+           ============================================ */
+        const translations = {
+            en: {
+                nav_home: 'Home',
+                nav_services: 'Services',
+                nav_about: 'About',
+                nav_portfolio: 'Portfolio',
+                nav_testimonials: 'Testimonials',
+                nav_pricing: 'Pricing',
+                nav_faq: 'FAQ',
+                nav_contact: 'Contact',
+                nav_quote: 'Get a Quote',
+                theme_to_dark: 'Switch to dark mode',
+                theme_to_light: 'Switch to light mode',
+                hero_title: 'Turning Your Ideas Into <span>Powerful Digital Solutions</span>',
+                hero_desc: "I'm Khalid — a freelance tech specialist helping businesses build, grow, and thrive online. From custom websites to full-scale applications, I deliver results that matter.",
+                hero_btn_services: 'Explore My Services <i class="fas fa-arrow-right"></i>',
+                hero_btn_talk: 'Let\'s Talk <i class="fas fa-comments"></i>',
+                stat_projects: 'Projects Completed',
+                stat_clients: 'Happy Clients',
+                stat_years: 'Years of Experience',
+                services_title: 'What I Offer',
+                services_desc: 'Comprehensive tech services tailored to help your business succeed in the digital world.',
+                service1_title: 'Web Design & Development',
+                service1_desc: 'Custom-built websites that are fast, responsive, and optimized for conversions. From landing pages to complex web applications.',
+                service2_title: 'Mobile App Development',
+                service2_desc: 'Native and cross-platform mobile applications for iOS and Android that deliver seamless user experiences.',
+                service3_title: 'Technical Support & Maintenance',
+                service3_desc: 'Reliable ongoing support, troubleshooting, and system maintenance to keep your digital infrastructure running smoothly.',
+                service4_title: 'UI/UX Design',
+                service4_desc: 'User-centered designs that look stunning and feel intuitive. Research-driven interfaces that boost engagement and retention.',
+                service5_title: 'Hosting & Server Management',
+                service5_desc: 'Secure, scalable hosting solutions and server administration. Cloud setup, migration, and performance optimization.',
+                service6_title: 'SEO & Digital Marketing',
+                service6_desc: 'Data-driven SEO strategies and digital marketing campaigns that increase visibility, traffic, and revenue.',
+                learn_more: 'Learn More <i class="fas fa-arrow-right"></i>',
+                about_title: 'Building Digital Excellence, One Project at a Time',
+                about_p1: "I'm Khalid, a passionate tech professional with over seven years of experience delivering high-quality digital solutions. I specialize in web development, mobile apps, and IT infrastructure — helping startups and established businesses alike achieve their goals through technology.",
+                about_p2: "My approach combines clean code, modern design principles, and a deep understanding of what users need. Every project I take on is treated with the same dedication — whether it's a simple website or a full-stack enterprise application.",
+                badge_exp: 'Years<br>Experience',
+                skill_uiux: 'UI/UX Design',
+                skill_devops: 'DevOps',
+                download_cv: 'Download My CV',
+                portfolio_title: 'My Work',
+                portfolio_desc: 'A selection of recent projects showcasing my skills across web, mobile, and design.',
+                filter_all: 'All',
+                filter_websites: 'Websites',
+                filter_apps: 'Apps',
+                filter_designs: 'Designs',
+                project1_title: 'ShopWave E-Commerce',
+                project1_cat: 'Full-Stack Web Application',
+                project2_title: 'FitTrack Pro',
+                project2_cat: 'iOS & Android App',
+                project3_title: 'Luxe Brand Identity',
+                project3_cat: 'UI/UX & Branding',
+                project4_title: 'CloudMetrics Dashboard',
+                project4_cat: 'SaaS Web Application',
+                project5_title: 'QuickDrop Delivery',
+                project5_cat: 'Cross-Platform Mobile App',
+                project6_title: 'Savora Restaurant',
+                project6_cat: 'Website Redesign',
+                view_project: 'View Project <i class="fas fa-external-link-alt"></i>',
+                testimonials_title: 'What Clients Say',
+                testimonials_desc: 'Real feedback from real clients who trusted me with their projects.',
+                testimonial1_text: '"Khalid transformed our outdated website into a modern, high-converting platform. Our online sales increased by 40% within three months of launch. His attention to detail and technical expertise are truly outstanding."',
+                testimonial1_name: 'Sarah Mitchell',
+                testimonial1_role: 'CEO, ShopWave Inc.',
+                testimonial2_text: '"Working with Khalid on our mobile app was a seamless experience. He understood our vision from day one and delivered a product that exceeded our expectations. The app has a 4.8-star rating on both stores."',
+                testimonial2_name: 'James Rodriguez',
+                testimonial2_role: 'Founder, FitTrack Pro',
+                testimonial3_text: '"Khalid doesn\'t just build websites — he builds solutions. His strategic approach to our SEO and digital presence helped us rank on the first page of Google for our key terms within six months."',
+                testimonial3_name: 'Amira Hassan',
+                testimonial3_role: 'Marketing Director, TechNova',
+                testimonial4_text: '"We needed a reliable tech partner for ongoing server management and support. Khalid has been exceptional — zero downtime in over a year, and his response time is always under an hour. Highly recommended."',
+                testimonial4_name: 'David Chen',
+                testimonial4_role: 'CTO, DataPulse Systems',
+                testimonial5_text: '"The UI/UX redesign Khalid delivered for our SaaS platform reduced our churn rate by 25%. He has an incredible eye for design and a deep understanding of user behavior. A true professional."',
+                testimonial5_name: 'Elena Petrova',
+                testimonial5_role: 'Product Manager, CloudMetrics',
+                pricing_title: 'Pricing Plans',
+                pricing_desc: 'Transparent pricing designed to fit businesses of every size and stage.',
+                plan1_name: 'Starter',
+                plan1_desc: 'Perfect for small businesses getting started',
+                plan2_name: 'Professional',
+                plan2_desc: 'For growing businesses that need more power',
+                plan3_name: 'Enterprise',
+                plan3_desc: 'Full-scale solutions for established organizations',
+                per_project: '/project',
+                most_popular: 'Most Popular',
+                plan1_f1: 'Responsive Website (up to 5 pages)',
+                plan1_f2: 'Basic SEO Setup',
+                plan1_f3: 'Contact Form Integration',
+                plan1_f4: 'Mobile-Friendly Design',
+                plan1_f5: '1 Month of Support',
+                plan1_f6: 'Custom Functionality',
+                plan1_f7: 'Priority Support',
+                plan2_f1: 'Responsive Website (up to 15 pages)',
+                plan2_f2: 'Advanced SEO & Analytics',
+                plan2_f3: 'CMS Integration',
+                plan2_f4: 'Custom Functionality',
+                plan2_f5: 'E-Commerce Ready',
+                plan2_f6: '3 Months of Support',
+                plan2_f7: 'Dedicated Account Manager',
+                plan3_f1: 'Unlimited Pages & Features',
+                plan3_f2: 'Full SEO & Marketing Suite',
+                plan3_f3: 'Custom Web Application',
+                plan3_f4: 'API Integrations',
+                plan3_f5: 'Server Setup & Management',
+                plan3_f6: '12 Months of Priority Support',
+                plan3_f7: 'Dedicated Account Manager',
+                order_now: 'Order Now',
+                faq_title: 'Frequently Asked Questions',
+                faq_desc: 'Find answers to common questions about my services and process.',
+                faq1_q: 'What services do you offer?',
+                faq1_a: 'I offer a wide range of digital services including web design & development, mobile app development, UI/UX design, technical support & maintenance, hosting & server management, and SEO & digital marketing.',
+                faq2_q: 'How long does a typical project take?',
+                faq2_a: "Project timelines vary depending on complexity. A simple website takes 1-2 weeks, while a full web application or mobile app can take 4-12 weeks. I'll provide a detailed timeline after understanding your requirements.",
+                faq3_q: 'Do you offer ongoing support after project delivery?',
+                faq3_a: 'Yes! All my plans include a support period. I also offer extended maintenance packages to keep your project running smoothly, including updates, security patches, and performance optimization.',
+                faq4_q: 'What is your payment process?',
+                faq4_a: 'I typically require a 50% upfront deposit to begin work, with the remaining 50% due upon project completion. For larger projects, we can arrange milestone-based payments.',
+                faq5_q: 'Can you work with my existing website or app?',
+                faq5_a: "Absolutely! I can redesign, optimize, or add new features to your existing website or application. I'll first conduct a thorough review and then suggest the best approach forward.",
+                faq6_q: 'How do we communicate during the project?',
+                faq6_a: "I stay in touch via WhatsApp, email, or your preferred communication tool. You'll receive regular progress updates and can review the work at each milestone before we move forward.",
+                contact_title: 'Get In Touch',
+                contact_desc: "Have a project in mind? Let's discuss how I can help bring your vision to life.",
+                contact_subtitle: "Let's Start a Conversation",
+                contact_text: "Whether you need a website, an app, or ongoing technical support, I'm here to help. Reach out and let's explore how we can work together.",
+                contact_phone: 'Phone',
+                contact_email: 'Email',
+                contact_location: 'Location',
+                contact_location_val: 'Available Worldwide (Remote)',
+                map_placeholder: 'Google Map Placeholder — Embed your map here',
+                form_name: 'Full Name',
+                form_name_ph: 'John Doe',
+                form_email: 'Email Address',
+                form_email_ph: 'john@example.com',
+                form_subject: 'Subject',
+                form_subject_ph: 'Project Inquiry',
+                form_message: 'Message',
+                form_message_ph: 'Tell me about your project...',
+                form_send: 'Send Message',
+                error_name: 'Please enter your name.',
+                error_email: 'Please enter a valid email address.',
+                error_subject: 'Please enter a subject.',
+                error_message: 'Please enter your message.',
+                toast_success: "Message sent successfully! I'll get back to you soon.",
+                go_to_testimonial: 'Go to testimonial',
+                toast_send_error: 'Could not send the message. Make sure the site is running (npm start) and try again.',
+                footer_desc: "Delivering premium digital solutions that help businesses grow and succeed. Let's build something remarkable together.",
+                footer_links: 'Quick Links',
+                footer_contact: 'Contact Info',
+                footer_location: 'Available Worldwide',
+                footer_copy: '&copy; 2026 Khalid. All Rights Reserved.',
+                pwa_install_title: 'Install Khalid App',
+                pwa_install_desc: 'Add to home screen for quick access',
+                pwa_install_btn: 'Install',
+                pwa_close_btn: '✕'
+            },
+            ar: {
+                nav_home: 'الرئيسية',
+                nav_services: 'الخدمات',
+                nav_about: 'عني',
+                nav_portfolio: 'أعمالي',
+                nav_testimonials: 'آراء العملاء',
+                nav_pricing: 'الأسعار',
+                nav_faq: 'الأسئلة الشائعة',
+                nav_contact: 'تواصل معي',
+                nav_quote: 'احصل على عرض سعر',
+                theme_to_dark: 'التبديل إلى الوضع الداكن',
+                theme_to_light: 'التبديل إلى الوضع الفاتح',
+                hero_title: 'تحويل أفكارك إلى <span>حلول رقمية قوية</span>',
+                hero_desc: 'أنا خالد — متخصص تقني مستقل أساعد الشركات على البناء والنمو والازدهار عبر الإنترنت. من المواقع المخصصة إلى التطبيقات الشاملة، أقدم نتائج تهمك.',
+                hero_btn_services: 'استكشف خدماتي <i class="fas fa-arrow-right"></i>',
+                hero_btn_talk: 'دعنا نتحدث <i class="fas fa-comments"></i>',
+                stat_projects: 'مشروع مكتمل',
+                stat_clients: 'عميل سعيد',
+                stat_years: 'سنوات خبرة',
+                services_title: 'ما أقدمه',
+                services_desc: 'خدمات تقنية شاملة مصممة لمساعدة عملك على النجاح في العالم الرقمي.',
+                service1_title: 'تصميم وتطوير المواقع',
+                service1_desc: 'مواقع مصممة خصيصًا، سريعة ومتجاوبة ومحسّنة لتحقيق أعلى معدلات التحويل. من صفحات الهبوط إلى تطبيقات الويب المعقدة.',
+                service2_title: 'تطوير تطبيقات الجوال',
+                service2_desc: 'تطبيقات جوال أصلية ومتعددة المنصات لنظامي iOS و Android تقدم تجارب مستخدم سلسة.',
+                service3_title: 'الدعم الفني والصيانة',
+                service3_desc: 'دعم مستمر وموثوق واستكشاف الأخطاء وصيانة الأنظمة للحفاظ على بنيتك التحتية الرقمية.',
+                service4_title: 'تصميم واجهات المستخدم',
+                service4_desc: 'تصاميم تركز على المستخدم تبدو مذهلة وسهلة الاستخدام. واجهات مدفوعة بالبحث تعزز التفاعل والاحتفاظ.',
+                service5_title: 'الاستضافة وإدارة الخوادم',
+                service5_desc: 'حلول استضافة آمنة وقابلة للتوسع وإدارة خوادم. إعداد السحابة والترحيل وتحسين الأداء.',
+                service6_title: 'تحسين محركات البحث والتسويق الرقمي',
+                service6_desc: 'استراتيجيات SEO مبنية على البيانات وحملات تسويق رقمي تزيد من الظهور وحركة المرور والإيرادات.',
+                learn_more: 'اعرف المزيد <i class="fas fa-arrow-right"></i>',
+                about_title: 'بناء التميز الرقمي، مشروعًا تلو الآخر',
+                about_p1: 'أنا خالد، محترف تقني شغوف بأكثر من سبع سنوات من الخبرة في تقديم حلول رقمية عالية الجودة. أتخصص في تطوير الويب وتطبيقات الجوال والبنية التحتية لتكنولوجيا المعلومات — أساعد الشركات الناشئة والمؤسسات على تحقيق أهدافها من خلال التكنولوجيا.',
+                about_p2: 'يجمع نهجي بين الكود النظيف ومبادئ التصميم الحديثة والفهم العميق لاحتياجات المستخدمين. كل مشروع أتولاه يُعامل بنفس التفاني — سواء كان موقعًا بسيطًا أو تطبيقًا مؤسسيًا متكاملًا.',
+                badge_exp: 'سنوات<br>خبرة',
+                skill_uiux: 'تصميم UI/UX',
+                skill_devops: 'DevOps',
+                download_cv: 'تحميل سيرتي الذاتية',
+                portfolio_title: 'أعمالي',
+                portfolio_desc: 'مجموعة مختارة من المشاريع الحديثة التي تعرض مهاراتي في الويب والجوال والتصميم.',
+                filter_all: 'الكل',
+                filter_websites: 'مواقع',
+                filter_apps: 'تطبيقات',
+                filter_designs: 'تصاميم',
+                project1_title: 'ShopWave للتجارة الإلكترونية',
+                project1_cat: 'تطبيق ويب متكامل',
+                project2_title: 'FitTrack Pro',
+                project2_cat: 'تطبيق iOS و Android',
+                project3_title: 'هوية Luxe التجارية',
+                project3_cat: 'تصميم واجهات وعلامة تجارية',
+                project4_title: 'لوحة تحكم CloudMetrics',
+                project4_cat: 'تطبيق ويب SaaS',
+                project5_title: 'QuickDrop للتوصيل',
+                project5_cat: 'تطبيق جوال متعدد المنصات',
+                project6_title: 'مطعم Savora',
+                project6_cat: 'إعادة تصميم الموقع',
+                view_project: 'عرض المشروع <i class="fas fa-external-link-alt"></i>',
+                testimonials_title: 'ماذا يقول العملاء',
+                testimonials_desc: 'آراء حقيقية من عملاء حقيقيين وثقوا بي في مشاريعهم.',
+                testimonial1_text: '"حوّل خالد موقعنا القديم إلى منصة حديثة عالية التحويل. زادت مبيعاتنا عبر الإنترنت بنسبة 40% خلال ثلاثة أشهر من الإطلاق. اهتمامه بالتفاصيل وخبرته التقنية مذهلة حقًا."',
+                testimonial1_name: 'سارة ميتشل',
+                testimonial1_role: 'الرئيس التنفيذي، ShopWave',
+                testimonial2_text: '"العمل مع خالد على تطبيقنا كان تجربة سلسة. فهم رؤيتنا من اليوم الأول وقدم منتجًا فاق توقعاتنا. التطبيق حصل على تقييم 4.8 نجوم في كلا المتجرين."',
+                testimonial2_name: 'جيمس رودريغيز',
+                testimonial2_role: 'المؤسس، FitTrack Pro',
+                testimonial3_text: '"خالد لا يبني مواقع فحسب — بل يبني حلولًا. ساعدنا نهجه الاستراتيجي في تحسين SEO والحضور الرقمي على الظهور في الصفحة الأولى من Google خلال ستة أشهر."',
+                testimonial3_name: 'أميرة حسن',
+                testimonial3_role: 'مديرة التسويق، TechNova',
+                testimonial4_text: '"كنا بحاجة إلى شريك تقني موثوق لإدارة الخوادم والدعم المستمر. كان خالد استثنائيًا — صفر توقف لأكثر من عام، ووقت استجابته دائمًا أقل من ساعة. أنصح به بشدة."',
+                testimonial4_name: 'ديفيد تشين',
+                testimonial4_role: 'المدير التقني، DataPulse Systems',
+                testimonial5_text: '"إعادة تصميم واجهات المستخدم التي قدمها خالد لمنصتنا SaaS خفضت معدل فقدان العملاء بنسبة 25%. لديه عين لا تصدق للتصميم وفهم عميق لسلوك المستخدم. محترف حقيقي."',
+                testimonial5_name: 'إيلينا بتروفا',
+                testimonial5_role: 'مديرة المنتج، CloudMetrics',
+                pricing_title: 'خطط الأسعار',
+                pricing_desc: 'أسعار شفافة مصممة لتناسب الشركات بجميع أحجامها ومراحلها.',
+                plan1_name: 'المبتدئ',
+                plan1_desc: 'مثالي للشركات الصغيرة في بداياتها',
+                plan2_name: 'الاحترافي',
+                plan2_desc: 'للشركات النامية التي تحتاج المزيد من القوة',
+                plan3_name: 'المؤسسي',
+                plan3_desc: 'حلول شاملة للمؤسسات الكبيرة',
+                per_project: '/للمشروع',
+                most_popular: 'الأكثر شعبية',
+                plan1_f1: 'موقع متجاوب (حتى 5 صفحات)',
+                plan1_f2: 'إعداد SEO أساسي',
+                plan1_f3: 'نموذج تواصل',
+                plan1_f4: 'تصميم متوافق مع الجوال',
+                plan1_f5: 'شهر واحد من الدعم',
+                plan1_f6: 'وظائف مخصصة',
+                plan1_f7: 'دعم ذو أولوية',
+                plan2_f1: 'موقع متجاوب (حتى 15 صفحة)',
+                plan2_f2: 'SEO متقدم وتحليلات',
+                plan2_f3: 'نظام إدارة محتوى',
+                plan2_f4: 'وظائف مخصصة',
+                plan2_f5: 'جاهز للتجارة الإلكترونية',
+                plan2_f6: '3 أشهر من الدعم',
+                plan2_f7: 'مدير حساب مخصص',
+                plan3_f1: 'صفحات وميزات غير محدودة',
+                plan3_f2: 'حزمة SEO وتسويق كاملة',
+                plan3_f3: 'تطبيق ويب مخصص',
+                plan3_f4: 'تكامل مع APIs',
+                plan3_f5: 'إعداد وإدارة الخوادم',
+                plan3_f6: '12 شهرًا من الدعم ذو الأولوية',
+                plan3_f7: 'مدير حساب مخصص',
+                order_now: 'اطلب الآن',
+                faq_title: 'الأسئلة الشائعة',
+                faq_desc: 'اعثر على إجابات للأسئلة الشائعة حول خدماتي وطريقة عملي.',
+                faq1_q: 'ما هي الخدمات التي تقدمها؟',
+                faq1_a: 'أقدم مجموعة واسعة من الخدمات الرقمية تشمل تصميم وتطوير المواقع، تطوير تطبيقات الجوال، تصميم واجهات المستخدم، الدعم الفني والصيانة، الاستضافة وإدارة الخوادم، وتحسين محركات البحث والتسويق الرقمي.',
+                faq2_q: 'كم تستغرق مدة المشروع عادةً؟',
+                faq2_a: 'تختلف مدة المشاريع حسب التعقيد. الموقع البسيط يستغرق 1-2 أسبوع، بينما تطبيق الويب الكامل أو تطبيق الجوال قد يستغرق 4-12 أسبوعًا. سأقدم لك جدولًا زمنيًا مفصلًا بعد فهم متطلباتك.',
+                faq3_q: 'هل تقدم دعمًا مستمرًا بعد تسليم المشروع؟',
+                faq3_a: 'نعم! جميع خططي تتضمن فترة دعم. كما أقدم حزم صيانة ممتدة للحفاظ على مشروعك يعمل بسلاسة، بما في ذلك التحديثات وتصحيحات الأمان وتحسين الأداء.',
+                faq4_q: 'ما هي طريقة الدفع؟',
+                faq4_a: 'عادةً أطلب دفعة مقدمة بنسبة 50% لبدء العمل، والـ 50% المتبقية عند اكتمال المشروع. للمشاريع الكبيرة، يمكننا ترتيب دفعات على مراحل.',
+                faq5_q: 'هل يمكنك العمل على موقعي أو تطبيقي الحالي؟',
+                faq5_a: 'بالتأكيد! يمكنني إعادة تصميم أو تحسين أو إضافة ميزات جديدة لموقعك أو تطبيقك الحالي. سأقوم أولاً بمراجعة شاملة ثم أقترح أفضل نهج للمضي قدمًا.',
+                faq6_q: 'كيف نتواصل أثناء المشروع؟',
+                faq6_a: 'أبقى على تواصل عبر واتساب أو البريد الإلكتروني أو أداة التواصل المفضلة لديك. ستتلقى تحديثات منتظمة عن التقدم ويمكنك مراجعة العمل في كل مرحلة قبل الانتقال للتالية.',
+                contact_title: 'تواصل معي',
+                contact_desc: 'لديك مشروع في ذهنك؟ دعنا نناقش كيف يمكنني مساعدتك في تحقيق رؤيتك.',
+                contact_subtitle: 'لنبدأ محادثة',
+                contact_text: 'سواء كنت بحاجة إلى موقع ويب أو تطبيق أو دعم تقني مستمر، أنا هنا للمساعدة. تواصل معي ودعنا نستكشف كيف يمكننا العمل معًا.',
+                contact_phone: 'الهاتف',
+                contact_email: 'البريد الإلكتروني',
+                contact_location: 'الموقع',
+                contact_location_val: 'متاح عالميًا (عن بُعد)',
+                map_placeholder: 'خريطة جوجل — قم بتضمين خريطتك هنا',
+                form_name: 'الاسم الكامل',
+                form_name_ph: 'محمد أحمد',
+                form_email: 'البريد الإلكتروني',
+                form_email_ph: 'mohammed@example.com',
+                form_subject: 'الموضوع',
+                form_subject_ph: 'استفسار عن مشروع',
+                form_message: 'الرسالة',
+                form_message_ph: 'أخبرني عن مشروعك...',
+                form_send: 'إرسال الرسالة',
+                error_name: 'يرجى إدخال اسمك.',
+                error_email: 'يرجى إدخال بريد إلكتروني صحيح.',
+                error_subject: 'يرجى إدخال الموضوع.',
+                error_message: 'يرجى إدخال رسالتك.',
+                toast_success: 'تم إرسال الرسالة بنجاح! سأرد عليك قريبًا.',
+                go_to_testimonial: 'انتقل إلى التقييم',
+                toast_send_error: 'تعذر إرسال الرسالة. شغّل الموقع عبر الطرفية (npm start) ثم أعد المحاولة.',
+                footer_desc: 'تقديم حلول رقمية متميزة تساعد الشركات على النمو والنجاح. دعنا نبني شيئًا رائعًا معًا.',
+                footer_links: 'روابط سريعة',
+                footer_contact: 'معلومات التواصل',
+                footer_location: 'متاح عالميًا',
+                footer_copy: '&copy; 2026 خالد. جميع الحقوق محفوظة.',
+                pwa_install_title: 'تثبيت تطبيق خالد',
+                pwa_install_desc: 'أضفه للشاشة الرئيسية للوصول السريع',
+                pwa_install_btn: 'تثبيت',
+                pwa_close_btn: '✕'
+            }
+        };
+
+        let currentLang = 'en';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            const html = document.documentElement;
+            html.setAttribute('lang', lang);
+            html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+
+            const t = translations[lang];
+            const htmlKeys = new Set([
+                'hero_title', 'hero_btn_services', 'hero_btn_talk',
+                'learn_more', 'view_project', 'badge_exp', 'footer_copy'
+            ]);
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key] !== undefined) {
+                    if (htmlKeys.has(key)) {
+                        el.innerHTML = t[key];
+                    } else {
+                        el.textContent = t[key];
+                    }
+                }
+            });
+
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (t[key] !== undefined) {
+                    el.placeholder = t[key];
+                }
+            });
+
+            document.getElementById('langLabel').textContent = lang === 'en' ? 'AR' : 'EN';
+            document.title = lang === 'ar'
+                ? 'خالد | خدمات تقنية وحلول رقمية'
+                : 'Khalid | Tech Services & Digital Solutions';
+
+            localStorage.setItem('lang', lang);
+            syncThemeToggle();
+
+            document.querySelectorAll('.testimonial-dot').forEach((dot, i) => {
+                dot.setAttribute('aria-label', `${t.go_to_testimonial} ${i + 1}`);
+            });
+        }
+
+        document.getElementById('langToggle').addEventListener('click', () => {
+            setLanguage(currentLang === 'en' ? 'ar' : 'en');
+        });
+
+        /* ============================================
+           Theme (dark / light)
+           ============================================ */
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+
+        function syncThemeToggle() {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            if (themeIcon) {
+                themeIcon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+            }
+            const t = translations[currentLang];
+            themeToggle.setAttribute('aria-label', isDark ? t.theme_to_light : t.theme_to_dark);
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            if (isDark) {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            }
+            syncThemeToggle();
+        });
+
+        // Load saved theme
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+        syncThemeToggle();
+
+        // Load saved language
+        const savedLang = localStorage.getItem('lang');
+        if (savedLang && savedLang !== 'en') {
+            setLanguage(savedLang);
+        }
+
+        /* ============================================
+           Navbar scroll effect
+           ============================================ */
+        const navbar = document.getElementById('navbar');
+        const backToTop = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            navbar.classList.toggle('scrolled', scrollY > 50);
+            backToTop.classList.toggle('visible', scrollY > 400);
+        });
+
+        /* ============================================
+           Mobile menu toggle
+           ============================================ */
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('open');
+            document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+            hamburger.setAttribute('aria-expanded', mobileMenu.classList.contains('open'));
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('open');
+                document.body.style.overflow = '';
+                hamburger.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        /* ============================================
+           Back to Top
+           ============================================ */
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        /* ============================================
+           Scroll reveal animations (Intersection Observer)
+           ============================================ */
+        const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        /* ============================================
+           Animated counters
+           ============================================ */
+        const statsBar = document.getElementById('statsBar');
+
+        const statsObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    document.querySelectorAll('.stat-number').forEach(counter => {
+                        const target = +counter.dataset.target;
+                        const duration = 2000;
+                        const step = target / (duration / 16);
+                        let current = 0;
+                        const update = () => {
+                            current += step;
+                            if (current < target) {
+                                counter.textContent = Math.floor(current) + '+';
+                                requestAnimationFrame(update);
+                            } else {
+                                counter.textContent = target + '+';
+                            }
+                        };
+                        update();
+                    });
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        statsObserver.observe(statsBar);
+
+        /* ============================================
+           Skill bars animation
+           ============================================ */
+        const skillsSection = document.getElementById('skillsSection');
+
+        const skillsObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    document.querySelectorAll('.skill-fill').forEach(bar => {
+                        bar.style.width = bar.dataset.width + '%';
+                    });
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        skillsObserver.observe(skillsSection);
+
+        /* ============================================
+           Portfolio filter
+           ============================================ */
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.dataset.filter;
+                portfolioItems.forEach(item => {
+                    if (filter === 'all' || item.dataset.category === filter) {
+                        item.classList.remove('hidden');
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        /* ============================================
+           Testimonial slider
+           ============================================ */
+        const slides = document.querySelectorAll('.testimonial-slide');
+        const dotsContainer = document.getElementById('testimonialDots');
+        let currentSlide = 0;
+        let autoPlayInterval;
+
+        // Create dots
+        slides.forEach((_, i) => {
+            const dot = document.createElement('button');
+            dot.classList.add('testimonial-dot');
+            if (i === 0) dot.classList.add('active');
+            dot.setAttribute('aria-label', `Go to testimonial ${i + 1}`);
+            dot.addEventListener('click', () => goToSlide(i));
+            dotsContainer.appendChild(dot);
+        });
+
+        const dots = document.querySelectorAll('.testimonial-dot');
+
+        function goToSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            currentSlide = (index + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        document.getElementById('prevTestimonial').addEventListener('click', () => {
+            goToSlide(currentSlide - 1);
+            resetAutoPlay();
+        });
+
+        document.getElementById('nextTestimonial').addEventListener('click', () => {
+            goToSlide(currentSlide + 1);
+            resetAutoPlay();
+        });
+
+        function startAutoPlay() {
+            autoPlayInterval = setInterval(() => goToSlide(currentSlide + 1), 5000);
+        }
+
+        function resetAutoPlay() {
+            clearInterval(autoPlayInterval);
+            startAutoPlay();
+        }
+
+        startAutoPlay();
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                clearInterval(autoPlayInterval);
+            } else {
+                startAutoPlay();
+            }
+        });
+
+        /* ============================================
+           Contact form validation
+           ============================================ */
+        const form = document.getElementById('form');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let isValid = true;
+
+            const fields = [
+                { id: 'name', validate: v => v.trim().length > 0 },
+                { id: 'email', validate: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) },
+                { id: 'subject', validate: v => v.trim().length > 0 },
+                { id: 'message', validate: v => v.trim().length > 0 }
+            ];
+
+            fields.forEach(field => {
+                const input = document.getElementById(field.id);
+                const group = input.closest('.form-group');
+
+                if (!field.validate(input.value)) {
+                    group.classList.add('error');
+                    isValid = false;
+                } else {
+                    group.classList.remove('error');
+                }
+            });
+
+            if (!isValid) return;
+
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const subject = document.getElementById('subject').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            const whatsappText = encodeURIComponent(
+                `*New Message from Website*\n\n` +
+                `*Name:* ${name}\n` +
+                `*Email:* ${email}\n` +
+                `*Subject:* ${subject}\n\n` +
+                `*Message:*\n${message}`
+            );
+
+            const whatsappURL = `https://wa.me/966509182112?text=${whatsappText}`;
+            window.open(whatsappURL, '_blank');
+
+            showToast(translations[currentLang].toast_success);
+            form.reset();
+        });
+
+        // Clear error on input
+        document.querySelectorAll('#form input, #form textarea').forEach(input => {
+            input.addEventListener('input', () => {
+                input.closest('.form-group').classList.remove('error');
+            });
+        });
+
+        /* ============================================
+           Toast notification
+           ============================================ */
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+
+        /* ============================================
+           Hero particles
+           ============================================ */
+        (function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const p = document.createElement('div');
+                p.classList.add('particle');
+                p.style.left = Math.random() * 100 + '%';
+                p.style.top = Math.random() * 100 + '%';
+                p.style.width = p.style.height = (Math.random() * 4 + 2) + 'px';
+                p.style.opacity = Math.random() * 0.3 + 0.05;
+                p.style.animation = `float ${Math.random() * 6 + 4}s ease-in-out infinite ${Math.random() * 4}s`;
+                container.appendChild(p);
+            }
+        })();
+
+        /* ============================================
+           Preloader
+           ============================================ */
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                preloader.classList.add('hidden');
+                setTimeout(() => preloader.remove(), 500);
+            }
+        });
+
+        /* ============================================
+           Typing animation (hero description)
+           ============================================ */
+        (function initTypingAnimation() {
+            const heroDesc = document.querySelector('[data-i18n="hero_desc"]');
+            if (!heroDesc) return;
+
+            const fullText = heroDesc.textContent;
+            heroDesc.textContent = '';
+
+            const cursor = document.createElement('span');
+            cursor.classList.add('typed-cursor');
+            cursor.textContent = '|';
+            heroDesc.parentNode.insertBefore(cursor, heroDesc.nextSibling);
+
+            let i = 0;
+            const speed = 25;
+
+            function type() {
+                if (i < fullText.length) {
+                    heroDesc.textContent += fullText.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else {
+                    setTimeout(() => cursor.remove(), 2000);
+                }
+            }
+
+            type();
+        })();
+
+        /* ============================================
+           FAQ Accordion
+           ============================================ */
+        document.querySelectorAll('.faq-question').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = btn.closest('.faq-item');
+                const isOpen = item.classList.contains('open');
+
+                // Close all other items
+                document.querySelectorAll('.faq-item.open').forEach(openItem => {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+                });
+
+                // Toggle clicked item
+                if (!isOpen) {
+                    item.classList.add('open');
+                    btn.setAttribute('aria-expanded', 'true');
+                }
+            });
+        });
+
+        /* ============================================
+           PWA — Service Worker Registration
+           ============================================ */
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(() => {});
+            });
+        }
+
+        /* ============================================
+           PWA — Install Prompt
+           ============================================ */
+        let deferredPrompt = null;
+        const installBanner = document.getElementById('pwaInstallBanner');
+        const installBtn = document.getElementById('pwaInstallBtn');
+        const closeBtn = document.getElementById('pwaCloseBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+
+            // Don't show if user dismissed before
+            if (localStorage.getItem('pwa-dismissed')) return;
+
+            // Show banner after 30 seconds
+            setTimeout(() => {
+                installBanner.classList.add('show');
+            }, 30000);
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            deferredPrompt = null;
+            installBanner.classList.remove('show');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            installBanner.classList.remove('show');
+            localStorage.setItem('pwa-dismissed', 'true');
+        });
+
+        window.addEventListener('appinstalled', () => {
+            installBanner.classList.remove('show');
+            deferredPrompt = null;
+        });
+    </script>
+</body>
+</html>

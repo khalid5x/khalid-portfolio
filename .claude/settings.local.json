@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node generate-icons.js)",
+      "Bash(mv \"C:/Users/kssaa/OneDrive/Desktop/khalid/generate-icons.js\" \"C:/Users/kssaa/OneDrive/Desktop/khalid/generate-icons.cjs\")",
+      "Bash(node generate-icons.cjs)"
+    ]
+  }
+}
