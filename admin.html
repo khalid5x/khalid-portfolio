@@ -4,406 +4,931 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>لوحة الإدارة — الرسائل</title>
+    <title>لوحة الإدارة — Khalid Tech</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
             --primary: #1a1a2e;
+            --primary-dark: #12121f;
             --accent: #e94560;
-            --bg: #0f0f18;
+            --accent-hover: #d63a52;
+            --accent-glow: rgba(233, 69, 96, 0.15);
+            --gold: #f0a500;
+            --bg: #0d0d1a;
             --card: #1a1a2e;
+            --card-hover: #1e1e35;
             --border: #2a2a40;
+            --border-light: #353550;
             --text: #e8e8e8;
-            --muted: #9ca3af;
+            --text-secondary: #b0b0c0;
+            --muted: #707080;
             --success: #22c55e;
+            --success-bg: rgba(34,197,94,0.12);
             --warn: #eab308;
+            --warn-bg: rgba(234,179,8,0.12);
+            --info: #3b82f6;
+            --info-bg: rgba(59,130,246,0.12);
+            --danger: #ef4444;
+            --danger-bg: rgba(239,68,68,0.12);
+            --sidebar-w: 260px;
+            --header-h: 64px;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --shadow: 0 4px 24px rgba(0,0,0,0.3);
+            --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Cairo', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            line-height: 1.6;
-        }
-        .wrap { max-width: 960px; margin: 0 auto; padding: 24px 16px 48px; }
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-bottom: 28px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border);
-        }
-        header h1 { font-size: 1.35rem; font-weight: 800; }
-        header h1 i { color: var(--accent); margin-left: 8px; }
-        .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-        button, .btn {
-            font-family: inherit;
-            cursor: pointer;
-            border: none;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            padding: 10px 18px;
-            transition: opacity 0.2s, transform 0.15s;
-        }
+        body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+        a { color: var(--accent); text-decoration: none; }
+        button, .btn { font-family: inherit; cursor: pointer; border: none; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.875rem; padding: 10px 18px; transition: all var(--transition); display: inline-flex; align-items: center; gap: 8px; }
         button:disabled { opacity: 0.5; cursor: not-allowed; }
         .btn-primary { background: linear-gradient(135deg, var(--accent), #c73a52); color: #fff; }
-        .btn-ghost { background: var(--card); color: var(--text); border: 1px solid var(--border); }
-        .btn-primary:hover:not(:disabled), .btn-ghost:hover:not(:disabled) { transform: translateY(-1px); }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(233,69,96,0.4); }
+        .btn-secondary { background: var(--card); color: var(--text); border: 1px solid var(--border); }
+        .btn-secondary:hover:not(:disabled) { background: var(--card-hover); border-color: var(--border-light); }
+        .btn-danger { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(239,68,68,0.3); }
+        .btn-danger:hover:not(:disabled) { background: rgba(239,68,68,0.2); }
+        .btn-success { background: var(--success-bg); color: var(--success); border: 1px solid rgba(34,197,94,0.3); }
+        .btn-success:hover:not(:disabled) { background: rgba(34,197,94,0.2); }
+        .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+        .btn-icon { width: 36px; height: 36px; padding: 0; justify-content: center; border-radius: 8px; }
+        input, textarea, select {
+            width: 100%; padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border);
+            background: var(--primary-dark); color: var(--text); font-family: inherit; font-size: 0.9rem; transition: border var(--transition);
+        }
+        input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); }
+        textarea { min-height: 90px; resize: vertical; }
+        label { display: block; font-size: 0.82rem; margin-bottom: 6px; color: var(--text-secondary); font-weight: 600; }
+        .form-group { margin-bottom: 16px; }
+
+        /* ===== LOGIN ===== */
+        #loginView { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
         .login-card {
-            max-width: 400px;
-            margin: 60px auto;
-            background: var(--card);
-            padding: 32px;
-            border-radius: 16px;
-            border: 1px solid var(--border);
+            width: 100%; max-width: 420px; background: var(--card); padding: 40px 32px; border-radius: 20px;
+            border: 1px solid var(--border); box-shadow: var(--shadow);
         }
-        .login-card h2 { margin-bottom: 8px; font-size: 1.2rem; }
-        .login-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 20px; }
-        label { display: block; font-size: 0.85rem; margin-bottom: 6px; color: var(--muted); }
-        input[type="password"], textarea {
-            width: 100%;
-            padding: 12px 14px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            background: #12121f;
-            color: var(--text);
-            font-family: inherit;
-            font-size: 1rem;
+        .login-logo { text-align: center; margin-bottom: 28px; }
+        .login-logo .icon { width: 64px; height: 64px; background: linear-gradient(135deg, var(--accent), var(--gold)); border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 900; color: #fff; margin-bottom: 12px; }
+        .login-card h2 { text-align: center; font-size: 1.3rem; margin-bottom: 6px; }
+        .login-card p.sub { text-align: center; color: var(--muted); font-size: 0.88rem; margin-bottom: 24px; }
+        .login-card .btn-primary { width: 100%; padding: 12px; justify-content: center; font-size: 1rem; margin-top: 8px; }
+        .err-msg { color: var(--danger); font-size: 0.83rem; margin-top: 8px; display: none; padding: 8px 12px; background: var(--danger-bg); border-radius: var(--radius-sm); }
+        .err-msg.show { display: block; }
+
+        /* ===== LAYOUT ===== */
+        .layout { display: flex; min-height: 100vh; }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-w); background: var(--card); border-left: 1px solid var(--border);
+            position: fixed; top: 0; right: 0; bottom: 0; z-index: 100; display: flex; flex-direction: column;
+            transition: transform var(--transition);
         }
-        textarea { min-height: 100px; resize: vertical; }
-        input:focus, textarea:focus { outline: none; border-color: var(--accent); }
-        .login-card .btn-primary { width: 100%; margin-top: 16px; padding: 12px; }
-        .err { color: var(--accent); font-size: 0.85rem; margin-top: 10px; display: none; }
-        .err.show { display: block; }
-        .empty {
-            text-align: center;
-            color: var(--muted);
-            padding: 48px 16px;
-            background: var(--card);
-            border-radius: 16px;
-            border: 1px dashed var(--border);
+        .sidebar-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+        .sidebar-header .logo { width: 40px; height: 40px; background: linear-gradient(135deg, var(--accent), var(--gold)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 18px; color: #fff; flex-shrink: 0; }
+        .sidebar-header .info h3 { font-size: 0.95rem; font-weight: 800; line-height: 1.2; }
+        .sidebar-header .info span { font-size: 0.75rem; color: var(--muted); }
+        .sidebar-nav { flex: 1; padding: 12px; overflow-y: auto; }
+        .sidebar-nav .nav-section { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; padding: 12px 12px 6px; font-weight: 700; }
+        .nav-item {
+            display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-radius: 10px;
+            color: var(--text-secondary); font-weight: 600; font-size: 0.88rem; cursor: pointer; transition: all var(--transition); margin-bottom: 2px; position: relative;
         }
-        .msg {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 20px;
-            margin-bottom: 16px;
+        .nav-item:hover { background: rgba(233,69,96,0.08); color: var(--text); }
+        .nav-item.active { background: var(--accent-glow); color: var(--accent); }
+        .nav-item i { width: 20px; text-align: center; font-size: 1rem; }
+        .nav-badge { background: var(--accent); color: #fff; font-size: 0.68rem; padding: 2px 7px; border-radius: 50px; margin-right: auto; font-weight: 700; }
+        .sidebar-footer { padding: 16px; border-top: 1px solid var(--border); }
+        .sidebar-footer button { width: 100%; justify-content: center; }
+
+        /* Main content */
+        .main { flex: 1; margin-right: var(--sidebar-w); min-height: 100vh; }
+        .topbar {
+            height: var(--header-h); background: rgba(13,13,26,0.8); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between;
+            padding: 0 24px; position: sticky; top: 0; z-index: 50;
         }
-        .msg-head {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 12px;
+        .topbar h2 { font-size: 1.1rem; font-weight: 700; }
+        .topbar-actions { display: flex; gap: 8px; align-items: center; }
+        .content { padding: 24px; max-width: 1200px; }
+
+        /* Mobile menu toggle */
+        .menu-toggle { display: none; background: var(--card); border: 1px solid var(--border); color: var(--text); width: 40px; height: 40px; padding: 0; justify-content: center; border-radius: 10px; }
+        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 99; }
+
+        /* ===== PAGES ===== */
+        .page { display: none; }
+        .page.active { display: block; }
+
+        /* ===== STAT CARDS ===== */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .stat-card {
+            background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px;
+            display: flex; align-items: center; gap: 16px; transition: all var(--transition);
         }
-        .badge {
-            font-size: 0.75rem;
-            padding: 4px 10px;
-            border-radius: 50px;
-            font-weight: 700;
+        .stat-card:hover { border-color: var(--border-light); transform: translateY(-2px); }
+        .stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+        .stat-icon.blue { background: var(--info-bg); color: var(--info); }
+        .stat-icon.yellow { background: var(--warn-bg); color: var(--warn); }
+        .stat-icon.gray { background: rgba(148,163,184,0.15); color: #94a3b8; }
+        .stat-icon.green { background: var(--success-bg); color: var(--success); }
+        .stat-icon.red { background: var(--danger-bg); color: var(--accent); }
+        .stat-info h3 { font-size: 1.5rem; font-weight: 800; line-height: 1; }
+        .stat-info span { font-size: 0.78rem; color: var(--muted); }
+
+        /* ===== CHART ===== */
+        .chart-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 24px; }
+        .chart-card h3 { font-size: 0.95rem; margin-bottom: 16px; font-weight: 700; }
+        .chart-bars { display: flex; align-items: flex-end; gap: 4px; height: 120px; padding-top: 8px; }
+        .chart-bar { flex: 1; background: linear-gradient(to top, var(--accent), rgba(233,69,96,0.3)); border-radius: 4px 4px 0 0; min-width: 8px; position: relative; transition: all var(--transition); cursor: pointer; }
+        .chart-bar:hover { opacity: 0.8; }
+        .chart-bar .tooltip { display: none; position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: var(--primary); padding: 4px 8px; border-radius: 6px; font-size: 0.7rem; white-space: nowrap; border: 1px solid var(--border); }
+        .chart-bar:hover .tooltip { display: block; }
+
+        /* ===== MESSAGES ===== */
+        .msg-toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; align-items: center; }
+        .msg-toolbar .search-box { flex: 1; min-width: 200px; position: relative; }
+        .msg-toolbar .search-box input { padding-right: 40px; }
+        .msg-toolbar .search-box i { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); }
+        .filter-tabs { display: flex; gap: 4px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 4px; }
+        .filter-tab { padding: 7px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; color: var(--muted); cursor: pointer; transition: all var(--transition); border: none; background: none; font-family: inherit; }
+        .filter-tab.active { background: var(--accent); color: #fff; }
+        .filter-tab:hover:not(.active) { color: var(--text); }
+        .msg-list { display: flex; flex-direction: column; gap: 12px; }
+        .msg-card {
+            background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px;
+            transition: all var(--transition); position: relative;
         }
-        .badge-new { background: rgba(234, 179, 8, 0.2); color: var(--warn); }
-        .badge-read { background: rgba(148, 163, 184, 0.2); color: var(--muted); }
-        .badge-replied { background: rgba(34, 197, 94, 0.2); color: var(--success); }
-        .meta { font-size: 0.85rem; color: var(--muted); }
-        .meta strong { color: var(--text); }
-        .msg-subject { font-weight: 700; margin: 10px 0 6px; font-size: 1.05rem; }
-        .msg-body {
-            background: #12121f;
-            padding: 14px;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            white-space: pre-wrap;
-            word-break: break-word;
-            margin-bottom: 14px;
+        .msg-card:hover { border-color: var(--border-light); }
+        .msg-card.unread { border-right: 3px solid var(--warn); }
+        .msg-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+        .msg-sender { display: flex; align-items: center; gap: 10px; }
+        .msg-avatar { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; color: #fff; flex-shrink: 0; }
+        .msg-sender-info h4 { font-size: 0.95rem; font-weight: 700; }
+        .msg-sender-info span { font-size: 0.78rem; color: var(--muted); }
+        .msg-actions { display: flex; gap: 6px; }
+        .badge { font-size: 0.72rem; padding: 3px 10px; border-radius: 50px; font-weight: 700; }
+        .badge-new { background: var(--warn-bg); color: var(--warn); }
+        .badge-read { background: rgba(148,163,184,0.15); color: #94a3b8; }
+        .badge-replied { background: var(--success-bg); color: var(--success); }
+        .msg-subject { font-weight: 700; font-size: 1rem; margin-bottom: 6px; }
+        .msg-body { background: var(--primary-dark); padding: 14px; border-radius: 10px; font-size: 0.9rem; white-space: pre-wrap; word-break: break-word; color: var(--text-secondary); margin-bottom: 12px; max-height: 120px; overflow: hidden; position: relative; }
+        .msg-body.expanded { max-height: none; }
+        .msg-body:not(.expanded)::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 40px; background: linear-gradient(transparent, var(--primary-dark)); }
+        .msg-toggle { font-size: 0.8rem; color: var(--accent); cursor: pointer; display: inline-block; margin-bottom: 10px; }
+        .msg-reply-existing { background: var(--success-bg); border: 1px solid rgba(34,197,94,0.2); padding: 12px; border-radius: 10px; margin-bottom: 10px; }
+        .msg-reply-existing small { color: var(--success); display: block; margin-bottom: 4px; font-weight: 600; }
+        .msg-reply-form { margin-top: 10px; }
+        .msg-reply-form textarea { margin-bottom: 10px; }
+        .msg-reply-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+        .msg-date { font-size: 0.75rem; color: var(--muted); }
+        .msg-empty { text-align: center; padding: 60px 20px; color: var(--muted); }
+        .msg-empty i { font-size: 3rem; margin-bottom: 16px; display: block; opacity: 0.3; }
+        .msg-count { font-size: 0.82rem; color: var(--muted); margin-bottom: 16px; }
+        .msg-select { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; margin-left: 8px; }
+        .bulk-bar { display: none; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 16px; margin-bottom: 16px; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .bulk-bar.show { display: flex; }
+        .bulk-bar span { font-size: 0.85rem; color: var(--text-secondary); }
+
+        /* ===== SETTINGS ===== */
+        .settings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
+        .settings-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+        .settings-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+        .settings-card h3 i { color: var(--accent); }
+        .settings-card p.desc { font-size: 0.8rem; color: var(--muted); margin-bottom: 20px; }
+        .settings-card .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .save-bar { margin-top: 24px; display: flex; justify-content: flex-end; gap: 10px; }
+
+        /* ===== QUICK ACTIONS ===== */
+        .quick-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+        .quick-card {
+            background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px;
+            text-align: center; transition: all var(--transition); cursor: pointer; text-decoration: none; color: var(--text);
         }
-        .reply-box { margin-top: 12px; }
-        .reply-box label { margin-top: 8px; }
-        .reply-prev {
-            margin-top: 8px;
-            padding: 12px;
-            border-radius: 10px;
-            background: rgba(34, 197, 94, 0.08);
-            border: 1px solid rgba(34, 197, 94, 0.25);
-            font-size: 0.9rem;
-            white-space: pre-wrap;
-            word-break: break-word;
+        .quick-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 8px 30px rgba(233,69,96,0.15); }
+        .quick-card i { font-size: 2rem; margin-bottom: 12px; display: block; }
+        .quick-card h4 { font-size: 0.95rem; margin-bottom: 4px; }
+        .quick-card p { font-size: 0.78rem; color: var(--muted); }
+
+        /* ===== TOAST ===== */
+        .toast-container { position: fixed; bottom: 24px; left: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+        .toast { padding: 12px 20px; border-radius: 10px; font-size: 0.88rem; font-weight: 600; display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease; box-shadow: var(--shadow); }
+        .toast-success { background: #065f46; color: #a7f3d0; }
+        .toast-error { background: #7f1d1d; color: #fecaca; }
+        .toast-info { background: #1e3a5f; color: #bfdbfe; }
+        @keyframes slideIn { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* ===== CONFIRM MODAL ===== */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; align-items: center; justify-content: center; padding: 20px; }
+        .modal-overlay.show { display: flex; }
+        .modal { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px; max-width: 420px; width: 100%; box-shadow: var(--shadow); }
+        .modal h3 { font-size: 1.1rem; margin-bottom: 10px; }
+        .modal p { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px; }
+        .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(100%); }
+            .sidebar.open { transform: translateX(0); }
+            .sidebar-overlay.show { display: block; }
+            .main { margin-right: 0; }
+            .menu-toggle { display: inline-flex; }
+            .content { padding: 16px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .settings-grid { grid-template-columns: 1fr; }
+            .settings-card .form-row { grid-template-columns: 1fr; }
+            .filter-tabs { overflow-x: auto; }
         }
-        .reply-prev small { color: var(--success); display: block; margin-bottom: 6px; }
-        .row-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-        #globalErr {
-            display: none;
-            background: rgba(233, 69, 96, 0.15);
-            border: 1px solid var(--accent);
-            color: #fecaca;
-            padding: 12px 16px;
-            border-radius: 10px;
-            margin-bottom: 16px;
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .quick-grid { grid-template-columns: 1fr; }
         }
-        #globalErr.show { display: block; }
-        .protocol-banner {
-            display: none;
-            background: rgba(234, 179, 8, 0.15);
-            border: 1px solid rgba(234, 179, 8, 0.5);
-            color: #fef9c3;
-            padding: 14px 16px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-        .protocol-banner.show { display: block; }
-        .hint { font-size: 0.8rem; color: var(--muted); margin-top: 8px; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
     </style>
 </head>
 <body>
-    <div class="wrap">
-        <div id="protocolBanner" class="protocol-banner">
-            <strong><i class="fas fa-triangle-exclamation"></i> فتح خاطئ للصفحة</strong><br>
-            لا تفتح <code>admin.html</code> بالنقر المزدوج من المجلد. شغّل في الطرفية <code>npm start</code> ثم افتح من المتصفح العنوان الذي يظهر (مثل
-            <a href="http://localhost:3000/admin.html" style="color:#fde047">http://localhost:3000/admin.html</a>
-            — إن استخدمت منفذًا آخر غيّر الرقم).
+
+<!-- ===== LOGIN VIEW ===== -->
+<div id="loginView">
+    <div class="login-card">
+        <div class="login-logo">
+            <div class="icon">K</div>
+            <h2>لوحة الإدارة</h2>
+            <p class="sub">أدخل كلمة المرور للوصول إلى لوحة التحكم</p>
         </div>
-        <div id="loginView">
-            <div class="login-card">
-                <h2><i class="fas fa-lock" style="color:var(--accent)"></i> تسجيل الدخول</h2>
-                <p>أدخل كلمة مرور الإدارة لمتابعة الرسائل والردود.</p>
-                <form id="loginForm">
-                    <label for="password">كلمة المرور</label>
-                    <input type="password" id="password" autocomplete="current-password" required>
-                    <p class="hint">إن لم تنشئ ملف <code>.env</code> فالافتراضي (بالإنجليزية): <strong>changeme</strong></p>
-                    <p class="err" id="loginErr"></p>
-                    <button type="submit" class="btn-primary">دخول</button>
-                </form>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="password"><i class="fas fa-lock"></i> كلمة المرور</label>
+                <input type="password" id="password" autocomplete="current-password" placeholder="أدخل كلمة المرور..." required>
+            </div>
+            <div class="err-msg" id="loginErr"></div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-arrow-right-to-bracket"></i> تسجيل الدخول</button>
+        </form>
+    </div>
+</div>
+
+<!-- ===== APP VIEW ===== -->
+<div id="appView" style="display:none">
+    <div class="layout">
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">K</div>
+                <div class="info">
+                    <h3>Khalid Tech</h3>
+                    <span>لوحة الإدارة</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-section">الرئيسية</div>
+                <div class="nav-item active" data-page="dashboard">
+                    <i class="fas fa-chart-pie"></i> لوحة القيادة
+                </div>
+                <div class="nav-item" data-page="messages">
+                    <i class="fas fa-envelope"></i> الرسائل
+                    <span class="nav-badge" id="newMsgBadge" style="display:none">0</span>
+                </div>
+
+                <div class="nav-section">الإدارة</div>
+                <div class="nav-item" data-page="settings">
+                    <i class="fas fa-gear"></i> إعدادات الموقع
+                </div>
+                <div class="nav-item" data-page="actions">
+                    <i class="fas fa-bolt"></i> إجراءات سريعة
+                </div>
+
+                <div class="nav-section">روابط</div>
+                <a class="nav-item" href="/" target="_blank" style="text-decoration:none">
+                    <i class="fas fa-globe"></i> عرض الموقع
+                    <i class="fas fa-external-link-alt" style="font-size:0.7rem;margin-right:auto"></i>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="btn btn-secondary" id="btnLogout" style="width:100%;justify-content:center">
+                    <i class="fas fa-right-from-bracket"></i> تسجيل خروج
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main -->
+        <div class="main">
+            <div class="topbar">
+                <div style="display:flex;align-items:center;gap:12px">
+                    <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+                    <h2 id="pageTitle">لوحة القيادة</h2>
+                </div>
+                <div class="topbar-actions">
+                    <button class="btn btn-secondary btn-sm" id="btnRefresh"><i class="fas fa-rotate"></i> تحديث</button>
+                </div>
+            </div>
+
+            <div class="content">
+                <!-- ===== DASHBOARD PAGE ===== -->
+                <div class="page active" id="pageDashboard">
+                    <div class="stats-grid" id="statsGrid">
+                        <div class="stat-card"><div class="stat-icon blue"><i class="fas fa-envelope"></i></div><div class="stat-info"><h3 id="statTotal">-</h3><span>إجمالي الرسائل</span></div></div>
+                        <div class="stat-card"><div class="stat-icon yellow"><i class="fas fa-bell"></i></div><div class="stat-info"><h3 id="statNew">-</h3><span>رسائل جديدة</span></div></div>
+                        <div class="stat-card"><div class="stat-icon gray"><i class="fas fa-eye"></i></div><div class="stat-info"><h3 id="statRead">-</h3><span>مقروءة</span></div></div>
+                        <div class="stat-card"><div class="stat-icon green"><i class="fas fa-reply"></i></div><div class="stat-info"><h3 id="statReplied">-</h3><span>تم الرد</span></div></div>
+                    </div>
+
+                    <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));">
+                        <div class="stat-card"><div class="stat-icon red"><i class="fas fa-users"></i></div><div class="stat-info"><h3 id="statVisitorsToday">-</h3><span>زوار اليوم</span></div></div>
+                        <div class="stat-card"><div class="stat-icon blue"><i class="fas fa-chart-line"></i></div><div class="stat-info"><h3 id="statVisitorsWeek">-</h3><span>زوار الأسبوع</span></div></div>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3><i class="fas fa-chart-bar" style="color:var(--accent)"></i> الرسائل آخر 30 يوم</h3>
+                        <div class="chart-bars" id="chartBars"></div>
+                    </div>
+
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+                        <h3 style="font-size:1rem"><i class="fas fa-clock" style="color:var(--accent)"></i> آخر الرسائل</h3>
+                        <button class="btn btn-secondary btn-sm" onclick="navigateTo('messages')">عرض الكل <i class="fas fa-arrow-left"></i></button>
+                    </div>
+                    <div id="recentMessages"></div>
+                </div>
+
+                <!-- ===== MESSAGES PAGE ===== -->
+                <div class="page" id="pageMessages">
+                    <div class="msg-toolbar">
+                        <div class="search-box">
+                            <input type="text" id="msgSearch" placeholder="بحث في الرسائل...">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="filter-tabs">
+                            <button class="filter-tab active" data-filter="all">الكل</button>
+                            <button class="filter-tab" data-filter="new">جديد</button>
+                            <button class="filter-tab" data-filter="read">مقروء</button>
+                            <button class="filter-tab" data-filter="replied">تم الرد</button>
+                        </div>
+                        <button class="btn btn-secondary btn-sm" id="btnExport"><i class="fas fa-download"></i> تصدير CSV</button>
+                    </div>
+                    <div class="bulk-bar" id="bulkBar">
+                        <input type="checkbox" id="selectAll" class="msg-select">
+                        <span id="bulkCount">0 محدد</span>
+                        <button class="btn btn-danger btn-sm" id="btnBulkDelete"><i class="fas fa-trash"></i> حذف المحدد</button>
+                        <button class="btn btn-secondary btn-sm" id="btnBulkRead"><i class="fas fa-eye"></i> تعيين كمقروء</button>
+                    </div>
+                    <div class="msg-count" id="msgCount"></div>
+                    <div class="msg-list" id="msgList"></div>
+                </div>
+
+                <!-- ===== SETTINGS PAGE ===== -->
+                <div class="page" id="pageSettings">
+                    <form id="settingsForm">
+                        <div class="settings-grid">
+                            <div class="settings-card">
+                                <h3><i class="fas fa-user"></i> المعلومات الشخصية</h3>
+                                <p class="desc">بيانات أساسية تظهر في الموقع</p>
+                                <div class="form-group">
+                                    <label>الاسم</label>
+                                    <input type="text" id="setSiteName" placeholder="Khalid">
+                                </div>
+                                <div class="form-group">
+                                    <label>العنوان الوظيفي</label>
+                                    <input type="text" id="setSiteTitle" placeholder="Tech Services & Digital Solutions">
+                                </div>
+                                <div class="form-group">
+                                    <label>النبذة التعريفية</label>
+                                    <textarea id="setBio" rows="3" placeholder="نبذة قصيرة عنك..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>الموقع / المدينة</label>
+                                    <input type="text" id="setLocation" placeholder="الرياض، السعودية">
+                                </div>
+                            </div>
+
+                            <div class="settings-card">
+                                <h3><i class="fas fa-address-book"></i> معلومات التواصل</h3>
+                                <p class="desc">بيانات الاتصال والتواصل</p>
+                                <div class="form-group">
+                                    <label>البريد الإلكتروني</label>
+                                    <input type="email" id="setEmail" placeholder="email@example.com">
+                                </div>
+                                <div class="form-group">
+                                    <label>رقم الهاتف</label>
+                                    <input type="text" id="setPhone" placeholder="+966...">
+                                </div>
+                                <div class="form-group">
+                                    <label>رقم واتساب</label>
+                                    <input type="text" id="setWhatsapp" placeholder="+966...">
+                                </div>
+                            </div>
+
+                            <div class="settings-card">
+                                <h3><i class="fas fa-share-nodes"></i> وسائل التواصل الاجتماعي</h3>
+                                <p class="desc">روابط حساباتك على المنصات</p>
+                                <div class="form-group">
+                                    <label><i class="fab fa-github"></i> GitHub</label>
+                                    <input type="url" id="setGithub" placeholder="https://github.com/...">
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fab fa-linkedin"></i> LinkedIn</label>
+                                    <input type="url" id="setLinkedin" placeholder="https://linkedin.com/in/...">
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fab fa-twitter"></i> Twitter / X</label>
+                                    <input type="url" id="setTwitter" placeholder="https://x.com/...">
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fab fa-instagram"></i> Instagram</label>
+                                    <input type="url" id="setInstagram" placeholder="https://instagram.com/...">
+                                </div>
+                                <div class="form-group">
+                                    <label><i class="fab fa-youtube"></i> YouTube</label>
+                                    <input type="url" id="setYoutube" placeholder="https://youtube.com/...">
+                                </div>
+                            </div>
+
+                            <div class="settings-card">
+                                <h3><i class="fas fa-search"></i> تحسين محركات البحث (SEO)</h3>
+                                <p class="desc">بيانات تظهر في نتائج البحث</p>
+                                <div class="form-group">
+                                    <label>عنوان SEO</label>
+                                    <input type="text" id="setSeoTitle" placeholder="Khalid | Tech Services">
+                                </div>
+                                <div class="form-group">
+                                    <label>وصف SEO</label>
+                                    <textarea id="setSeoDesc" rows="3" placeholder="وصف قصير يظهر في نتائج البحث..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="save-bar">
+                            <button type="button" class="btn btn-secondary" id="btnResetSettings"><i class="fas fa-undo"></i> إعادة تعيين</button>
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-floppy-disk"></i> حفظ الإعدادات</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- ===== QUICK ACTIONS PAGE ===== -->
+                <div class="page" id="pageActions">
+                    <div class="quick-grid">
+                        <a class="quick-card" href="/" target="_blank">
+                            <i class="fas fa-globe" style="color:var(--info)"></i>
+                            <h4>عرض الموقع</h4>
+                            <p>فتح الموقع في نافذة جديدة</p>
+                        </a>
+                        <div class="quick-card" onclick="navigateTo('messages')">
+                            <i class="fas fa-envelope" style="color:var(--warn)"></i>
+                            <h4>الرسائل الجديدة</h4>
+                            <p>مراجعة والرد على الرسائل</p>
+                        </div>
+                        <div class="quick-card" id="qcWhatsapp">
+                            <i class="fab fa-whatsapp" style="color:var(--success)"></i>
+                            <h4>فتح واتساب</h4>
+                            <p>التواصل مع العملاء مباشرة</p>
+                        </div>
+                        <div class="quick-card" id="qcEmail">
+                            <i class="fas fa-at" style="color:var(--accent)"></i>
+                            <h4>إرسال بريد</h4>
+                            <p>فتح تطبيق البريد الإلكتروني</p>
+                        </div>
+                        <a class="quick-card" href="https://github.com/khalid5x/khalid-portfolio" target="_blank">
+                            <i class="fab fa-github" style="color:var(--text)"></i>
+                            <h4>GitHub Repo</h4>
+                            <p>إدارة الكود المصدري</p>
+                        </a>
+                        <a class="quick-card" href="https://dashboard.render.com" target="_blank">
+                            <i class="fas fa-server" style="color:#8b5cf6"></i>
+                            <h4>Render Dashboard</h4>
+                            <p>إدارة الاستضافة والنشر</p>
+                        </a>
+                        <div class="quick-card" id="qcExport">
+                            <i class="fas fa-file-csv" style="color:var(--gold)"></i>
+                            <h4>تصدير الرسائل</h4>
+                            <p>تحميل جميع الرسائل كملف CSV</p>
+                        </div>
+                        <a class="quick-card" href="https://search.google.com/search-console" target="_blank">
+                            <i class="fab fa-google" style="color:#4285f4"></i>
+                            <h4>Google Console</h4>
+                            <p>متابعة أداء محركات البحث</p>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
+</div>
 
-        <div id="appView" style="display:none">
-            <header>
-                <h1><i class="fas fa-inbox"></i> رسائل التواصل</h1>
-                <div class="toolbar">
-                    <button type="button" class="btn-ghost" id="btnRefresh"><i class="fas fa-rotate"></i> تحديث</button>
-                    <button type="button" class="btn-ghost" id="btnLogout"><i class="fas fa-right-from-bracket"></i> خروج</button>
-                </div>
-            </header>
-            <p id="globalErr"></p>
-            <div id="list"></div>
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Confirm Modal -->
+<div class="modal-overlay" id="confirmModal">
+    <div class="modal">
+        <h3 id="confirmTitle">تأكيد</h3>
+        <p id="confirmMsg">هل أنت متأكد؟</p>
+        <div class="modal-actions">
+            <button class="btn btn-secondary" id="confirmCancel">إلغاء</button>
+            <button class="btn btn-danger" id="confirmOk">تأكيد</button>
         </div>
     </div>
+</div>
 
-    <script>
-        const TOKEN_KEY = 'adminMsgToken';
-        const api = (path, opts = {}) => {
-            const token = sessionStorage.getItem(TOKEN_KEY);
-            const headers = { 'Content-Type': 'application/json', ...opts.headers };
-            if (token) headers['Authorization'] = 'Bearer ' + token;
-            return fetch(path, { ...opts, headers });
-        };
+<script>
+(() => {
+    const TOKEN_KEY = 'adminToken';
+    let allMessages = [];
+    let currentFilter = 'all';
+    let selectedIds = new Set();
+    let cachedSettings = {};
 
-        const loginView = document.getElementById('loginView');
-        const appView = document.getElementById('appView');
-        const listEl = document.getElementById('list');
-        const loginErr = document.getElementById('loginErr');
-        const globalErr = document.getElementById('globalErr');
-        const protocolBanner = document.getElementById('protocolBanner');
-
-        if (location.protocol === 'file:') {
-            protocolBanner.classList.add('show');
-        }
-
-        function showGlobal(msg) {
-            globalErr.textContent = msg;
-            globalErr.classList.toggle('show', !!msg);
-        }
-
-        function badgeClass(s) {
-            if (s === 'replied') return 'badge-replied';
-            if (s === 'read') return 'badge-read';
-            return 'badge-new';
-        }
-        function badgeText(s) {
-            if (s === 'replied') return 'تم الرد';
-            if (s === 'read') return 'مقروء';
-            return 'جديد';
-        }
-
-        function fmtDate(iso) {
-            if (!iso) return '—';
-            try {
-                return new Date(iso).toLocaleString('ar-SA', { dateStyle: 'medium', timeStyle: 'short' });
-            } catch { return iso; }
-        }
-
-        function escapeHtml(s) {
-            const d = document.createElement('div');
-            d.textContent = s;
-            return d.innerHTML;
-        }
-
-        async function loadMessages() {
-            showGlobal('');
-            const res = await api('/api/admin/messages');
-            if (res.status === 401) {
-                sessionStorage.removeItem(TOKEN_KEY);
-                appView.style.display = 'none';
-                loginView.style.display = 'block';
-                showGlobal('انتهت الجلسة. سجّل الدخول مجددًا.');
-                return;
-            }
-            if (!res.ok) {
-                showGlobal('تعذر تحميل الرسائل.');
-                return;
-            }
-            const messages = await res.json();
-            if (!messages.length) {
-                listEl.innerHTML = '<div class="empty"><i class="fas fa-envelope-open" style="font-size:2rem;margin-bottom:12px;display:block;opacity:0.5"></i>لا توجد رسائل بعد.</div>';
-                return;
-            }
-            listEl.innerHTML = messages.map((m) => `
-                <article class="msg" data-id="${escapeHtml(m.id)}">
-                    <div class="msg-head">
-                        <div>
-                            <div class="meta"><strong>${escapeHtml(m.name)}</strong> — <a href="mailto:${escapeHtml(m.email)}" style="color:var(--accent)">${escapeHtml(m.email)}</a></div>
-                            <div class="meta" style="margin-top:4px">${fmtDate(m.createdAt)}</div>
-                        </div>
-                        <span class="badge ${badgeClass(m.status)}">${badgeText(m.status)}</span>
-                    </div>
-                    <div class="msg-subject">${escapeHtml(m.subject)}</div>
-                    <div class="msg-body">${escapeHtml(m.message)}</div>
-                    ${m.reply ? `<div class="reply-prev"><small><i class="fas fa-reply"></i> ردك المحفوظ (${fmtDate(m.repliedAt)})</small>${escapeHtml(m.reply)}</div>` : ''}
-                    <div class="reply-box">
-                        <label for="reply-${escapeHtml(m.id)}">ردك (يُحفظ في اللوحة — أرسل للعميل عبر البريد يدويًا إن رغبت)</label>
-                        <textarea id="reply-${escapeHtml(m.id)}" rows="3"></textarea>
-                        <div class="row-actions">
-                            <button type="button" class="btn-primary btn-save" data-id="${escapeHtml(m.id)}"><i class="fas fa-floppy-disk"></i> حفظ الرد</button>
-                            <button type="button" class="btn-ghost btn-read" data-id="${escapeHtml(m.id)}">تعيين كمقروء</button>
-                        </div>
-                    </div>
-                </article>
-            `).join('');
-
-            messages.forEach((m) => {
-                const ta = document.getElementById('reply-' + m.id);
-                if (ta) ta.value = m.reply || '';
-            });
-
-            listEl.querySelectorAll('.btn-save').forEach((btn) => {
-                btn.addEventListener('click', async () => {
-                    const id = btn.dataset.id;
-                    const ta = document.getElementById('reply-' + id);
-                    const text = ta.value.trim();
-                    if (!text) {
-                        alert('اكتب نص الرد قبل الحفظ.');
-                        return;
-                    }
-                    btn.disabled = true;
-                    const r = await api('/api/admin/messages/' + encodeURIComponent(id), {
-                        method: 'PATCH',
-                        body: JSON.stringify({ reply: text })
-                    });
-                    btn.disabled = false;
-                    if (r.status === 401) {
-                        sessionStorage.removeItem(TOKEN_KEY);
-                        location.reload();
-                        return;
-                    }
-                    if (!r.ok) {
-                        alert('فشل الحفظ.');
-                        return;
-                    }
-                    await loadMessages();
-                });
-            });
-
-            listEl.querySelectorAll('.btn-read').forEach((btn) => {
-                btn.addEventListener('click', async () => {
-                    const id = btn.dataset.id;
-                    btn.disabled = true;
-                    const r = await api('/api/admin/messages/' + encodeURIComponent(id), {
-                        method: 'PATCH',
-                        body: JSON.stringify({ status: 'read' })
-                    });
-                    btn.disabled = false;
-                    if (!r.ok) {
-                        alert('تعذر التحديث.');
-                        return;
-                    }
-                    await loadMessages();
-                });
-            });
-        }
-
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            loginErr.textContent = '';
-            loginErr.classList.remove('show');
-
-            if (location.protocol === 'file:') {
-                loginErr.textContent =
-                    'لا يمكن تسجيل الدخول من ملف على القرص. افتح الصفحة من الرابط http://localhost:المنفذ/admin.html بعد تشغيل npm start.';
-                loginErr.classList.add('show');
-                return;
-            }
-
-            const password = document.getElementById('password').value.trim();
-            try {
-                const res = await fetch('/api/admin/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ password })
-                });
-                let data = {};
-                try {
-                    data = await res.json();
-                } catch {
-                    /* ignore */
-                }
-                if (!res.ok) {
-                    loginErr.textContent = data.error || 'كلمة المرور غير صحيحة.';
-                    loginErr.classList.add('show');
-                    return;
-                }
-                if (!data.token) {
-                    loginErr.textContent = 'استجابة غير متوقعة من الخادم.';
-                    loginErr.classList.add('show');
-                    return;
-                }
-                sessionStorage.setItem(TOKEN_KEY, data.token);
-                loginView.style.display = 'none';
-                appView.style.display = 'block';
-                await loadMessages();
-            } catch {
-                loginErr.textContent =
-                    'تعذر الاتصال بالخادم. شغّل npm start في مجلد المشروع، ثم افتح هذه الصفحة من المتصفح (رابط يبدأ بـ http) وليس بفتح الملف مباشرة من المستكشف.';
-                loginErr.classList.add('show');
-            }
-        });
-
-        document.getElementById('btnRefresh').addEventListener('click', () => loadMessages());
-
-        document.getElementById('btnLogout').addEventListener('click', async () => {
-            await api('/api/admin/logout', { method: 'POST', body: '{}' });
+    // === API Helper ===
+    const api = async (path, opts = {}) => {
+        const token = sessionStorage.getItem(TOKEN_KEY);
+        const headers = { 'Content-Type': 'application/json', ...opts.headers };
+        if (token) headers['Authorization'] = 'Bearer ' + token;
+        const res = await fetch(path, { ...opts, headers });
+        if (res.status === 401 && path !== '/api/admin/login') {
             sessionStorage.removeItem(TOKEN_KEY);
-            appView.style.display = 'none';
-            loginView.style.display = 'block';
-            listEl.innerHTML = '';
-        });
-
-        if (sessionStorage.getItem(TOKEN_KEY)) {
-            loginView.style.display = 'none';
-            appView.style.display = 'block';
-            loadMessages();
+            location.reload();
         }
-    </script>
+        return res;
+    };
+
+    // === DOM ===
+    const $ = (s) => document.querySelector(s);
+    const $$ = (s) => document.querySelectorAll(s);
+    const loginView = $('#loginView');
+    const appView = $('#appView');
+    const loginErr = $('#loginErr');
+    const sidebar = $('#sidebar');
+    const overlay = $('#sidebarOverlay');
+
+    // === Toast ===
+    function toast(msg, type = 'success') {
+        const el = document.createElement('div');
+        el.className = 'toast toast-' + type;
+        el.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'times-circle' : 'info-circle'}"></i> ${msg}`;
+        $('#toastContainer').appendChild(el);
+        setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 3500);
+    }
+
+    // === Confirm Modal ===
+    function confirm(title, msg) {
+        return new Promise(resolve => {
+            $('#confirmTitle').textContent = title;
+            $('#confirmMsg').textContent = msg;
+            $('#confirmModal').classList.add('show');
+            const cleanup = (val) => { $('#confirmModal').classList.remove('show'); resolve(val); };
+            $('#confirmOk').onclick = () => cleanup(true);
+            $('#confirmCancel').onclick = () => cleanup(false);
+        });
+    }
+
+    // === Utils ===
+    const esc = (s) => { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; };
+    const fmtDate = (iso) => {
+        if (!iso) return '-';
+        try { return new Date(iso).toLocaleString('ar-SA', { dateStyle: 'medium', timeStyle: 'short' }); } catch { return iso; }
+    };
+    const avatarColor = (name) => {
+        let h = 0; for (const c of name) h = c.charCodeAt(0) + ((h << 5) - h);
+        return `hsl(${h % 360}, 50%, 40%)`;
+    };
+
+    // === Navigation ===
+    const pages = { dashboard: 'لوحة القيادة', messages: 'الرسائل', settings: 'إعدادات الموقع', actions: 'إجراءات سريعة' };
+    window.navigateTo = function(page) {
+        $$('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.page === page));
+        $$('.page').forEach(p => p.classList.toggle('active', p.id === 'page' + page.charAt(0).toUpperCase() + page.slice(1)));
+        $('#pageTitle').textContent = pages[page] || '';
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+        if (page === 'dashboard') loadDashboard();
+        if (page === 'messages') renderMessages();
+        if (page === 'settings') loadSettings();
+    };
+    $$('.nav-item[data-page]').forEach(n => n.addEventListener('click', () => navigateTo(n.dataset.page)));
+    $('#menuToggle').addEventListener('click', () => { sidebar.classList.toggle('open'); overlay.classList.toggle('show'); });
+    overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('show'); });
+
+    // === Login ===
+    $('#loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        loginErr.classList.remove('show');
+        if (location.protocol === 'file:') {
+            loginErr.textContent = 'افتح الصفحة من http://localhost:PORT/admin.html بعد تشغيل npm start';
+            loginErr.classList.add('show');
+            return;
+        }
+        const pw = $('#password').value.trim();
+        try {
+            const res = await fetch('/api/admin/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pw }) });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) { loginErr.textContent = data.error || 'كلمة المرور غير صحيحة'; loginErr.classList.add('show'); return; }
+            sessionStorage.setItem(TOKEN_KEY, data.token);
+            showApp();
+        } catch {
+            loginErr.textContent = 'تعذر الاتصال. شغّل npm start ثم افتح من http://localhost';
+            loginErr.classList.add('show');
+        }
+    });
+
+    function showApp() {
+        loginView.style.display = 'none';
+        appView.style.display = 'block';
+        loadAll();
+    }
+
+    $('#btnLogout').addEventListener('click', async () => {
+        await api('/api/admin/logout', { method: 'POST', body: '{}' }).catch(() => {});
+        sessionStorage.removeItem(TOKEN_KEY);
+        appView.style.display = 'none';
+        loginView.style.display = '';
+    });
+
+    // === Load All Data ===
+    async function loadAll() {
+        await Promise.all([loadMessages(), loadDashboard(), loadSettings()]);
+    }
+
+    $('#btnRefresh').addEventListener('click', () => { toast('جاري التحديث...', 'info'); loadAll(); });
+
+    // === MESSAGES ===
+    async function loadMessages() {
+        try {
+            const res = await api('/api/admin/messages');
+            if (!res.ok) return;
+            allMessages = await res.json();
+            const newCount = allMessages.filter(m => m.status === 'new').length;
+            const badge = $('#newMsgBadge');
+            if (newCount > 0) { badge.textContent = newCount; badge.style.display = ''; } else { badge.style.display = 'none'; }
+            renderMessages();
+        } catch (e) { console.error(e); }
+    }
+
+    function renderMessages() {
+        const search = ($('#msgSearch')?.value || '').toLowerCase();
+        let filtered = allMessages;
+        if (currentFilter !== 'all') filtered = filtered.filter(m => m.status === currentFilter);
+        if (search) filtered = filtered.filter(m => [m.name, m.email, m.subject, m.message].some(f => (f || '').toLowerCase().includes(search)));
+
+        $('#msgCount').textContent = `عرض ${filtered.length} من ${allMessages.length} رسالة`;
+        selectedIds.clear();
+        updateBulkBar();
+
+        if (!filtered.length) {
+            $('#msgList').innerHTML = `<div class="msg-empty"><i class="fas fa-envelope-open"></i><p>لا توجد رسائل ${currentFilter !== 'all' ? 'في هذا التصنيف' : 'بعد'}</p></div>`;
+            return;
+        }
+
+        $('#msgList').innerHTML = filtered.map(m => `
+            <div class="msg-card ${m.status === 'new' ? 'unread' : ''}" data-id="${esc(m.id)}">
+                <div class="msg-header">
+                    <div class="msg-sender">
+                        <input type="checkbox" class="msg-select" data-id="${esc(m.id)}" ${selectedIds.has(m.id) ? 'checked' : ''}>
+                        <div class="msg-avatar" style="background:${avatarColor(m.name)}">${esc(m.name.charAt(0).toUpperCase())}</div>
+                        <div class="msg-sender-info">
+                            <h4>${esc(m.name)}</h4>
+                            <span><a href="mailto:${esc(m.email)}" style="color:var(--accent)">${esc(m.email)}</a></span>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px">
+                        <span class="badge badge-${m.status}">${m.status === 'new' ? 'جديد' : m.status === 'read' ? 'مقروء' : 'تم الرد'}</span>
+                        <span class="msg-date">${fmtDate(m.createdAt)}</span>
+                    </div>
+                </div>
+                <div class="msg-subject">${esc(m.subject)}</div>
+                <div class="msg-body" id="body-${esc(m.id)}">${esc(m.message)}</div>
+                <span class="msg-toggle" data-id="${esc(m.id)}">عرض المزيد</span>
+                ${m.reply ? `<div class="msg-reply-existing"><small><i class="fas fa-reply"></i> ردك (${fmtDate(m.repliedAt)})</small>${esc(m.reply)}</div>` : ''}
+                <div class="msg-reply-form">
+                    <textarea id="reply-${esc(m.id)}" placeholder="اكتب ردك هنا...">${esc(m.reply || '')}</textarea>
+                    <div class="msg-reply-actions">
+                        <button class="btn btn-primary btn-sm btn-save" data-id="${esc(m.id)}"><i class="fas fa-floppy-disk"></i> حفظ الرد</button>
+                        <button class="btn btn-secondary btn-sm btn-mark-read" data-id="${esc(m.id)}"><i class="fas fa-eye"></i> مقروء</button>
+                        <a class="btn btn-success btn-sm" href="mailto:${esc(m.email)}?subject=Re: ${encodeURIComponent(m.subject)}" target="_blank"><i class="fas fa-envelope"></i> إرسال بريد</a>
+                        <button class="btn btn-danger btn-sm btn-delete" data-id="${esc(m.id)}"><i class="fas fa-trash"></i> حذف</button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        // Events
+        $$('.msg-toggle').forEach(t => t.addEventListener('click', () => {
+            const body = $(`#body-${t.dataset.id}`);
+            body.classList.toggle('expanded');
+            t.textContent = body.classList.contains('expanded') ? 'عرض أقل' : 'عرض المزيد';
+        }));
+
+        $$('.btn-save').forEach(btn => btn.addEventListener('click', async () => {
+            const id = btn.dataset.id;
+            const text = $(`#reply-${id}`).value.trim();
+            if (!text) { toast('اكتب نص الرد أولاً', 'error'); return; }
+            btn.disabled = true;
+            const r = await api(`/api/admin/messages/${encodeURIComponent(id)}`, { method: 'PATCH', body: JSON.stringify({ reply: text }) });
+            btn.disabled = false;
+            if (r.ok) { toast('تم حفظ الرد'); await loadMessages(); } else { toast('فشل الحفظ', 'error'); }
+        }));
+
+        $$('.btn-mark-read').forEach(btn => btn.addEventListener('click', async () => {
+            const r = await api(`/api/admin/messages/${encodeURIComponent(btn.dataset.id)}`, { method: 'PATCH', body: JSON.stringify({ status: 'read' }) });
+            if (r.ok) { toast('تم تعيين كمقروء'); await loadMessages(); }
+        }));
+
+        $$('.btn-delete').forEach(btn => btn.addEventListener('click', async () => {
+            const ok = await confirm('حذف الرسالة', 'هل تريد حذف هذه الرسالة نهائياً؟');
+            if (!ok) return;
+            const r = await api(`/api/admin/messages/${encodeURIComponent(btn.dataset.id)}`, { method: 'DELETE' });
+            if (r.ok) { toast('تم حذف الرسالة'); await loadMessages(); } else { toast('فشل الحذف', 'error'); }
+        }));
+
+        $$('.msg-select').forEach(cb => cb.addEventListener('change', () => {
+            if (cb.checked) selectedIds.add(cb.dataset.id); else selectedIds.delete(cb.dataset.id);
+            updateBulkBar();
+        }));
+    }
+
+    function updateBulkBar() {
+        const bar = $('#bulkBar');
+        if (selectedIds.size > 0) { bar.classList.add('show'); } else { bar.classList.remove('show'); }
+        $('#bulkCount').textContent = `${selectedIds.size} محدد`;
+    }
+
+    // Search & Filter
+    $('#msgSearch').addEventListener('input', renderMessages);
+    $$('.filter-tab').forEach(tab => tab.addEventListener('click', () => {
+        $$('.filter-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentFilter = tab.dataset.filter;
+        renderMessages();
+    }));
+
+    // Select All
+    $('#selectAll').addEventListener('change', (e) => {
+        const checkboxes = $$('.msg-select[data-id]');
+        checkboxes.forEach(cb => { cb.checked = e.target.checked; if (cb.checked) selectedIds.add(cb.dataset.id); else selectedIds.delete(cb.dataset.id); });
+        updateBulkBar();
+    });
+
+    // Bulk Delete
+    $('#btnBulkDelete').addEventListener('click', async () => {
+        const ok = await confirm('حذف متعدد', `هل تريد حذف ${selectedIds.size} رسالة؟`);
+        if (!ok) return;
+        await api('/api/admin/messages/bulk-delete', { method: 'POST', body: JSON.stringify({ ids: [...selectedIds] }) });
+        toast(`تم حذف ${selectedIds.size} رسالة`);
+        selectedIds.clear();
+        await loadMessages();
+    });
+
+    // Bulk Mark Read
+    $('#btnBulkRead').addEventListener('click', async () => {
+        for (const id of selectedIds) {
+            await api(`/api/admin/messages/${encodeURIComponent(id)}`, { method: 'PATCH', body: JSON.stringify({ status: 'read' }) });
+        }
+        toast('تم تعيين المحدد كمقروء');
+        selectedIds.clear();
+        await loadMessages();
+    });
+
+    // Export
+    const doExport = () => {
+        const token = sessionStorage.getItem(TOKEN_KEY);
+        window.open(`/api/admin/messages/export?t=${token}`, '_blank');
+    };
+    $('#btnExport').addEventListener('click', doExport);
+    $('#qcExport')?.addEventListener('click', doExport);
+
+    // === DASHBOARD ===
+    async function loadDashboard() {
+        try {
+            const res = await api('/api/admin/stats');
+            if (!res.ok) return;
+            const s = await res.json();
+            $('#statTotal').textContent = s.total;
+            $('#statNew').textContent = s.new;
+            $('#statRead').textContent = s.read;
+            $('#statReplied').textContent = s.replied;
+            $('#statVisitorsToday').textContent = s.todayVisitors || 0;
+            $('#statVisitorsWeek').textContent = s.weekVisitors || 0;
+
+            // Chart
+            const chartEl = $('#chartBars');
+            const days = [];
+            const now = new Date();
+            for (let i = 29; i >= 0; i--) {
+                const d = new Date(now - i * 86400000);
+                days.push(d.toISOString().slice(0, 10));
+            }
+            const maxVal = Math.max(1, ...days.map(d => s.perDay[d] || 0));
+            chartEl.innerHTML = days.map(d => {
+                const v = s.perDay[d] || 0;
+                const h = Math.max(4, (v / maxVal) * 100);
+                return `<div class="chart-bar" style="height:${h}%"><div class="tooltip">${d.slice(5)}: ${v} رسالة</div></div>`;
+            }).join('');
+
+            // Recent messages
+            const recent = allMessages.slice(0, 5);
+            if (recent.length) {
+                $('#recentMessages').innerHTML = recent.map(m => `
+                    <div class="msg-card" style="padding:14px;margin-bottom:8px;cursor:pointer" onclick="navigateTo('messages')">
+                        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+                            <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">
+                                <div class="msg-avatar" style="background:${avatarColor(m.name)};width:36px;height:36px;font-size:0.85rem;flex-shrink:0">${esc(m.name.charAt(0).toUpperCase())}</div>
+                                <div style="min-width:0">
+                                    <div style="font-weight:700;font-size:0.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(m.name)} — ${esc(m.subject)}</div>
+                                    <div style="font-size:0.78rem;color:var(--muted)">${fmtDate(m.createdAt)}</div>
+                                </div>
+                            </div>
+                            <span class="badge badge-${m.status}" style="flex-shrink:0">${m.status === 'new' ? 'جديد' : m.status === 'read' ? 'مقروء' : 'تم الرد'}</span>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                $('#recentMessages').innerHTML = '<div class="msg-empty" style="padding:30px"><i class="fas fa-inbox"></i><p>لا توجد رسائل</p></div>';
+            }
+        } catch (e) { console.error(e); }
+    }
+
+    // === SETTINGS ===
+    async function loadSettings() {
+        try {
+            const res = await api('/api/admin/settings');
+            if (!res.ok) return;
+            cachedSettings = await res.json();
+            $('#setSiteName').value = cachedSettings.siteName || '';
+            $('#setSiteTitle').value = cachedSettings.siteTitle || '';
+            $('#setBio').value = cachedSettings.bio || '';
+            $('#setLocation').value = cachedSettings.location || '';
+            $('#setEmail').value = cachedSettings.email || '';
+            $('#setPhone').value = cachedSettings.phone || '';
+            $('#setWhatsapp').value = cachedSettings.whatsapp || '';
+            $('#setGithub').value = cachedSettings.socialLinks?.github || '';
+            $('#setLinkedin').value = cachedSettings.socialLinks?.linkedin || '';
+            $('#setTwitter').value = cachedSettings.socialLinks?.twitter || '';
+            $('#setInstagram').value = cachedSettings.socialLinks?.instagram || '';
+            $('#setYoutube').value = cachedSettings.socialLinks?.youtube || '';
+            $('#setSeoTitle').value = cachedSettings.seoTitle || '';
+            $('#setSeoDesc').value = cachedSettings.seoDescription || '';
+
+            // Update quick action links
+            if (cachedSettings.whatsapp) {
+                $('#qcWhatsapp').onclick = () => window.open(`https://wa.me/${cachedSettings.whatsapp.replace(/[^0-9]/g, '')}`, '_blank');
+            }
+            if (cachedSettings.email) {
+                $('#qcEmail').onclick = () => window.open(`mailto:${cachedSettings.email}`, '_blank');
+            }
+        } catch (e) { console.error(e); }
+    }
+
+    $('#settingsForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const body = {
+            siteName: $('#setSiteName').value.trim(),
+            siteTitle: $('#setSiteTitle').value.trim(),
+            bio: $('#setBio').value.trim(),
+            location: $('#setLocation').value.trim(),
+            email: $('#setEmail').value.trim(),
+            phone: $('#setPhone').value.trim(),
+            whatsapp: $('#setWhatsapp').value.trim(),
+            socialLinks: {
+                github: $('#setGithub').value.trim(),
+                linkedin: $('#setLinkedin').value.trim(),
+                twitter: $('#setTwitter').value.trim(),
+                instagram: $('#setInstagram').value.trim(),
+                youtube: $('#setYoutube').value.trim()
+            },
+            seoTitle: $('#setSeoTitle').value.trim(),
+            seoDescription: $('#setSeoDesc').value.trim()
+        };
+        const res = await api('/api/admin/settings', { method: 'PUT', body: JSON.stringify(body) });
+        if (res.ok) { toast('تم حفظ الإعدادات بنجاح'); cachedSettings = await res.json(); }
+        else { toast('فشل حفظ الإعدادات', 'error'); }
+    });
+
+    $('#btnResetSettings').addEventListener('click', () => loadSettings());
+
+    // === Export auth workaround (token in header not supported for direct download) ===
+    // Override export to use fetch + blob
+    const realExport = async () => {
+        const res = await api('/api/admin/messages/export');
+        if (!res.ok) { toast('فشل التصدير', 'error'); return; }
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'messages.csv'; a.click();
+        URL.revokeObjectURL(url);
+        toast('تم تصدير الرسائل');
+    };
+    $('#btnExport').removeEventListener('click', doExport);
+    $('#btnExport').addEventListener('click', realExport);
+    if ($('#qcExport')) { $('#qcExport').removeEventListener('click', doExport); $('#qcExport').addEventListener('click', realExport); }
+
+    // === Init ===
+    if (sessionStorage.getItem(TOKEN_KEY)) { showApp(); }
+})();
+</script>
 </body>
 </html>

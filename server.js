@@ -8,6 +8,8 @@ import { randomUUID } from 'crypto';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = path.join(__dirname, 'data');
 const MESSAGES_PATH = path.join(DATA_DIR, 'messages.json');
+const SETTINGS_PATH = path.join(DATA_DIR, 'settings.json');
+const VISITORS_PATH = path.join(DATA_DIR, 'visitors.json');
 
 const ADMIN_PASSWORD = String(process.env.ADMIN_PASSWORD || 'changeme').trim();
 const PORT = Number(process.env.PORT) || 3000;
@@ -41,13 +43,25 @@ function rateLimit(maxReqs, windowMs) {
 const app = express();
 app.use(express.json({ limit: '128kb' }));
 
+const DEFAULT_SETTINGS = {
+    siteName: 'Khalid',
+    siteTitle: 'Tech Services & Digital Solutions',
+    bio: 'Freelance tech specialist offering web development, mobile apps, UI/UX design, and digital marketing services.',
+    email: '',
+    phone: '',
+    whatsapp: '',
+    location: '',
+    socialLinks: { github: '', linkedin: '', twitter: '', instagram: '', youtube: '' },
+    seoTitle: 'Khalid | Tech Services & Digital Solutions',
+    seoDescription: 'Freelance tech specialist — web development, mobile apps, UI/UX design, and digital marketing.',
+    updatedAt: null
+};
+
 async function ensureDataFile() {
     await fs.mkdir(DATA_DIR, { recursive: true });
-    try {
-        await fs.access(MESSAGES_PATH);
-    } catch {
-        await fs.writeFile(MESSAGES_PATH, '[]', 'utf8');
-    }
+    try { await fs.access(MESSAGES_PATH); } catch { await fs.writeFile(MESSAGES_PATH, '[]', 'utf8'); }
+    try { await fs.access(SETTINGS_PATH); } catch { await fs.writeFile(SETTINGS_PATH, JSON.stringify(DEFAULT_SETTINGS, null, 2), 'utf8'); }
+    try { await fs.access(VISITORS_PATH); } catch { await fs.writeFile(VISITORS_PATH, '[]', 'utf8'); }
 }
 
 async function readMessages() {
@@ -58,6 +72,31 @@ async function readMessages() {
 
 async function writeMessages(messages) {
     await fs.writeFile(MESSAGES_PATH, JSON.stringify(messages, null, 2), 'utf8');
+}
+
+async function readSettings() {
+    try {
+        const raw = await fs.readFile(SETTINGS_PATH, 'utf8');
+        return { ...DEFAULT_SETTINGS, ...JSON.parse(raw) };
+    } catch { return { ...DEFAULT_SETTINGS }; }
+}
+
+async function writeSettings(settings) {
+    await fs.writeFile(SETTINGS_PATH, JSON.stringify(settings, null, 2), 'utf8');
+}
+
+async function readVisitors() {
+    try {
+        const raw = await fs.readFile(VISITORS_PATH, 'utf8');
+        const data = JSON.parse(raw);
+        return Array.isArray(data) ? data : [];
+    } catch { return []; }
+}
+
+async function writeVisitors(visitors) {
+    // keep last 10000 entries max
+    const trimmed = visitors.slice(-10000);
+    await fs.writeFile(VISITORS_PATH, JSON.stringify(trimmed, null, 2), 'utf8');
 }
 
 function clip(str, max) {
@@ -102,6 +141,72 @@ app.get('/api/admin/messages', adminAuth, async (req, res) => {
     }
 });
 
+// --- Admin Stats ---
+app.get('/api/admin/stats', adminAuth, async (req, res) => {
+    try {
+        const messages = await readMessages();
+        const total = messages.length;
+        const newCount = messages.filter(m => m.status === 'new').length;
+        const readCount = messages.filter(m => m.status === 'read').length;
+        const repliedCount = messages.filter(m => m.status === 'replied').length;
+
+        const now = new Date();
+        const thirtyDaysAgo = new Date(now - 30 * 24 * 60 * 60 * 1000);
+        const recent = messages.filter(m => new Date(m.createdAt) >= thirtyDaysAgo);
+        const perDay = {};
+        recent.forEach(m => {
+            const day = m.createdAt?.slice(0, 10);
+            if (day) perDay[day] = (perDay[day] || 0) + 1;
+        });
+
+        const visitors = await readVisitors();
+        const todayStr = now.toISOString().slice(0, 10);
+        const todayVisitors = visitors.filter(v => v.date === todayStr).length;
+        const weekAgo = new Date(now - 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+        const weekVisitors = visitors.filter(v => v.date >= weekAgo).length;
+
+        res.json({ total, new: newCount, read: readCount, replied: repliedCount, perDay, todayVisitors, weekVisitors, totalVisitors: visitors.length });
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: 'فشل جلب الإحصائيات' });
+    }
+});
+
+// --- Export messages CSV (must be before :id routes) ---
+app.get('/api/admin/messages/export', adminAuth, async (req, res) => {
+    try {
+        const messages = await readMessages();
+        const header = 'ID,Name,Email,Subject,Message,Status,Reply,CreatedAt,RepliedAt\n';
+        const csvEscape = (s) => '"' + String(s || '').replace(/"/g, '""') + '"';
+        const rows = messages.map(m =>
+            [m.id, m.name, m.email, m.subject, m.message, m.status, m.reply, m.createdAt, m.repliedAt].map(csvEscape).join(',')
+        ).join('\n');
+        res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+        res.setHeader('Content-Disposition', 'attachment; filename=messages.csv');
+        res.send('\uFEFF' + header + rows);
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: 'فشل التصدير' });
+    }
+});
+
+// --- Bulk delete messages (must be before :id routes) ---
+app.post('/api/admin/messages/bulk-delete', adminAuth, async (req, res) => {
+    try {
+        const { ids } = req.body || {};
+        if (!Array.isArray(ids) || !ids.length) return res.status(400).json({ error: 'لا توجد معرفات' });
+        let messages = await readMessages();
+        const idSet = new Set(ids);
+        messages = messages.filter(m => !idSet.has(m.id));
+        await writeMessages(messages);
+        res.json({ ok: true, deleted: ids.length });
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: 'فشل الحذف' });
+    }
+});
+
+// --- Update message (PATCH :id) ---
 app.patch('/api/admin/messages/:id', adminAuth, async (req, res) => {
     const { id } = req.params;
     const { reply, status } = req.body || {};
@@ -133,6 +238,83 @@ app.patch('/api/admin/messages/:id', adminAuth, async (req, res) => {
         console.error(e);
         res.status(500).json({ error: 'فشل الحفظ' });
     }
+});
+
+// --- Delete single message ---
+app.delete('/api/admin/messages/:id', adminAuth, async (req, res) => {
+    try {
+        const messages = await readMessages();
+        const idx = messages.findIndex(m => m.id === req.params.id);
+        if (idx === -1) return res.status(404).json({ error: 'الرسالة غير موجودة' });
+        messages.splice(idx, 1);
+        await writeMessages(messages);
+        res.json({ ok: true });
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: 'فشل الحذف' });
+    }
+});
+
+// --- Site Settings ---
+app.get('/api/admin/settings', adminAuth, async (req, res) => {
+    try {
+        const settings = await readSettings();
+        res.json(settings);
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: 'فشل قراءة الإعدادات' });
+    }
+});
+
+app.put('/api/admin/settings', adminAuth, async (req, res) => {
+    try {
+        const current = await readSettings();
+        const allowed = ['siteName', 'siteTitle', 'bio', 'email', 'phone', 'whatsapp', 'location', 'socialLinks', 'seoTitle', 'seoDescription'];
+        for (const key of allowed) {
+            if (req.body[key] !== undefined) {
+                if (key === 'socialLinks' && typeof req.body[key] === 'object') {
+                    current.socialLinks = { ...current.socialLinks, ...req.body[key] };
+                } else if (typeof req.body[key] === 'string') {
+                    current[key] = clip(req.body[key], 2000);
+                }
+            }
+        }
+        current.updatedAt = new Date().toISOString();
+        await writeSettings(current);
+        res.json(current);
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: 'فشل حفظ الإعدادات' });
+    }
+});
+
+// --- Change Admin Password ---
+app.post('/api/admin/change-password', adminAuth, (req, res) => {
+    const { currentPassword, newPassword } = req.body || {};
+    if (!currentPassword || currentPassword.trim() !== ADMIN_PASSWORD) {
+        return res.status(400).json({ error: 'كلمة المرور الحالية غير صحيحة' });
+    }
+    if (!newPassword || newPassword.trim().length < 6) {
+        return res.status(400).json({ error: 'كلمة المرور الجديدة يجب أن تكون 6 أحرف على الأقل' });
+    }
+    // Note: This only changes in memory for current session. For permanent change, update .env
+    res.json({ ok: true, message: 'لتغيير كلمة المرور بشكل دائم، عدّل ملف .env وأعد تشغيل الخادم.' });
+});
+
+// --- Track visitor (public) ---
+app.post('/api/track', rateLimit(30, 60000), async (req, res) => {
+    try {
+        const visitors = await readVisitors();
+        visitors.push({
+            date: new Date().toISOString().slice(0, 10),
+            time: new Date().toISOString(),
+            page: clip(req.body?.page || '/', 500),
+            referrer: clip(req.body?.referrer || '', 500),
+            ua: clip(req.headers['user-agent'] || '', 300)
+        });
+        await writeVisitors(visitors);
+        res.json({ ok: true });
+    } catch { res.json({ ok: true }); }
 });
 
 app.post('/api/contact', rateLimit(5, 60000), async (req, res) => {

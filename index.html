@@ -2457,7 +2457,6 @@
                     </div>
 
                     <div class="social-links">
-                        <a href="https://wa.me/966509182112" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
                         <a href="mailto:khalidtrrk@gmail.com" class="social-link" aria-label="Email"><i class="fas fa-envelope"></i></a>
                     </div>
 
@@ -2507,7 +2506,6 @@
                     <h3>K<span>.</span></h3>
                     <p data-i18n="footer_desc">Delivering premium digital solutions that help businesses grow and succeed. Let's build something remarkable together.</p>
                     <div class="footer-social">
-                        <a href="https://wa.me/966509182112" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
                         <a href="mailto:khalidtrrk@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
                     </div>
                 </div>
@@ -2535,17 +2533,11 @@
             <div class="footer-bottom">
                 <p data-i18n="footer_copy">&copy; 2026 Khalid. All Rights Reserved.</p>
                 <div class="footer-social">
-                    <a href="https://wa.me/966509182112" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
                     <a href="mailto:khalidtrrk@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
                 </div>
             </div>
         </div>
     </footer>
-
-    <!-- WhatsApp Float Button -->
-    <a href="https://wa.me/966509182112" target="_blank" rel="noopener noreferrer" class="whatsapp-float" aria-label="WhatsApp">
-        <i class="fab fa-whatsapp"></i>
-    </a>
 
     <!-- PWA Install Banner -->
     <div class="pwa-install-banner" id="pwaInstallBanner">
@@ -3171,7 +3163,7 @@
            ============================================ */
         const form = document.getElementById('form');
 
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
             let isValid = true;
 
@@ -3201,19 +3193,26 @@
             const subject = document.getElementById('subject').value.trim();
             const message = document.getElementById('message').value.trim();
 
-            const whatsappText = encodeURIComponent(
-                `*New Message from Website*\n\n` +
-                `*Name:* ${name}\n` +
-                `*Email:* ${email}\n` +
-                `*Subject:* ${subject}\n\n` +
-                `*Message:*\n${message}`
-            );
-
-            const whatsappURL = `https://wa.me/966509182112?text=${whatsappText}`;
-            window.open(whatsappURL, '_blank');
-
-            showToast(translations[currentLang].toast_success);
-            form.reset();
+            // Send to server API
+            const submitBtn = form.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            try {
+                const res = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, subject, message })
+                });
+                if (res.ok) {
+                    showToast(translations[currentLang].toast_success);
+                    form.reset();
+                } else {
+                    const data = await res.json().catch(() => ({}));
+                    showToast(data.error || 'حدث خطأ، حاول مرة أخرى');
+                }
+            } catch {
+                showToast('تعذر الاتصال بالخادم');
+            }
+            submitBtn.disabled = false;
         });
 
         // Clear error on input
@@ -3361,6 +3360,15 @@
             installBanner.classList.remove('show');
             deferredPrompt = null;
         });
+
+        /* ============================================
+           Visitor Tracking
+           ============================================ */
+        fetch('/api/track', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ page: location.pathname, referrer: document.referrer })
+        }).catch(() => {});
     </script>
 </body>
 </html>
