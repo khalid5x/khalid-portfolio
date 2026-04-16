@@ -2,7 +2,7 @@
    Service Worker — Khalid Portfolio PWA
    ============================================ */
 
-const CACHE_NAME = 'khalid-pwa-v3';
+const CACHE_NAME = 'khalid-pwa-v4';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
