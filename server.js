@@ -10,6 +10,7 @@ const DATA_DIR = path.join(__dirname, 'data');
 const MESSAGES_PATH = path.join(DATA_DIR, 'messages.json');
 const SETTINGS_PATH = path.join(DATA_DIR, 'settings.json');
 const VISITORS_PATH = path.join(DATA_DIR, 'visitors.json');
+const ORDERS_PATH = path.join(DATA_DIR, 'orders.json');
 
 const ADMIN_PASSWORD = String(process.env.ADMIN_PASSWORD || 'changeme').trim();
 const PORT = Number(process.env.PORT) || 3000;
@@ -62,6 +63,43 @@ async function ensureDataFile() {
     try { await fs.access(MESSAGES_PATH); } catch { await fs.writeFile(MESSAGES_PATH, '[]', 'utf8'); }
     try { await fs.access(SETTINGS_PATH); } catch { await fs.writeFile(SETTINGS_PATH, JSON.stringify(DEFAULT_SETTINGS, null, 2), 'utf8'); }
     try { await fs.access(VISITORS_PATH); } catch { await fs.writeFile(VISITORS_PATH, '[]', 'utf8'); }
+    try { await fs.access(ORDERS_PATH); } catch { await fs.writeFile(ORDERS_PATH, '[]', 'utf8'); }
+}
+
+async function readOrders() {
+    try {
+        const raw = await fs.readFile(ORDERS_PATH, 'utf8');
+        const data = JSON.parse(raw);
+        if (!Array.isArray(data)) return [];
+        // Backfill access tokens for orders created before token was introduced
+        let needsMigration = false;
+        for (const o of data) {
+            if (!o.accessToken) {
+                o.accessToken = randomUUID().replace(/-/g, '').slice(0, 24);
+                needsMigration = true;
+            }
+        }
+        if (needsMigration) await fs.writeFile(ORDERS_PATH, JSON.stringify(data, null, 2), 'utf8');
+        return data;
+    } catch { return []; }
+}
+
+async function writeOrders(orders) {
+    await fs.writeFile(ORDERS_PATH, JSON.stringify(orders, null, 2), 'utf8');
+}
+
+async function generateOrderNumber() {
+    const orders = await readOrders();
+    const year = new Date().getFullYear();
+    const yearPrefix = `ORD-${year}-`;
+    const thisYearOrders = orders.filter(o => o.orderNumber && o.orderNumber.startsWith(yearPrefix));
+    const nextSeq = thisYearOrders.length + 1;
+    return `${yearPrefix}${String(nextSeq).padStart(4, '0')}`;
+}
+
+function generateAccessToken() {
+    // 24-char url-safe random token (prevents order enumeration)
+    return randomUUID().replace(/-/g, '').slice(0, 24);
 }
 
 async function readMessages() {
@@ -349,6 +387,166 @@ app.post('/api/contact', rateLimit(5, 60000), async (req, res) => {
     } catch (e) {
         console.error(e);
         res.status(500).json({ error: 'تعذر حفظ الرسالة' });
+    }
+});
+
+// Public: fetch public-safe site settings (for invoice page branding)
+app.get('/api/public/settings', async (req, res) => {
+    try {
+        const settings = await readSettings();
+        const { siteName, siteTitle, email, phone, whatsapp } = settings;
+        res.json({ siteName, siteTitle, email, phone, whatsapp });
+    } catch (e) {
+        res.json({});
+    }
+});
+
+// ========== ORDERS ==========
+
+// Public: create a new order
+app.post('/api/orders', rateLimit(5, 60000), async (req, res) => {
+    const name = clip(req.body?.name, 200);
+    const email = clip(req.body?.email, 200);
+    const phone = clip(req.body?.phone, 50);
+    const service = clip(req.body?.service, 300);
+    const packageName = clip(req.body?.package, 200);
+    const amount = clip(req.body?.amount, 50);
+    const notes = clip(req.body?.notes, 5000);
+    const paymentMethod = clip(req.body?.paymentMethod, 100) || 'STC Pay';
+
+    if (!name || !email || !service) {
+        return res.status(400).json({ error: 'الاسم والبريد والخدمة مطلوبة' });
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return res.status(400).json({ error: 'بريد غير صالح' });
+    }
+
+    try {
+        const orders = await readOrders();
+        const orderNumber = await generateOrderNumber();
+        const accessToken = generateAccessToken();
+        const entry = {
+            id: randomUUID(),
+            orderNumber,
+            accessToken,
+            name,
+            email,
+            phone,
+            service,
+            package: packageName,
+            amount,
+            paymentMethod,
+            notes,
+            status: 'pending',
+            createdAt: new Date().toISOString(),
+            paidAt: null
+        };
+        orders.push(entry);
+        await writeOrders(orders);
+
+        // Build owner notification URL (WhatsApp message to Khalid)
+        const settings = await readSettings();
+        const ownerWa = (settings.whatsapp || '').replace(/\D/g, '');
+        let notifyUrl = null;
+        if (ownerWa) {
+            const msg = `🔔 طلب جديد!\n\n` +
+                `📋 رقم الطلب: ${orderNumber}\n` +
+                `👤 ${name}\n` +
+                `📧 ${email}\n` +
+                (phone ? `📱 ${phone}\n` : '') +
+                `\n🛠️ الخدمة: ${service}\n` +
+                (packageName ? `📦 الباقة: ${packageName}\n` : '') +
+                (amount ? `💰 المبلغ: ${amount}\n` : '') +
+                `💳 طريقة الدفع: ${paymentMethod}\n` +
+                (notes ? `\n📝 ملاحظات:\n${notes}\n` : '');
+            notifyUrl = `https://wa.me/${ownerWa}?text=${encodeURIComponent(msg)}`;
+        }
+
+        res.status(201).json({
+            ok: true,
+            orderNumber,
+            invoiceUrl: `/invoice.html?order=${encodeURIComponent(orderNumber)}&t=${accessToken}`,
+            notifyUrl,
+            order: { ...entry, accessToken: undefined }
+        });
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: 'تعذر حفظ الطلب' });
+    }
+});
+
+// Public: fetch order by order number + access token (for invoice page)
+// SECURITY: Requires matching token to prevent order enumeration
+app.get('/api/orders/:orderNumber', async (req, res) => {
+    try {
+        const orders = await readOrders();
+        const order = orders.find(o => o.orderNumber === req.params.orderNumber);
+        if (!order) return res.status(404).json({ error: 'الطلب غير موجود' });
+
+        // Require access token (prevents enumeration attacks)
+        const providedToken = String(req.query.t || '').trim();
+        if (!order.accessToken || providedToken !== order.accessToken) {
+            return res.status(403).json({ error: 'رمز الوصول غير صالح' });
+        }
+
+        // Return public-safe data (exclude internal id + token)
+        const { id, accessToken, ...publicOrder } = order;
+        res.json(publicOrder);
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: 'تعذر جلب الطلب' });
+    }
+});
+
+// Admin: list all orders
+app.get('/api/admin/orders', adminAuth, async (req, res) => {
+    try {
+        const orders = await readOrders();
+        orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        res.json(orders);
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: 'فشل جلب الطلبات' });
+    }
+});
+
+// Admin: update order status
+app.patch('/api/admin/orders/:id', adminAuth, async (req, res) => {
+    try {
+        const orders = await readOrders();
+        const idx = orders.findIndex(o => o.id === req.params.id);
+        if (idx === -1) return res.status(404).json({ error: 'الطلب غير موجود' });
+
+        const allowed = ['pending', 'paid', 'in-progress', 'completed', 'cancelled'];
+        const { status, amount, notes } = req.body || {};
+        if (typeof status === 'string') {
+            if (!allowed.includes(status)) return res.status(400).json({ error: 'حالة غير صالحة' });
+            orders[idx].status = status;
+            if (status === 'paid' && !orders[idx].paidAt) orders[idx].paidAt = new Date().toISOString();
+        }
+        if (typeof amount === 'string') orders[idx].amount = clip(amount, 50);
+        if (typeof notes === 'string') orders[idx].notes = clip(notes, 5000);
+
+        await writeOrders(orders);
+        res.json(orders[idx]);
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: 'فشل التحديث' });
+    }
+});
+
+// Admin: delete order
+app.delete('/api/admin/orders/:id', adminAuth, async (req, res) => {
+    try {
+        const orders = await readOrders();
+        const idx = orders.findIndex(o => o.id === req.params.id);
+        if (idx === -1) return res.status(404).json({ error: 'الطلب غير موجود' });
+        orders.splice(idx, 1);
+        await writeOrders(orders);
+        res.json({ ok: true });
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: 'فشل الحذف' });
     }
 });
 

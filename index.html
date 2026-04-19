@@ -1363,6 +1363,288 @@
         }
 
         /* ============================================
+           Order Modal
+           ============================================ */
+        .order-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 10, 20, 0.75);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+        }
+        .order-modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .order-modal {
+            background: var(--white);
+            width: 100%;
+            max-width: 560px;
+            max-height: 92vh;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 40px 90px rgba(0, 0, 0, 0.4);
+            transform: translateY(30px) scale(0.95);
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .order-modal-overlay.active .order-modal {
+            transform: translateY(0) scale(1);
+        }
+
+        .order-modal-header {
+            padding: 28px 32px 22px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-gold));
+            color: #fff;
+            position: relative;
+        }
+        .order-modal-header h3 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+        .order-modal-header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        .order-modal-close {
+            position: absolute;
+            top: 18px;
+            inset-inline-end: 18px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+        .order-modal-close:hover { background: rgba(255, 255, 255, 0.35); }
+
+        .order-modal-body {
+            padding: 28px 32px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .order-selected {
+            background: linear-gradient(135deg, rgba(233, 69, 96, 0.08), rgba(255, 193, 7, 0.05));
+            border: 1px solid rgba(233, 69, 96, 0.2);
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-bottom: 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .order-selected-label { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
+        .order-selected-plan { font-size: 1.05rem; font-weight: 700; color: var(--text-dark); }
+        .order-selected-price { font-size: 1.1rem; font-weight: 800; color: var(--accent); }
+
+        .order-field {
+            margin-bottom: 16px;
+        }
+        .order-field label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+        .order-field label .req { color: var(--accent); }
+        .order-field input,
+        .order-field select,
+        .order-field textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid var(--border-light);
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            background: var(--white);
+            color: var(--text-dark);
+            transition: all 0.2s;
+        }
+        .order-field input:focus,
+        .order-field select:focus,
+        .order-field textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.1);
+        }
+        .order-field textarea { resize: vertical; min-height: 80px; }
+
+        .order-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-gold));
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 6px;
+        }
+        .order-submit:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(233, 69, 96, 0.35);
+        }
+        .order-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .order-error {
+            background: rgba(233, 69, 96, 0.08);
+            border: 1px solid rgba(233, 69, 96, 0.25);
+            color: var(--accent);
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            margin-bottom: 14px;
+            display: none;
+        }
+
+        /* Success screen */
+        .order-success {
+            padding: 40px 32px;
+            text-align: center;
+        }
+        .order-success-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00a859, #007a43);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 2rem;
+            box-shadow: 0 15px 35px rgba(0, 168, 89, 0.35);
+            animation: successPop 0.5s cubic-bezier(0.22, 1.6, 0.36, 1);
+        }
+        @keyframes successPop {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .order-success h3 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+        .order-success > p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 22px;
+        }
+        .order-number-box {
+            background: linear-gradient(135deg, var(--text-dark), #16213e);
+            color: #fff;
+            padding: 18px 22px;
+            border-radius: 14px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .order-number-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            margin-bottom: 4px;
+        }
+        .order-number-value {
+            font-size: 1.3rem;
+            font-weight: 800;
+            font-family: 'Inter', monospace;
+            letter-spacing: 1px;
+            color: var(--accent-gold);
+        }
+        .copy-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #fff;
+            padding: 8px 14px;
+            border-radius: 50px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .copy-btn:hover { background: rgba(255, 255, 255, 0.25); }
+        .copy-btn.copied { background: #00a859; border-color: #00a859; }
+
+        .order-actions-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 14px;
+        }
+        .order-action {
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: transform 0.2s;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+        .order-action:hover { transform: translateY(-2px); }
+        .order-action.primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-gold));
+            color: #fff;
+        }
+        .order-action.secondary {
+            background: var(--light-bg);
+            color: var(--text-dark);
+            border: 1px solid var(--border-light);
+        }
+
+        @media (max-width: 520px) {
+            .order-modal-header { padding: 22px 22px 18px; }
+            .order-modal-body { padding: 22px; }
+            .order-actions-row { grid-template-columns: 1fr; }
+            .order-success { padding: 30px 22px; }
+        }
+
+        /* ============================================
            8. Contact Section
            ============================================ */
         .contact {
@@ -1851,6 +2133,70 @@
             box-shadow: 0 6px 25px rgba(233, 69, 96, 0.5);
         }
 
+        /* Floating WhatsApp Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 90px;
+            right: 30px;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.7rem;
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.45);
+            z-index: 500;
+            text-decoration: none;
+            transition: transform 0.3s cubic-bezier(0.22, 1.4, 0.36, 1);
+            animation: whatsappBounceIn 0.8s cubic-bezier(0.22, 1.5, 0.36, 1) 0.5s both;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.12) rotate(-8deg);
+            box-shadow: 0 12px 40px rgba(37, 211, 102, 0.6);
+        }
+
+        .whatsapp-float i {
+            position: relative;
+            z-index: 2;
+        }
+
+        .whatsapp-pulse {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: #25D366;
+            opacity: 0.6;
+            animation: whatsappPulse 2s ease-out infinite;
+        }
+
+        @keyframes whatsappPulse {
+            0% { transform: scale(1); opacity: 0.55; }
+            100% { transform: scale(1.8); opacity: 0; }
+        }
+
+        @keyframes whatsappBounceIn {
+            0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+            60% { transform: scale(1.15) rotate(10deg); }
+            100% { transform: scale(1) rotate(0); opacity: 1; }
+        }
+
+        [dir="rtl"] .whatsapp-float,
+        [dir="rtl"] .back-to-top {
+            right: auto;
+            left: 30px;
+        }
+
+        @media (max-width: 640px) {
+            .whatsapp-float { width: 52px; height: 52px; font-size: 1.5rem; bottom: 80px; right: 18px; }
+            [dir="rtl"] .whatsapp-float { left: 18px; right: auto; }
+            .back-to-top { right: 18px; }
+            [dir="rtl"] .back-to-top { left: 18px; right: auto; }
+        }
+
         /* ============================================
            Responsive Design
            ============================================ */
@@ -1998,6 +2344,165 @@
         @keyframes preload {
             0% { transform: translateX(-100%); }
             100% { transform: translateX(350%); }
+        }
+
+        /* ============================================
+           Payment Methods Section
+           ============================================ */
+        .payments {
+            padding: 100px 0;
+            background: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .payments::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(233, 69, 96, 0.08), transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .payments::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 193, 7, 0.06), transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .payments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 28px;
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .payment-card {
+            background: var(--white);
+            border: 1px solid var(--border-light);
+            border-radius: 18px;
+            padding: 32px 28px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .payment-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-gold));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .payment-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            border-color: transparent;
+        }
+
+        .payment-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .payment-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 20px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            color: var(--white);
+            background: linear-gradient(135deg, var(--accent), var(--accent-gold));
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.25);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .payment-card:hover .payment-icon {
+            transform: scale(1.1) rotate(-6deg);
+        }
+
+        .payment-icon.blue { background: linear-gradient(135deg, #0057b7, #003d82); box-shadow: 0 10px 30px rgba(0, 87, 183, 0.3); }
+        .payment-icon.purple { background: linear-gradient(135deg, #6c1d7e, #9b27b5); box-shadow: 0 10px 30px rgba(108, 29, 126, 0.3); }
+        .payment-icon.green { background: linear-gradient(135deg, #00a859, #007a43); box-shadow: 0 10px 30px rgba(0, 168, 89, 0.3); }
+        .payment-icon.orange { background: linear-gradient(135deg, #ff6d00, #e65100); box-shadow: 0 10px 30px rgba(255, 109, 0, 0.3); }
+        .payment-icon.dark { background: linear-gradient(135deg, #1a1a2e, #16213e); box-shadow: 0 10px 30px rgba(26, 26, 46, 0.4); }
+
+        .payment-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .payment-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .payment-tag {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: rgba(233, 69, 96, 0.08);
+            color: var(--accent);
+            letter-spacing: 0.5px;
+        }
+
+        .payments-note {
+            max-width: 720px;
+            margin: 60px auto 0;
+            padding: 24px 28px;
+            background: linear-gradient(135deg, rgba(233, 69, 96, 0.06), rgba(255, 193, 7, 0.04));
+            border: 1px solid rgba(233, 69, 96, 0.15);
+            border-radius: 16px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .payments-note i {
+            color: var(--accent);
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .payments-note p {
+            color: var(--text-dark);
+            font-size: 0.98rem;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .payments-grid { gap: 20px; }
+            .payment-card { padding: 28px 22px; }
         }
 
         /* ============================================
@@ -2548,7 +3053,7 @@
                         <li class="disabled"><i class="fas fa-times"></i> <span data-i18n="plan1_f6">Custom Functionality</span></li>
                         <li class="disabled"><i class="fas fa-times"></i> <span data-i18n="plan1_f7">Priority Support</span></li>
                     </ul>
-                    <a href="#contact" class="btn btn-dark" data-i18n="order_now">Order Now</a>
+                    <button type="button" class="btn btn-dark order-trigger" data-plan="Starter" data-price="$499" data-i18n="order_now">Order Now</button>
                 </div>
 
                 <div class="pricing-card featured reveal">
@@ -2565,7 +3070,7 @@
                         <li><i class="fas fa-check"></i> <span data-i18n="plan2_f6">3 Months of Support</span></li>
                         <li class="disabled"><i class="fas fa-times"></i> <span data-i18n="plan2_f7">Dedicated Account Manager</span></li>
                     </ul>
-                    <a href="#contact" class="btn btn-primary" data-i18n="order_now">Order Now</a>
+                    <button type="button" class="btn btn-primary order-trigger" data-plan="Professional" data-price="$1,299" data-i18n="order_now">Order Now</button>
                 </div>
 
                 <div class="pricing-card reveal">
@@ -2581,8 +3086,82 @@
                         <li><i class="fas fa-check"></i> <span data-i18n="plan3_f6">12 Months of Priority Support</span></li>
                         <li><i class="fas fa-check"></i> <span data-i18n="plan3_f7">Dedicated Account Manager</span></li>
                     </ul>
-                    <a href="#contact" class="btn btn-dark" data-i18n="order_now">Order Now</a>
+                    <button type="button" class="btn btn-dark order-trigger" data-plan="Enterprise" data-price="$3,499" data-i18n="order_now">Order Now</button>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================
+         Payment Methods Section
+         ============================================ -->
+    <section class="payments" id="payments">
+        <div class="container">
+            <div class="section-title reveal">
+                <h2 data-i18n="payments_title">Accepted Payment Methods</h2>
+                <p data-i18n="payments_desc">Safe, flexible, and trusted — choose the method that works best for you, locally or internationally.</p>
+                <div class="underline"></div>
+            </div>
+
+            <div class="payments-grid reveal-stagger">
+                <div class="payment-card reveal">
+                    <div class="payment-icon blue">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <h3 data-i18n="pay1_title">Bank Transfer</h3>
+                    <p data-i18n="pay1_desc">Direct transfer to local Saudi bank accounts. Fast, secure, and straightforward for clients inside KSA.</p>
+                    <span class="payment-tag" data-i18n="pay_tag_local">Local</span>
+                </div>
+
+                <div class="payment-card reveal">
+                    <div class="payment-icon purple">
+                        <i class="fas fa-mobile-screen-button"></i>
+                    </div>
+                    <h3 data-i18n="pay2_title">STC Pay</h3>
+                    <p data-i18n="pay2_desc">Instant mobile wallet payments for clients across Saudi Arabia. Quick, paperless, and convenient.</p>
+                    <span class="payment-tag" data-i18n="pay_tag_local">Local</span>
+                </div>
+
+                <div class="payment-card reveal">
+                    <div class="payment-icon dark">
+                        <i class="fab fa-paypal"></i>
+                    </div>
+                    <h3 data-i18n="pay3_title">PayPal</h3>
+                    <p data-i18n="pay3_desc">Global digital payments with buyer protection. Perfect for international clients who prefer a familiar platform.</p>
+                    <span class="payment-tag" data-i18n="pay_tag_global">International</span>
+                </div>
+
+                <div class="payment-card reveal">
+                    <div class="payment-icon green">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3 data-i18n="pay4_title">Wise</h3>
+                    <p data-i18n="pay4_desc">Low-fee international transfers with real exchange rates. Reliable option for cross-border payments.</p>
+                    <span class="payment-tag" data-i18n="pay_tag_global">International</span>
+                </div>
+
+                <div class="payment-card reveal">
+                    <div class="payment-icon orange">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <h3 data-i18n="pay5_title">Payoneer</h3>
+                    <p data-i18n="pay5_desc">Trusted by global freelancers. Supports business and marketplace payments across 200+ countries.</p>
+                    <span class="payment-tag" data-i18n="pay_tag_global">International</span>
+                </div>
+
+                <div class="payment-card reveal">
+                    <div class="payment-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <h3 data-i18n="pay6_title">Credit / Debit Card</h3>
+                    <p data-i18n="pay6_desc">Secure card payments via encrypted invoicing links (Visa, Mastercard, Mada). Receipt provided for every transaction.</p>
+                    <span class="payment-tag" data-i18n="pay_tag_all">Local &amp; Global</span>
+                </div>
+            </div>
+
+            <div class="payments-note reveal">
+                <i class="fas fa-lock"></i>
+                <p data-i18n="payments_note">For security, full payment details are shared privately after confirming the project scope. A formal invoice is issued before any transfer. Contact me to receive your preferred payment details.</p>
             </div>
         </div>
     </section>
@@ -2679,10 +3258,10 @@
                     <p data-i18n="contact_text">Whether you need a website, an app, or ongoing technical support, I'm here to help. Reach out and let's explore how we can work together.</p>
 
                     <div class="contact-detail">
-                        <div class="contact-detail-icon"><i class="fas fa-phone"></i></div>
+                        <div class="contact-detail-icon" style="background:linear-gradient(135deg,#25D366,#128C7E)"><i class="fab fa-whatsapp"></i></div>
                         <div class="contact-detail-text">
-                            <h4 data-i18n="contact_phone">Phone</h4>
-                            <p><a href="tel:+966509182112">0509182112</a></p>
+                            <h4 data-i18n="contact_whatsapp">WhatsApp</h4>
+                            <p><a href="https://wa.me/966509182112" target="_blank" rel="noopener">+966 50 918 2112</a></p>
                         </div>
                     </div>
                     <div class="contact-detail">
@@ -2701,6 +3280,7 @@
                     </div>
 
                     <div class="social-links">
+                        <a href="https://wa.me/966509182112" target="_blank" rel="noopener" class="social-link" aria-label="WhatsApp" style="background:linear-gradient(135deg,#25D366,#128C7E);color:#fff"><i class="fab fa-whatsapp"></i></a>
                         <a href="mailto:khalidtrrk@gmail.com" class="social-link" aria-label="Email"><i class="fas fa-envelope"></i></a>
                     </div>
 
@@ -2752,6 +3332,7 @@
                     <h3>K<span>.</span></h3>
                     <p data-i18n="footer_desc">Delivering premium digital solutions that help businesses grow and succeed. Let's build something remarkable together.</p>
                     <div class="footer-social">
+                        <a href="https://wa.me/966509182112" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
                         <a href="mailto:khalidtrrk@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
                     </div>
                 </div>
@@ -2770,7 +3351,7 @@
                 <div>
                     <h4 data-i18n="footer_contact">Contact Info</h4>
                     <ul class="footer-contact">
-                        <li><i class="fas fa-phone"></i> <a href="tel:+966509182112">0509182112</a></li>
+                        <li><i class="fab fa-whatsapp" style="color:#25D366"></i> <a href="https://wa.me/966509182112" target="_blank" rel="noopener">+966 50 918 2112</a></li>
                         <li><i class="fas fa-envelope"></i> <a href="mailto:khalidtrrk@gmail.com">khalidtrrk@gmail.com</a></li>
                         <li><i class="fas fa-map-marker-alt"></i> <span data-i18n="footer_location">Available Worldwide</span></li>
                     </ul>
@@ -2779,6 +3360,7 @@
             <div class="footer-bottom">
                 <p data-i18n="footer_copy">&copy; 2026 Khalid. All Rights Reserved.</p>
                 <div class="footer-social">
+                    <a href="https://wa.me/966509182112" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
                     <a href="mailto:khalidtrrk@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
                 </div>
             </div>
@@ -2803,8 +3385,133 @@
         <i class="fas fa-chevron-up"></i>
     </button>
 
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/966509182112?text=مرحباً%20خالد،%20أود%20الاستفسار%20عن%20خدماتك" target="_blank" rel="noopener" class="whatsapp-float" aria-label="WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+        <span class="whatsapp-pulse"></span>
+    </a>
+
     <!-- Toast Notification -->
     <div class="toast" id="toast"></div>
+
+    <!-- ============================================
+         Order Modal
+         ============================================ -->
+    <div class="order-modal-overlay" id="orderModalOverlay" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="order-modal" id="orderModal">
+            <div class="order-modal-header">
+                <h3 data-i18n="order_modal_title">اطلب الآن</h3>
+                <p data-i18n="order_modal_desc">املأ البيانات وستحصل على رقم طلب وفاتورة فورًا</p>
+                <button class="order-modal-close" id="orderModalClose" aria-label="Close">
+                    <i class="fas fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- FORM -->
+            <div class="order-modal-body" id="orderFormWrap">
+                <div class="order-selected">
+                    <div>
+                        <div class="order-selected-label" data-i18n="order_selected_plan">الباقة المختارة</div>
+                        <div class="order-selected-plan" id="selectedPlan">—</div>
+                    </div>
+                    <div class="order-selected-price" id="selectedPrice">—</div>
+                </div>
+
+                <div class="order-error" id="orderError"></div>
+
+                <form id="orderForm" autocomplete="on">
+                    <input type="hidden" name="package" id="orderPlan" />
+                    <input type="hidden" name="amount" id="orderAmount" />
+
+                    <div class="order-field">
+                        <label for="orderName" data-i18n="order_field_name">الاسم الكامل <span class="req">*</span></label>
+                        <input type="text" id="orderName" name="name" required maxlength="200" />
+                    </div>
+
+                    <div class="order-field">
+                        <label for="orderEmail" data-i18n="order_field_email">البريد الإلكتروني <span class="req">*</span></label>
+                        <input type="email" id="orderEmail" name="email" required maxlength="200" />
+                    </div>
+
+                    <div class="order-field">
+                        <label for="orderPhone" data-i18n="order_field_phone">رقم الجوال (واتساب)</label>
+                        <input type="tel" id="orderPhone" name="phone" maxlength="30" placeholder="05XXXXXXXX" />
+                    </div>
+
+                    <div class="order-field">
+                        <label for="orderService" data-i18n="order_field_service">الخدمة المطلوبة <span class="req">*</span></label>
+                        <select id="orderService" name="service" required>
+                            <option value="" data-i18n="order_opt_select">-- اختر الخدمة --</option>
+                            <option value="Web Design & Development" data-i18n="service1_title">تصميم وتطوير المواقع</option>
+                            <option value="Mobile App Development" data-i18n="service2_title">تطوير تطبيقات الجوال</option>
+                            <option value="Technical Support & Maintenance" data-i18n="service3_title">الدعم الفني والصيانة</option>
+                            <option value="UI/UX Design" data-i18n="service4_title">تصميم واجهات المستخدم</option>
+                            <option value="Hosting & Server Management" data-i18n="service5_title">الاستضافة وإدارة الخوادم</option>
+                            <option value="SEO & Digital Marketing" data-i18n="service6_title">تحسين محركات البحث والتسويق</option>
+                            <option value="Other">أخرى / Other</option>
+                        </select>
+                    </div>
+
+                    <div class="order-field">
+                        <label for="orderPayment" data-i18n="order_field_payment">طريقة الدفع المفضلة</label>
+                        <select id="orderPayment" name="paymentMethod">
+                            <option value="STC Pay">STC Pay</option>
+                            <option value="Bank Transfer">تحويل بنكي / Bank Transfer</option>
+                            <option value="PayPal">PayPal</option>
+                            <option value="Wise">Wise</option>
+                            <option value="Payoneer">Payoneer</option>
+                            <option value="Credit Card">بطاقة ائتمانية / Credit Card</option>
+                        </select>
+                    </div>
+
+                    <div class="order-field">
+                        <label for="orderNotes" data-i18n="order_field_notes">تفاصيل المشروع (اختياري)</label>
+                        <textarea id="orderNotes" name="notes" maxlength="5000" placeholder="اذكر أي متطلبات خاصة أو تفاصيل تساعدني على فهم مشروعك..."></textarea>
+                    </div>
+
+                    <button type="submit" class="order-submit" id="orderSubmitBtn">
+                        <i class="fas fa-paper-plane"></i>
+                        <span data-i18n="order_submit">إرسال الطلب</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- SUCCESS -->
+            <div class="order-success" id="orderSuccessWrap" style="display: none;">
+                <div class="order-success-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h3 data-i18n="order_success_title">تم إرسال طلبك بنجاح!</h3>
+                <p data-i18n="order_success_desc">احتفظ برقم طلبك للمراجعة — تمّ إنشاء فاتورتك تلقائيًا.</p>
+
+                <div class="order-number-box">
+                    <div>
+                        <div class="order-number-label" data-i18n="order_your_num">رقم طلبك</div>
+                        <div class="order-number-value" id="successOrderNum">ORD-XXXX-XXXX</div>
+                    </div>
+                    <button type="button" class="copy-btn" id="copyOrderBtn">
+                        <i class="fas fa-copy"></i>
+                        <span data-i18n="copy">نسخ</span>
+                    </button>
+                </div>
+
+                <div class="order-actions-row">
+                    <a href="#" id="invoiceLink" target="_blank" rel="noopener" class="order-action primary">
+                        <i class="fas fa-file-invoice"></i>
+                        <span data-i18n="view_invoice">عرض الفاتورة</span>
+                    </a>
+                    <a href="#" id="whatsappLink" target="_blank" rel="noopener" class="order-action" style="background:linear-gradient(135deg,#25D366,#128C7E);color:#fff">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>تواصل عبر واتساب</span>
+                    </a>
+                </div>
+                <button type="button" class="order-action secondary" id="successCloseBtn" style="width:100%;margin-top:10px">
+                    <i class="fas fa-xmark"></i>
+                    <span data-i18n="close">إغلاق</span>
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- ============================================
          JavaScript
@@ -2923,6 +3630,47 @@
                 plan3_f6: '12 Months of Priority Support',
                 plan3_f7: 'Dedicated Account Manager',
                 order_now: 'Order Now',
+
+                // Payment Methods
+                payments_title: 'Accepted Payment Methods',
+                payments_desc: 'Safe, flexible, and trusted — choose the method that works best for you, locally or internationally.',
+                pay1_title: 'Bank Transfer',
+                pay1_desc: 'Direct transfer to local Saudi bank accounts. Fast, secure, and straightforward for clients inside KSA.',
+                pay2_title: 'STC Pay',
+                pay2_desc: 'Instant mobile wallet payments for clients across Saudi Arabia. Quick, paperless, and convenient.',
+                pay3_title: 'PayPal',
+                pay3_desc: 'Global digital payments with buyer protection. Perfect for international clients who prefer a familiar platform.',
+                pay4_title: 'Wise',
+                pay4_desc: 'Low-fee international transfers with real exchange rates. Reliable option for cross-border payments.',
+                pay5_title: 'Payoneer',
+                pay5_desc: 'Trusted by global freelancers. Supports business and marketplace payments across 200+ countries.',
+                pay6_title: 'Credit / Debit Card',
+                pay6_desc: 'Secure card payments via encrypted invoicing links (Visa, Mastercard, Mada). Receipt provided for every transaction.',
+                pay_tag_local: 'Local',
+                pay_tag_global: 'International',
+                pay_tag_all: 'Local & Global',
+                payments_note: 'For security, full payment details are shared privately after confirming the project scope. A formal invoice is issued before any transfer. Contact me to receive your preferred payment details.',
+
+                // Order Modal
+                order_modal_title: 'Place Your Order',
+                order_modal_desc: 'Fill in your details and get an order number + invoice instantly',
+                order_selected_plan: 'Selected Package',
+                order_field_name: 'Full Name',
+                order_field_email: 'Email Address',
+                order_field_phone: 'Phone Number (WhatsApp)',
+                order_field_service: 'Service Needed',
+                order_opt_select: '-- Select a service --',
+                order_field_payment: 'Preferred Payment Method',
+                order_field_notes: 'Project Details (optional)',
+                order_submit: 'Submit Order',
+                order_success_title: 'Your order has been submitted!',
+                order_success_desc: 'Save your order number for reference — your invoice has been generated automatically.',
+                order_your_num: 'Your Order Number',
+                copy: 'Copy',
+                view_invoice: 'View Invoice',
+                close: 'Close',
+                contact_whatsapp: 'WhatsApp',
+
                 faq_title: 'Frequently Asked Questions',
                 faq_desc: 'Find answers to common questions about my services and process.',
                 faq1_q: 'What services do you offer?',
@@ -3082,6 +3830,47 @@
                 plan3_f6: '12 شهرًا من الدعم ذو الأولوية',
                 plan3_f7: 'مدير حساب مخصص',
                 order_now: 'اطلب الآن',
+
+                // Payment Methods (AR)
+                payments_title: 'طرق الدفع المقبولة',
+                payments_desc: 'آمنة ومرنة وموثوقة — اختر الطريقة الأنسب لك، محليًا أو دوليًا.',
+                pay1_title: 'تحويل بنكي',
+                pay1_desc: 'تحويل مباشر إلى حسابات البنوك السعودية. سريع وآمن ومباشر للعملاء داخل المملكة.',
+                pay2_title: 'STC Pay',
+                pay2_desc: 'مدفوعات فورية عبر محفظة الجوال للعملاء في جميع أنحاء المملكة. سريعة وملائمة.',
+                pay3_title: 'PayPal',
+                pay3_desc: 'مدفوعات رقمية عالمية مع حماية للمشتري. مثالية للعملاء الدوليين.',
+                pay4_title: 'Wise',
+                pay4_desc: 'تحويلات دولية برسوم منخفضة وأسعار صرف حقيقية. خيار موثوق للمدفوعات العابرة للحدود.',
+                pay5_title: 'Payoneer',
+                pay5_desc: 'موثوقة من قبل المستقلين حول العالم. تدعم مدفوعات الأعمال في أكثر من 200 دولة.',
+                pay6_title: 'بطاقة ائتمانية / مدى',
+                pay6_desc: 'مدفوعات آمنة عبر روابط فواتير مشفرة (Visa, Mastercard, Mada). إيصال لكل معاملة.',
+                pay_tag_local: 'محلي',
+                pay_tag_global: 'دولي',
+                pay_tag_all: 'محلي ودولي',
+                payments_note: 'للأمان، يتم مشاركة تفاصيل الدفع الكاملة بشكل خاص بعد تأكيد نطاق المشروع. تُصدر فاتورة رسمية قبل أي تحويل. تواصل معي للحصول على تفاصيل طريقة الدفع المفضلة لديك.',
+
+                // Order Modal (AR)
+                order_modal_title: 'اطلب الآن',
+                order_modal_desc: 'املأ البيانات وستحصل على رقم طلب وفاتورة فورًا',
+                order_selected_plan: 'الباقة المختارة',
+                order_field_name: 'الاسم الكامل',
+                order_field_email: 'البريد الإلكتروني',
+                order_field_phone: 'رقم الجوال (واتساب)',
+                order_field_service: 'الخدمة المطلوبة',
+                order_opt_select: '-- اختر الخدمة --',
+                order_field_payment: 'طريقة الدفع المفضلة',
+                order_field_notes: 'تفاصيل المشروع (اختياري)',
+                order_submit: 'إرسال الطلب',
+                order_success_title: 'تم إرسال طلبك بنجاح!',
+                order_success_desc: 'احتفظ برقم طلبك للمراجعة — تم إنشاء فاتورتك تلقائيًا.',
+                order_your_num: 'رقم طلبك',
+                copy: 'نسخ',
+                view_invoice: 'عرض الفاتورة',
+                close: 'إغلاق',
+                contact_whatsapp: 'واتساب',
+
                 faq_title: 'الأسئلة الشائعة',
                 faq_desc: 'اعثر على إجابات للأسئلة الشائعة حول خدماتي وطريقة عملي.',
                 faq1_q: 'ما هي الخدمات التي تقدمها؟',
@@ -3701,6 +4490,122 @@
                 });
             });
         }
+
+        /* ============================================
+           Order Modal Logic
+           ============================================ */
+        (function initOrderModal() {
+            const overlay = document.getElementById('orderModalOverlay');
+            const modal = document.getElementById('orderModal');
+            const closeBtn = document.getElementById('orderModalClose');
+            const form = document.getElementById('orderForm');
+            const formWrap = document.getElementById('orderFormWrap');
+            const successWrap = document.getElementById('orderSuccessWrap');
+            const errorEl = document.getElementById('orderError');
+            const submitBtn = document.getElementById('orderSubmitBtn');
+            const selectedPlan = document.getElementById('selectedPlan');
+            const selectedPrice = document.getElementById('selectedPrice');
+            const planInput = document.getElementById('orderPlan');
+            const priceInput = document.getElementById('orderAmount');
+
+            if (!overlay) return;
+
+            function openModal(plan, price) {
+                formWrap.style.display = 'block';
+                successWrap.style.display = 'none';
+                errorEl.style.display = 'none';
+                form.reset();
+                selectedPlan.textContent = plan || 'Custom Project';
+                selectedPrice.textContent = price || '—';
+                planInput.value = plan || '';
+                priceInput.value = price || '';
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeModal() {
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            document.querySelectorAll('.order-trigger').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    openModal(btn.dataset.plan, btn.dataset.price);
+                });
+            });
+
+            closeBtn.addEventListener('click', closeModal);
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && overlay.classList.contains('active')) closeModal();
+            });
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                errorEl.style.display = 'none';
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ الإرسال...';
+
+                const data = {
+                    name: form.name.value.trim(),
+                    email: form.email.value.trim(),
+                    phone: form.phone.value.trim(),
+                    service: form.service.value.trim(),
+                    package: form.package.value.trim(),
+                    amount: form.amount.value.trim(),
+                    paymentMethod: form.paymentMethod.value,
+                    notes: form.notes.value.trim()
+                };
+
+                try {
+                    const res = await fetch('/api/orders', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                    const result = await res.json();
+                    if (!res.ok) throw new Error(result.error || 'تعذر إنشاء الطلب');
+
+                    // Show success screen
+                    document.getElementById('successOrderNum').textContent = result.orderNumber;
+                    document.getElementById('invoiceLink').href = result.invoiceUrl;
+                    // Client → Khalid: pre-filled message with their order number
+                    const waMsg = encodeURIComponent(`مرحباً خالد، تم إنشاء طلبي رقم ${result.orderNumber} وأريد إكمال الدفع.`);
+                    document.getElementById('whatsappLink').href = `https://wa.me/966509182112?text=${waMsg}`;
+                    // Save order number + invoice link to localStorage for recovery
+                    try {
+                        const saved = JSON.parse(localStorage.getItem('myOrders') || '[]');
+                        saved.push({ orderNumber: result.orderNumber, invoiceUrl: result.invoiceUrl, date: new Date().toISOString() });
+                        localStorage.setItem('myOrders', JSON.stringify(saved.slice(-20)));
+                    } catch {}
+                    formWrap.style.display = 'none';
+                    successWrap.style.display = 'block';
+                } catch (err) {
+                    errorEl.textContent = err.message || 'حدث خطأ، حاول مرة أخرى';
+                    errorEl.style.display = 'block';
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> <span data-i18n="order_submit">إرسال الطلب</span>';
+                }
+            });
+
+            // Copy order number
+            document.getElementById('copyOrderBtn').addEventListener('click', () => {
+                const num = document.getElementById('successOrderNum').textContent;
+                navigator.clipboard.writeText(num).then(() => {
+                    const btn = document.getElementById('copyOrderBtn');
+                    btn.classList.add('copied');
+                    btn.innerHTML = '<i class="fas fa-check"></i> تم النسخ';
+                    setTimeout(() => {
+                        btn.classList.remove('copied');
+                        btn.innerHTML = '<i class="fas fa-copy"></i> نسخ';
+                    }, 2000);
+                });
+            });
+
+            // Close after success
+            document.getElementById('successCloseBtn').addEventListener('click', closeModal);
+        })();
     </script>
 </body>
 </html>

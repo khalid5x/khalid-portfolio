@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>فاتورة — Khalid Tech</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --accent: #e94560;
+            --accent-gold: #ffc107;
+            --dark: #1a1a2e;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --bg: #f8fafc;
+        }
+        body {
+            font-family: 'Cairo', 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--dark);
+            padding: 40px 20px;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .loader, .error-box {
+            max-width: 500px;
+            margin: 100px auto;
+            text-align: center;
+            padding: 40px 30px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+        }
+        .loader i, .error-box i {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 16px;
+            display: block;
+        }
+        .loader i { animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .invoice {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 20px;
+            padding: 50px 55px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        .invoice::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; left: 0;
+            height: 8px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-gold));
+        }
+
+        .inv-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding-bottom: 30px;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 35px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .brand { display: flex; align-items: center; gap: 14px; }
+        .brand-logo {
+            width: 60px; height: 60px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-gold));
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 1.6rem; font-weight: 800;
+            box-shadow: 0 8px 20px rgba(233, 69, 96, 0.3);
+        }
+        .brand-info h1 { font-size: 1.5rem; font-weight: 800; margin-bottom: 4px; }
+        .brand-info p { color: var(--muted); font-size: 0.9rem; }
+        .inv-title { text-align: left; }
+        .inv-title h2 {
+            font-size: 2.2rem; font-weight: 800;
+            color: var(--accent);
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+        .inv-title p { color: var(--muted); font-size: 0.9rem; font-weight: 600; }
+        .inv-title .order-num {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 6px 14px;
+            background: var(--dark);
+            color: #fff;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            font-family: 'Inter', monospace;
+            letter-spacing: 1px;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .meta-box {
+            background: var(--bg);
+            padding: 22px 24px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+        }
+        .meta-box h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .meta-box .field {
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        .meta-box .label {
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+        .status-pill {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 6px;
+        }
+        .status-pending { background: rgba(255, 193, 7, 0.15); color: #b78103; }
+        .status-paid { background: rgba(0, 168, 89, 0.15); color: #007a43; }
+        .status-in-progress { background: rgba(0, 87, 183, 0.15); color: #0057b7; }
+        .status-completed { background: rgba(108, 29, 126, 0.15); color: #6c1d7e; }
+        .status-cancelled { background: rgba(100, 116, 139, 0.15); color: var(--muted); }
+
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+        }
+        .items-table thead {
+            background: linear-gradient(135deg, var(--dark), #16213e);
+            color: #fff;
+        }
+        .items-table th {
+            padding: 16px 18px;
+            text-align: right;
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .items-table th:last-child,
+        .items-table td:last-child { text-align: left; }
+        .items-table tbody tr { background: #fff; border-bottom: 1px solid var(--border); }
+        .items-table td {
+            padding: 18px;
+            font-size: 0.95rem;
+            vertical-align: top;
+        }
+        .items-table td.desc strong {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+        .items-table td.desc span {
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+        .items-table td.amount { font-weight: 700; white-space: nowrap; }
+
+        .totals { display: flex; justify-content: flex-start; margin-bottom: 35px; }
+        .totals-box {
+            min-width: 320px;
+            padding: 24px 28px;
+            background: linear-gradient(135deg, rgba(233, 69, 96, 0.05), rgba(255, 193, 7, 0.03));
+            border: 1px solid rgba(233, 69, 96, 0.15);
+            border-radius: 14px;
+        }
+        .totals-row {
+            display: flex; justify-content: space-between;
+            padding: 8px 0;
+            font-size: 0.95rem;
+        }
+        .totals-row.grand {
+            border-top: 2px dashed var(--border);
+            margin-top: 10px;
+            padding-top: 16px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .payment {
+            background: linear-gradient(135deg, var(--dark), #16213e);
+            color: #fff;
+            padding: 28px 32px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 24px;
+            align-items: center;
+        }
+        .payment-icon {
+            width: 70px; height: 70px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #6c1d7e, #9b27b5);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 10px 25px rgba(108, 29, 126, 0.4);
+        }
+        .payment h3 { font-size: 1.1rem; margin-bottom: 8px; font-weight: 700; }
+        .payment p { font-size: 0.95rem; opacity: 0.9; margin-bottom: 2px; }
+        .payment strong { color: var(--accent-gold); font-weight: 700; }
+
+        .notes-box {
+            background: var(--bg);
+            border: 1px dashed var(--border);
+            border-radius: 14px;
+            padding: 20px 24px;
+            margin-bottom: 30px;
+        }
+        .notes-box h4 {
+            font-size: 0.85rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .notes-box p { font-size: 0.95rem; white-space: pre-wrap; }
+
+        .inv-footer {
+            border-top: 2px solid var(--border);
+            padding-top: 25px;
+            text-align: center;
+        }
+        .thanks {
+            font-size: 1.1rem; font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        .terms {
+            font-size: 0.85rem;
+            color: var(--muted);
+            max-width: 600px;
+            margin: 0 auto 18px;
+            line-height: 1.7;
+        }
+        .signature {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: var(--bg);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .signature i { color: var(--accent); }
+
+        .actions {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            display: flex;
+            gap: 12px;
+            z-index: 999;
+        }
+        .action-btn {
+            padding: 14px 22px;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+        }
+        .action-btn.primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-gold));
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.4);
+        }
+        .action-btn.secondary {
+            background: #fff;
+            color: var(--dark);
+            border: 1px solid var(--border);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+        }
+        .action-btn:hover { transform: translateY(-2px); }
+
+        @media print {
+            body { padding: 0; background: #fff; }
+            .invoice {
+                box-shadow: none;
+                border-radius: 0;
+                padding: 30px 40px;
+                max-width: 100%;
+            }
+            .actions { display: none !important; }
+        }
+
+        @media (max-width: 640px) {
+            .invoice { padding: 30px 22px; }
+            .meta-grid { grid-template-columns: 1fr; gap: 16px; }
+            .payment { grid-template-columns: 1fr; text-align: center; }
+            .payment-icon { margin: 0 auto; }
+            .items-table th, .items-table td { padding: 12px 10px; font-size: 0.85rem; }
+            .actions { bottom: 16px; left: 16px; right: 16px; }
+            .action-btn { flex: 1; justify-content: center; padding: 12px 16px; font-size: 0.88rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loader" class="loader">
+        <i class="fas fa-spinner"></i>
+        <h2>جارٍ تحميل الفاتورة...</h2>
+        <p style="color: var(--muted); margin-top: 8px;">Loading your invoice</p>
+    </div>
+
+    <div id="error" class="error-box" style="display: none;">
+        <i class="fas fa-circle-exclamation"></i>
+        <h2>لم نتمكن من العثور على الفاتورة</h2>
+        <p style="color: var(--muted); margin-top: 10px;" id="errorMsg">تأكد من صحة رقم الطلب في الرابط.</p>
+        <a href="/" class="action-btn primary" style="margin-top: 20px; position: static;">
+            <i class="fas fa-home"></i> العودة للرئيسية
+        </a>
+    </div>
+
+    <div id="invoiceContainer" style="display: none;">
+        <div class="invoice">
+            <div class="inv-header">
+                <div class="brand">
+                    <div class="brand-logo">K</div>
+                    <div class="brand-info">
+                        <h1 id="brandName">Khalid Tech</h1>
+                        <p>متخصص تقني مستقل | Freelance Tech Specialist</p>
+                        <p id="brandContact"></p>
+                    </div>
+                </div>
+                <div class="inv-title">
+                    <h2>فاتورة</h2>
+                    <p>INVOICE</p>
+                    <div class="order-num" id="orderNumber">ORD-XXXX-XXXX</div>
+                </div>
+            </div>
+
+            <div class="meta-grid">
+                <div class="meta-box">
+                    <h3>الفاتورة صادرة إلى</h3>
+                    <div class="field" id="clientName">—</div>
+                    <div class="label" id="clientEmail">—</div>
+                    <div class="label" id="clientPhone"></div>
+                </div>
+                <div class="meta-box">
+                    <h3>تفاصيل الطلب</h3>
+                    <div class="field">تاريخ الإصدار: <span id="createdAt">—</span></div>
+                    <div class="label">الحالة: <span id="statusPill" class="status-pill status-pending">قيد الانتظار</span></div>
+                </div>
+            </div>
+
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th>الخدمة / الوصف</th>
+                        <th style="width: 80px; text-align: center;">الكمية</th>
+                        <th style="width: 160px;">الإجمالي</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="desc">
+                            <strong id="serviceName">—</strong>
+                            <span id="packageName"></span>
+                        </td>
+                        <td style="text-align: center;">1</td>
+                        <td class="amount" id="itemAmount">—</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="totals">
+                <div class="totals-box">
+                    <div class="totals-row">
+                        <span>المجموع الفرعي</span>
+                        <span id="subtotal">—</span>
+                    </div>
+                    <div class="totals-row grand">
+                        <span>الإجمالي المستحق</span>
+                        <span id="grandTotal">—</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="payment">
+                <div class="payment-icon">
+                    <i class="fas fa-mobile-screen-button" id="paymentIconEl"></i>
+                </div>
+                <div>
+                    <h3 id="paymentTitle">طريقة الدفع: STC Pay</h3>
+                    <p>الرقم: <strong id="paymentPhone">سيتم إرساله عند التواصل</strong></p>
+                    <p>الاسم: <strong id="paymentName">خالد</strong></p>
+                    <p style="margin-top: 10px; font-size: 0.85rem; opacity: 0.8;">
+                        يُرجى إرسال إيصال التحويل بعد الدفع مع رقم الطلب.
+                    </p>
+                </div>
+            </div>
+
+            <div class="notes-box" id="notesBox" style="display: none;">
+                <h4>📝 ملاحظات العميل</h4>
+                <p id="clientNotes"></p>
+            </div>
+
+            <div class="inv-footer">
+                <div class="thanks">شكرًا لثقتك! 🌟 Thank you for your business</div>
+                <p class="terms">
+                    يُسلّم المشروع بعد استلام كامل المبلغ. أي تعديلات خارج النطاق المتفق عليه قد تخضع لرسوم إضافية. احتفظ برقم الطلب للمراجعة لاحقًا.
+                </p>
+                <div class="signature">
+                    <i class="fas fa-signature"></i>
+                    <span>Khalid Tech — khalidtech.onrender.com</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="action-btn primary" onclick="window.print()">
+                <i class="fas fa-print"></i> طباعة / حفظ PDF
+            </button>
+            <a href="/#contact" class="action-btn secondary">
+                <i class="fas fa-comments"></i> تواصل معي
+            </a>
+        </div>
+    </div>
+
+    <script>
+    (async function loadInvoice() {
+        const params = new URLSearchParams(window.location.search);
+        const orderNum = params.get('order');
+        const token = params.get('t') || '';
+
+        const loader = document.getElementById('loader');
+        const errorEl = document.getElementById('error');
+        const container = document.getElementById('invoiceContainer');
+
+        if (!orderNum || !token) {
+            loader.style.display = 'none';
+            errorEl.style.display = 'block';
+            document.getElementById('errorMsg').textContent = 'رابط الفاتورة غير مكتمل. تأكد من استخدام الرابط الأصلي الذي حصلت عليه عند الطلب.';
+            return;
+        }
+
+        try {
+            const res = await fetch(`/api/orders/${encodeURIComponent(orderNum)}?t=${encodeURIComponent(token)}`);
+            if (!res.ok) {
+                const data = await res.json().catch(() => ({}));
+                throw new Error(data.error || 'الطلب غير موجود');
+            }
+            const order = await res.json();
+
+            // Fetch public site settings (name, phone, email) for branding
+            let settings = {};
+            try {
+                const setRes = await fetch('/api/public/settings');
+                if (setRes.ok) settings = await setRes.json();
+            } catch {}
+
+            fillInvoice(order, settings);
+            loader.style.display = 'none';
+            container.style.display = 'block';
+        } catch (err) {
+            loader.style.display = 'none';
+            errorEl.style.display = 'block';
+            document.getElementById('errorMsg').textContent = err.message || 'خطأ غير متوقع';
+        }
+    })();
+
+    function fillInvoice(order, settings) {
+        const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val || '—'; };
+
+        set('orderNumber', order.orderNumber);
+        set('clientName', order.name);
+        set('clientEmail', '📧 ' + (order.email || '—'));
+        set('clientPhone', order.phone ? '📱 ' + order.phone : '');
+
+        const date = order.createdAt ? new Date(order.createdAt) : null;
+        set('createdAt', date ? date.toLocaleDateString('ar-SA', { year: 'numeric', month: '2-digit', day: '2-digit' }) : '—');
+
+        set('serviceName', order.service);
+        set('packageName', order.package || '');
+        set('itemAmount', order.amount || 'سيتم تحديده');
+        set('subtotal', order.amount || '—');
+        set('grandTotal', order.amount || 'بانتظار التأكيد');
+
+        // Status pill
+        const pill = document.getElementById('statusPill');
+        const statusMap = {
+            pending: { label: 'قيد الانتظار', cls: 'status-pending' },
+            paid: { label: 'مدفوع', cls: 'status-paid' },
+            'in-progress': { label: 'قيد التنفيذ', cls: 'status-in-progress' },
+            completed: { label: 'مكتمل', cls: 'status-completed' },
+            cancelled: { label: 'ملغي', cls: 'status-cancelled' }
+        };
+        const s = statusMap[order.status] || statusMap.pending;
+        pill.textContent = s.label;
+        pill.className = 'status-pill ' + s.cls;
+
+        // Notes
+        if (order.notes) {
+            document.getElementById('notesBox').style.display = 'block';
+            document.getElementById('clientNotes').textContent = order.notes;
+        }
+
+        // Branding from settings (if available)
+        if (settings.siteName) set('brandName', settings.siteName + ' — Khalid Tech');
+        const contactParts = [];
+        if (settings.phone) contactParts.push('📱 ' + settings.phone);
+        if (settings.email) contactParts.push('📧 ' + settings.email);
+        document.getElementById('brandContact').textContent = contactParts.join('  |  ');
+
+        // Payment info
+        if (order.paymentMethod) {
+            document.getElementById('paymentTitle').textContent = 'طريقة الدفع: ' + order.paymentMethod;
+        }
+        if (settings.phone) document.getElementById('paymentPhone').textContent = settings.phone;
+        if (settings.siteName) document.getElementById('paymentName').textContent = settings.siteName;
+    }
+    </script>
+
+</body>
+</html>

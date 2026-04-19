@@ -136,6 +136,7 @@
         .stat-icon.gray { background: rgba(148,163,184,0.15); color: #94a3b8; }
         .stat-icon.green { background: var(--success-bg); color: var(--success); }
         .stat-icon.red { background: var(--danger-bg); color: var(--accent); }
+        .stat-icon.gold { background: rgba(240, 165, 0, 0.15); color: var(--gold); }
         .stat-info h3 { font-size: 1.5rem; font-weight: 800; line-height: 1; }
         .stat-info span { font-size: 0.78rem; color: var(--muted); }
 
@@ -192,6 +193,70 @@
         .bulk-bar { display: none; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 16px; margin-bottom: 16px; align-items: center; gap: 12px; flex-wrap: wrap; }
         .bulk-bar.show { display: flex; }
         .bulk-bar span { font-size: 0.85rem; color: var(--text-secondary); }
+
+        /* ===== ORDERS ===== */
+        .order-list { display: flex; flex-direction: column; gap: 12px; }
+        .order-card {
+            background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px;
+            transition: all var(--transition); position: relative;
+        }
+        .order-card:hover { border-color: var(--border-light); transform: translateY(-1px); }
+        .order-card.pending { border-right: 3px solid var(--warn); }
+        .order-card.paid { border-right: 3px solid var(--success); }
+        .order-card.in-progress { border-right: 3px solid var(--info); }
+        .order-card.completed { border-right: 3px solid #9b27b5; }
+        .order-card.cancelled { border-right: 3px solid var(--muted); opacity: 0.75; }
+
+        .order-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+        .order-id {
+            display: inline-flex; align-items: center; gap: 8px;
+            font-family: 'Inter', monospace; font-weight: 800; font-size: 1rem;
+            color: var(--accent);
+        }
+        .order-id i { color: var(--gold); }
+        .order-status {
+            font-size: 0.72rem; padding: 4px 12px; border-radius: 50px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .order-status.pending { background: var(--warn-bg); color: var(--warn); }
+        .order-status.paid { background: var(--success-bg); color: var(--success); }
+        .order-status.in-progress { background: var(--info-bg); color: var(--info); }
+        .order-status.completed { background: rgba(155, 39, 181, 0.15); color: #9b27b5; }
+        .order-status.cancelled { background: rgba(148,163,184,0.15); color: var(--muted); }
+
+        .order-client {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px;
+            padding: 12px; background: var(--bg); border-radius: 10px; margin-bottom: 12px;
+        }
+        .order-client .field { font-size: 0.85rem; display: flex; flex-direction: column; gap: 2px; }
+        .order-client .field small { color: var(--muted); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+        .order-client .field span { font-weight: 600; color: var(--text); word-break: break-word; }
+
+        .order-service {
+            padding: 12px 14px; background: rgba(233, 69, 96, 0.05);
+            border: 1px dashed rgba(233, 69, 96, 0.2); border-radius: 10px;
+            margin-bottom: 12px; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+        }
+        .order-service strong { font-size: 0.92rem; }
+        .order-service .amt { font-weight: 800; color: var(--accent); font-size: 1.05rem; white-space: nowrap; }
+        .order-service small { color: var(--muted); display: block; margin-top: 2px; font-size: 0.8rem; }
+
+        .order-notes {
+            padding: 10px 14px; background: var(--bg); border-radius: 10px; margin-bottom: 12px;
+            font-size: 0.88rem; color: var(--text-secondary); white-space: pre-wrap; border: 1px solid var(--border);
+        }
+        .order-notes small { display: block; font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; font-weight: 600; }
+
+        .order-footer {
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px;
+            padding-top: 12px; border-top: 1px solid var(--border);
+        }
+        .order-date { font-size: 0.78rem; color: var(--muted); }
+        .order-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+        .order-actions select {
+            padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border);
+            background: var(--bg); color: var(--text); font-size: 0.82rem; font-family: inherit; cursor: pointer;
+        }
 
         /* ===== SETTINGS ===== */
         .settings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
@@ -298,6 +363,10 @@
                     <i class="fas fa-envelope"></i> الرسائل
                     <span class="nav-badge" id="newMsgBadge" style="display:none">0</span>
                 </div>
+                <div class="nav-item" data-page="orders">
+                    <i class="fas fa-file-invoice-dollar"></i> الطلبات والفواتير
+                    <span class="nav-badge" id="pendingOrdersBadge" style="display:none">0</span>
+                </div>
 
                 <div class="nav-section">الإدارة</div>
                 <div class="nav-item" data-page="settings">
@@ -345,6 +414,9 @@
                     <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));">
                         <div class="stat-card"><div class="stat-icon red"><i class="fas fa-users"></i></div><div class="stat-info"><h3 id="statVisitorsToday">-</h3><span>زوار اليوم</span></div></div>
                         <div class="stat-card"><div class="stat-icon blue"><i class="fas fa-chart-line"></i></div><div class="stat-info"><h3 id="statVisitorsWeek">-</h3><span>زوار الأسبوع</span></div></div>
+                        <div class="stat-card" onclick="navigateTo('orders')" style="cursor:pointer"><div class="stat-icon gold"><i class="fas fa-file-invoice-dollar"></i></div><div class="stat-info"><h3 id="statOrdersTotal">-</h3><span>إجمالي الطلبات</span></div></div>
+                        <div class="stat-card" onclick="navigateTo('orders')" style="cursor:pointer"><div class="stat-icon yellow"><i class="fas fa-hourglass-half"></i></div><div class="stat-info"><h3 id="statOrdersPending">-</h3><span>طلبات معلقة</span></div></div>
+                        <div class="stat-card" onclick="navigateTo('orders')" style="cursor:pointer"><div class="stat-icon green"><i class="fas fa-circle-check"></i></div><div class="stat-info"><h3 id="statOrdersPaid">-</h3><span>طلبات مدفوعة</span></div></div>
                     </div>
 
                     <div class="chart-card">
@@ -382,6 +454,26 @@
                     </div>
                     <div class="msg-count" id="msgCount"></div>
                     <div class="msg-list" id="msgList"></div>
+                </div>
+
+                <!-- ===== ORDERS PAGE ===== -->
+                <div class="page" id="pageOrders">
+                    <div class="msg-toolbar">
+                        <div class="search-box">
+                            <input type="text" id="orderSearch" placeholder="بحث بالاسم، رقم الطلب، الإيميل...">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="filter-tabs">
+                            <button class="filter-tab order-filter active" data-ofilter="all">الكل</button>
+                            <button class="filter-tab order-filter" data-ofilter="pending">معلق</button>
+                            <button class="filter-tab order-filter" data-ofilter="paid">مدفوع</button>
+                            <button class="filter-tab order-filter" data-ofilter="in-progress">قيد التنفيذ</button>
+                            <button class="filter-tab order-filter" data-ofilter="completed">مكتمل</button>
+                            <button class="filter-tab order-filter" data-ofilter="cancelled">ملغي</button>
+                        </div>
+                    </div>
+                    <div class="msg-count" id="orderCount"></div>
+                    <div class="order-list" id="orderList"></div>
                 </div>
 
                 <!-- ===== SETTINGS PAGE ===== -->
@@ -540,7 +632,9 @@
 (() => {
     const TOKEN_KEY = 'adminToken';
     let allMessages = [];
+    let allOrders = [];
     let currentFilter = 'all';
+    let currentOrderFilter = 'all';
     let selectedIds = new Set();
     let cachedSettings = {};
 
@@ -599,7 +693,7 @@
     };
 
     // === Navigation ===
-    const pages = { dashboard: 'لوحة القيادة', messages: 'الرسائل', settings: 'إعدادات الموقع', actions: 'إجراءات سريعة' };
+    const pages = { dashboard: 'لوحة القيادة', messages: 'الرسائل', orders: 'الطلبات والفواتير', settings: 'إعدادات الموقع', actions: 'إجراءات سريعة' };
     window.navigateTo = function(page) {
         $$('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.page === page));
         $$('.page').forEach(p => p.classList.toggle('active', p.id === 'page' + page.charAt(0).toUpperCase() + page.slice(1)));
@@ -608,6 +702,7 @@
         overlay.classList.remove('show');
         if (page === 'dashboard') loadDashboard();
         if (page === 'messages') renderMessages();
+        if (page === 'orders') { loadOrders(); renderOrders(); }
         if (page === 'settings') loadSettings();
     };
     $$('.nav-item[data-page]').forEach(n => n.addEventListener('click', () => navigateTo(n.dataset.page)));
@@ -651,7 +746,7 @@
 
     // === Load All Data ===
     async function loadAll() {
-        await Promise.all([loadMessages(), loadDashboard(), loadSettings()]);
+        await Promise.all([loadMessages(), loadDashboard(), loadSettings(), loadOrders()]);
     }
 
     $('#btnRefresh').addEventListener('click', () => { toast('جاري التحديث...', 'info'); loadAll(); });
@@ -801,6 +896,146 @@
     $('#btnExport').addEventListener('click', doExport);
     $('#qcExport')?.addEventListener('click', doExport);
 
+    // === ORDERS ===
+    async function loadOrders() {
+        try {
+            const res = await api('/api/admin/orders');
+            if (!res.ok) return;
+            allOrders = await res.json();
+            const pending = allOrders.filter(o => o.status === 'pending').length;
+            const badge = $('#pendingOrdersBadge');
+            if (pending > 0) { badge.textContent = pending; badge.style.display = ''; } else { badge.style.display = 'none'; }
+            // Update dashboard stats live
+            if ($('#statOrdersTotal')) {
+                $('#statOrdersTotal').textContent = allOrders.length;
+                $('#statOrdersPending').textContent = pending;
+                $('#statOrdersPaid').textContent = allOrders.filter(o => o.status === 'paid' || o.status === 'completed').length;
+            }
+            renderOrders();
+        } catch (e) { console.error(e); }
+    }
+
+    const statusLabels = {
+        pending: 'معلق',
+        paid: 'مدفوع',
+        'in-progress': 'قيد التنفيذ',
+        completed: 'مكتمل',
+        cancelled: 'ملغي'
+    };
+
+    function renderOrders() {
+        const list = $('#orderList');
+        const countEl = $('#orderCount');
+        if (!list) return;
+        const q = ($('#orderSearch')?.value || '').toLowerCase().trim();
+        const filtered = allOrders.filter(o => {
+            if (currentOrderFilter !== 'all' && o.status !== currentOrderFilter) return false;
+            if (!q) return true;
+            return [o.orderNumber, o.name, o.email, o.phone, o.service].some(v => (v || '').toLowerCase().includes(q));
+        });
+        countEl.textContent = filtered.length ? `عرض ${filtered.length} من ${allOrders.length} طلب` : '';
+
+        if (!filtered.length) {
+            list.innerHTML = `<div class="msg-empty"><i class="fas fa-file-invoice-dollar"></i><p>${allOrders.length ? 'لا توجد طلبات مطابقة' : 'لا توجد طلبات بعد. عندما يطلب عميل من الموقع سيظهر هنا.'}</p></div>`;
+            return;
+        }
+
+        list.innerHTML = filtered.map(o => {
+            const st = statusLabels[o.status] || o.status;
+            const notes = o.notes ? `
+                <div class="order-notes">
+                    <small>📝 ملاحظات العميل</small>
+                    ${esc(o.notes)}
+                </div>` : '';
+            const paidAt = o.paidAt ? ` • دُفع: ${fmtDate(o.paidAt)}` : '';
+            return `
+            <div class="order-card ${o.status}">
+                <div class="order-head">
+                    <div class="order-id">
+                        <i class="fas fa-receipt"></i>
+                        ${esc(o.orderNumber)}
+                    </div>
+                    <span class="order-status ${o.status}">${st}</span>
+                </div>
+
+                <div class="order-client">
+                    <div class="field"><small>👤 الاسم</small><span>${esc(o.name)}</span></div>
+                    <div class="field"><small>📧 البريد</small><span>${esc(o.email)}</span></div>
+                    <div class="field"><small>📱 الجوال</small><span>${esc(o.phone || '—')}</span></div>
+                    <div class="field"><small>💳 الدفع</small><span>${esc(o.paymentMethod || '—')}</span></div>
+                </div>
+
+                <div class="order-service">
+                    <div>
+                        <strong>${esc(o.service || '—')}</strong>
+                        <small>${esc(o.package || '')}</small>
+                    </div>
+                    <div class="amt">${esc(o.amount || 'لم يُحدد')}</div>
+                </div>
+
+                ${notes}
+
+                <div class="order-footer">
+                    <div class="order-date">
+                        <i class="fas fa-clock"></i> ${fmtDate(o.createdAt)}${paidAt}
+                    </div>
+                    <div class="order-actions">
+                        <select data-order-id="${o.id}" class="order-status-select">
+                            <option value="pending" ${o.status==='pending'?'selected':''}>معلق</option>
+                            <option value="paid" ${o.status==='paid'?'selected':''}>مدفوع</option>
+                            <option value="in-progress" ${o.status==='in-progress'?'selected':''}>قيد التنفيذ</option>
+                            <option value="completed" ${o.status==='completed'?'selected':''}>مكتمل</option>
+                            <option value="cancelled" ${o.status==='cancelled'?'selected':''}>ملغي</option>
+                        </select>
+                        <a class="btn btn-secondary btn-sm" href="/invoice.html?order=${encodeURIComponent(o.orderNumber)}&t=${encodeURIComponent(o.accessToken || '')}" target="_blank" title="عرض الفاتورة">
+                            <i class="fas fa-file-invoice"></i> الفاتورة
+                        </a>
+                        ${o.phone ? `<a class="btn btn-secondary btn-sm" href="https://wa.me/${esc(o.phone.replace(/\D/g, '').replace(/^0/, '966'))}?text=${encodeURIComponent('مرحباً ' + o.name + '،\n\nشكراً لطلبك (رقم: ' + o.orderNumber + ').\n\nالخدمة: ' + o.service + (o.amount ? '\nالمبلغ: ' + o.amount : '') + '\n\nالفاتورة: ' + location.origin + '/invoice.html?order=' + o.orderNumber + '&t=' + (o.accessToken || '') + '\n\nلإكمال الدفع عبر STC Pay على الرقم: 0509182112')}" target="_blank" title="واتساب مع رسالة جاهزة" style="background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border-color:transparent"><i class="fab fa-whatsapp"></i></a>` : ''}
+                        <a class="btn btn-secondary btn-sm" href="mailto:${esc(o.email)}?subject=${encodeURIComponent('بخصوص طلبك رقم ' + o.orderNumber)}" title="بريد"><i class="fas fa-envelope"></i></a>
+                        <button class="btn btn-danger btn-sm order-delete" data-order-id="${o.id}" title="حذف"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
+
+        // Wire up status dropdowns
+        list.querySelectorAll('.order-status-select').forEach(sel => {
+            sel.addEventListener('change', async (e) => {
+                const id = sel.dataset.orderId;
+                const status = sel.value;
+                try {
+                    const r = await api(`/api/admin/orders/${id}`, { method: 'PATCH', body: JSON.stringify({ status }) });
+                    if (r.ok) { toast('تم تحديث حالة الطلب'); await loadOrders(); }
+                    else { toast('فشل التحديث', 'error'); }
+                } catch { toast('خطأ في الشبكة', 'error'); }
+            });
+        });
+
+        // Wire up delete buttons
+        list.querySelectorAll('.order-delete').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const id = btn.dataset.orderId;
+                const order = allOrders.find(o => o.id === id);
+                const ok = await confirm('حذف الطلب', `هل أنت متأكد من حذف الطلب ${order?.orderNumber || ''}؟ لا يمكن التراجع.`);
+                if (!ok) return;
+                try {
+                    const r = await api(`/api/admin/orders/${id}`, { method: 'DELETE' });
+                    if (r.ok) { toast('تم حذف الطلب'); await loadOrders(); }
+                    else { toast('فشل الحذف', 'error'); }
+                } catch { toast('خطأ في الشبكة', 'error'); }
+            });
+        });
+    }
+
+    // Wire up order filter tabs & search
+    $$('.order-filter').forEach(tab => tab.addEventListener('click', () => {
+        $$('.order-filter').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentOrderFilter = tab.dataset.ofilter;
+        renderOrders();
+    }));
+    $('#orderSearch')?.addEventListener('input', renderOrders);
+
     // === DASHBOARD ===
     async function loadDashboard() {
         try {
@@ -813,6 +1048,11 @@
             $('#statReplied').textContent = s.replied;
             $('#statVisitorsToday').textContent = s.todayVisitors || 0;
             $('#statVisitorsWeek').textContent = s.weekVisitors || 0;
+
+            // Orders stats (from cached allOrders)
+            $('#statOrdersTotal').textContent = allOrders.length;
+            $('#statOrdersPending').textContent = allOrders.filter(o => o.status === 'pending').length;
+            $('#statOrdersPaid').textContent = allOrders.filter(o => o.status === 'paid' || o.status === 'completed').length;
 
             // Chart
             const chartEl = $('#chartBars');

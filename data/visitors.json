@@ -12,5 +12,96 @@
     "page": "/",
     "referrer": "",
     "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Claude/1.1617.0 Chrome/144.0.7559.236 Electron/40.8.5 Safari/537.36 MSIX"
+  },
+  {
+    "date": "2026-04-16",
+    "time": "2026-04-16T07:16:10.868Z",
+    "page": "/",
+    "referrer": "",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Claude/1.1617.0 Chrome/144.0.7559.236 Electron/40.8.5 Safari/537.36 MSIX"
+  },
+  {
+    "date": "2026-04-16",
+    "time": "2026-04-16T07:16:11.138Z",
+    "page": "/",
+    "referrer": "",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Claude/1.1617.0 Chrome/144.0.7559.236 Electron/40.8.5 Safari/537.36 MSIX"
+  },
+  {
+    "date": "2026-04-16",
+    "time": "2026-04-16T07:16:12.320Z",
+    "page": "/",
+    "referrer": "",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Claude/1.1617.0 Chrome/144.0.7559.236 Electron/40.8.5 Safari/537.36 MSIX"
+  },
+  {
+    "date": "2026-04-16",
+    "time": "2026-04-16T07:36:49.097Z",
+    "page": "/",
+    "referrer": "http://localhost:3000/",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Claude/1.1617.0 Chrome/144.0.7559.236 Electron/40.8.5 Safari/537.36 MSIX"
+  },
+  {
+    "date": "2026-04-16",
+    "time": "2026-04-16T07:38:41.800Z",
+    "page": "/",
+    "referrer": "http://localhost:3000/",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Claude/1.1617.0 Chrome/144.0.7559.236 Electron/40.8.5 Safari/537.36 MSIX"
+  },
+  {
+    "date": "2026-04-16",
+    "time": "2026-04-16T08:33:17.548Z",
+    "page": "/",
+    "referrer": "http://localhost:3000/",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Claude/1.1617.0 Chrome/144.0.7559.236 Electron/40.8.5 Safari/537.36 MSIX"
+  },
+  {
+    "date": "2026-04-16",
+    "time": "2026-04-16T08:52:31.574Z",
+    "page": "/",
+    "referrer": "http://localhost:3000/",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Claude/1.1617.0 Chrome/144.0.7559.236 Electron/40.8.5 Safari/537.36 MSIX"
+  },
+  {
+    "date": "2026-04-16",
+    "time": "2026-04-16T08:55:57.133Z",
+    "page": "/",
+    "referrer": "http://localhost:3000/",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Claude/1.1617.0 Chrome/144.0.7559.236 Electron/40.8.5 Safari/537.36 MSIX"
+  },
+  {
+    "date": "2026-04-18",
+    "time": "2026-04-18T11:13:20.943Z",
+    "page": "/",
+    "referrer": "",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36"
+  },
+  {
+    "date": "2026-04-18",
+    "time": "2026-04-18T11:14:15.273Z",
+    "page": "/",
+    "referrer": "http://localhost:3000/",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36"
+  },
+  {
+    "date": "2026-04-18",
+    "time": "2026-04-18T11:33:59.343Z",
+    "page": "/",
+    "referrer": "",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36"
+  },
+  {
+    "date": "2026-04-18",
+    "time": "2026-04-18T12:00:04.947Z",
+    "page": "/",
+    "referrer": "",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36"
+  },
+  {
+    "date": "2026-04-18",
+    "time": "2026-04-18T12:02:49.043Z",
+    "page": "/",
+    "referrer": "",
+    "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36"
   }
 ]

@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>فاتورة - Khalid Tech</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --accent: #e94560;
+            --accent-gold: #ffc107;
+            --dark: #1a1a2e;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --bg: #f8fafc;
+        }
+
+        body {
+            font-family: 'Cairo', 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--dark);
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .invoice {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 20px;
+            padding: 50px 55px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .invoice::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 8px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-gold));
+        }
+
+        /* === Header === */
+        .inv-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding-bottom: 30px;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 35px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-gold));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.6rem;
+            font-weight: 800;
+            box-shadow: 0 8px 20px rgba(233, 69, 96, 0.3);
+        }
+
+        .brand-info h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 4px;
+        }
+
+        .brand-info p {
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .inv-title {
+            text-align: left;
+        }
+
+        .inv-title h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+
+        .inv-title p {
+            color: var(--muted);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* === Meta grid === */
+        .meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .meta-box {
+            background: var(--bg);
+            padding: 22px 24px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+        }
+
+        .meta-box h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .meta-box .field {
+            font-size: 0.95rem;
+            color: var(--dark);
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .meta-box .label {
+            font-size: 0.8rem;
+            color: var(--muted);
+            font-weight: 400;
+        }
+
+        /* === Items Table === */
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+        }
+
+        .items-table thead {
+            background: linear-gradient(135deg, var(--dark), #16213e);
+            color: #fff;
+        }
+
+        .items-table th {
+            padding: 16px 18px;
+            text-align: right;
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .items-table th:last-child,
+        .items-table td:last-child {
+            text-align: left;
+        }
+
+        .items-table tbody tr {
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.2s;
+        }
+
+        .items-table tbody tr:hover {
+            background: var(--bg);
+        }
+
+        .items-table td {
+            padding: 18px;
+            font-size: 0.95rem;
+            color: var(--dark);
+            vertical-align: top;
+        }
+
+        .items-table td.desc strong {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+
+        .items-table td.desc span {
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        .items-table td.amount {
+            font-weight: 700;
+            color: var(--dark);
+            white-space: nowrap;
+        }
+
+        /* === Totals === */
+        .totals {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 35px;
+        }
+
+        .totals-box {
+            min-width: 320px;
+            padding: 24px 28px;
+            background: linear-gradient(135deg, rgba(233, 69, 96, 0.05), rgba(255, 193, 7, 0.03));
+            border: 1px solid rgba(233, 69, 96, 0.15);
+            border-radius: 14px;
+        }
+
+        .totals-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 0.95rem;
+            color: var(--dark);
+        }
+
+        .totals-row.grand {
+            border-top: 2px dashed var(--border);
+            margin-top: 10px;
+            padding-top: 16px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        /* === Payment === */
+        .payment {
+            background: linear-gradient(135deg, var(--dark), #16213e);
+            color: #fff;
+            padding: 28px 32px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .payment-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #6c1d7e, #9b27b5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 10px 25px rgba(108, 29, 126, 0.4);
+        }
+
+        .payment h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .payment p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-bottom: 2px;
+        }
+
+        .payment strong {
+            color: var(--accent-gold);
+            font-weight: 700;
+        }
+
+        /* === Footer === */
+        .inv-footer {
+            border-top: 2px solid var(--border);
+            padding-top: 25px;
+            text-align: center;
+        }
+
+        .thanks {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .terms {
+            font-size: 0.85rem;
+            color: var(--muted);
+            max-width: 550px;
+            margin: 0 auto 18px;
+            line-height: 1.7;
+        }
+
+        .signature {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: var(--bg);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .signature i {
+            color: var(--accent);
+        }
+
+        /* === Print button (hidden when printing) === */
+        .print-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-gold));
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.4);
+            z-index: 999;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s;
+        }
+
+        .print-btn:hover { transform: translateY(-2px); }
+
+        /* === Editable hint === */
+        [contenteditable="true"] {
+            outline: none;
+            border-bottom: 1px dashed transparent;
+            transition: all 0.2s;
+            padding: 0 2px;
+        }
+
+        [contenteditable="true"]:hover {
+            border-bottom-color: var(--accent);
+            background: rgba(233, 69, 96, 0.04);
+        }
+
+        [contenteditable="true"]:focus {
+            border-bottom-color: var(--accent);
+            background: rgba(233, 69, 96, 0.06);
+        }
+
+        /* === Print styles === */
+        @media print {
+            body { padding: 0; background: #fff; }
+            .invoice {
+                box-shadow: none;
+                border-radius: 0;
+                padding: 30px 40px;
+                max-width: 100%;
+            }
+            .print-btn { display: none !important; }
+            [contenteditable="true"]:hover,
+            [contenteditable="true"]:focus {
+                border-bottom: none;
+                background: transparent;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .invoice { padding: 30px 22px; }
+            .meta-grid { grid-template-columns: 1fr; gap: 16px; }
+            .payment { grid-template-columns: 1fr; text-align: center; }
+            .payment-icon { margin: 0 auto; }
+            .items-table th, .items-table td { padding: 12px 10px; font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="invoice">
+
+        <!-- Header -->
+        <div class="inv-header">
+            <div class="brand">
+                <div class="brand-logo">K</div>
+                <div class="brand-info">
+                    <h1 contenteditable="true">خالد — Khalid Tech</h1>
+                    <p contenteditable="true">متخصص تقني مستقل | Freelance Tech Specialist</p>
+                    <p contenteditable="true">📱 05XXXXXXXX &nbsp;|&nbsp; 📧 your@email.com</p>
+                </div>
+            </div>
+            <div class="inv-title">
+                <h2>فاتورة</h2>
+                <p>INVOICE</p>
+            </div>
+        </div>
+
+        <!-- Meta info -->
+        <div class="meta-grid">
+            <div class="meta-box">
+                <h3>الفاتورة صادرة إلى</h3>
+                <div class="field" contenteditable="true">اسم العميل</div>
+                <div class="label" contenteditable="true">شركة / جهة العمل (اختياري)</div>
+                <div class="label" contenteditable="true">📧 client@email.com</div>
+            </div>
+            <div class="meta-box">
+                <h3>تفاصيل الفاتورة</h3>
+                <div class="field">
+                    رقم الفاتورة: <span contenteditable="true">INV-2026-001</span>
+                </div>
+                <div class="label">
+                    تاريخ الإصدار: <span contenteditable="true">18 / 04 / 2026</span>
+                </div>
+                <div class="label">
+                    تاريخ الاستحقاق: <span contenteditable="true">25 / 04 / 2026</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Items Table -->
+        <table class="items-table">
+            <thead>
+                <tr>
+                    <th>الخدمة / الوصف</th>
+                    <th style="width: 80px; text-align: center;">الكمية</th>
+                    <th style="width: 140px; text-align: center;">السعر</th>
+                    <th style="width: 140px;">الإجمالي</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="desc">
+                        <strong contenteditable="true">تصميم وتطوير موقع إلكتروني</strong>
+                        <span contenteditable="true">موقع متجاوب من 5 صفحات + ربط دومين + 3 تعديلات</span>
+                    </td>
+                    <td style="text-align: center;" contenteditable="true">1</td>
+                    <td style="text-align: center;" contenteditable="true">1,500 ر.س</td>
+                    <td class="amount" contenteditable="true">1,500 ر.س</td>
+                </tr>
+                <tr>
+                    <td class="desc">
+                        <strong contenteditable="true">خدمة إضافية (اختياري)</strong>
+                        <span contenteditable="true">وصف الخدمة الإضافية</span>
+                    </td>
+                    <td style="text-align: center;" contenteditable="true">1</td>
+                    <td style="text-align: center;" contenteditable="true">0 ر.س</td>
+                    <td class="amount" contenteditable="true">0 ر.س</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Totals -->
+        <div class="totals">
+            <div class="totals-box">
+                <div class="totals-row">
+                    <span>المجموع الفرعي</span>
+                    <span contenteditable="true">1,500 ر.س</span>
+                </div>
+                <div class="totals-row">
+                    <span>الخصم</span>
+                    <span contenteditable="true">0 ر.س</span>
+                </div>
+                <div class="totals-row grand">
+                    <span>الإجمالي المستحق</span>
+                    <span contenteditable="true">1,500 ر.س</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment method -->
+        <div class="payment">
+            <div class="payment-icon">
+                <i class="fas fa-mobile-screen-button"></i>
+            </div>
+            <div>
+                <h3>طريقة الدفع: STC Pay</h3>
+                <p>الرقم: <strong contenteditable="true">05XXXXXXXX</strong></p>
+                <p>الاسم: <strong contenteditable="true">خالد [الاسم الكامل]</strong></p>
+                <p style="margin-top: 8px; font-size: 0.85rem; opacity: 0.75;">
+                    يُرجى إرسال إيصال التحويل بعد الدفع.
+                </p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="inv-footer">
+            <div class="thanks">شكرًا لثقتك! 🌟 Thank you for your business</div>
+            <p class="terms" contenteditable="true">
+                جميع الأعمال تُنفّذ وفق الاتفاق المسبق. يُسلّم المشروع بعد استلام كامل المبلغ. أي تعديلات خارج النطاق المتفق عليه قد تخضع لرسوم إضافية. للاستفسار تواصل معي مباشرة.
+            </p>
+            <div class="signature">
+                <i class="fas fa-signature"></i>
+                <span>Khalid Tech — khalidtech.onrender.com</span>
+            </div>
+        </div>
+
+    </div>
+
+    <button class="print-btn" onclick="window.print()">
+        <i class="fas fa-print"></i>
+        طباعة / حفظ PDF
+    </button>
+
+</body>
+</html>
