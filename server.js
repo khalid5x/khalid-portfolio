@@ -3,7 +3,7 @@ import express from 'express';
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'crypto'; import { sendOrderEmails } from './email.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = path.join(__dirname, 'data');
@@ -444,7 +444,8 @@ app.post('/api/orders', rateLimit(5, 60000), async (req, res) => {
         orders.push(entry);
         await writeOrders(orders);
 
-        // Build owner notification URL (WhatsApp message to Khalid)
+        // Build owner notification URL (WhatsApp message to Khalid)         // Send confirmation emails (fire-and-forget)
+        sendOrderEmails(entry).catch(err => console.error('[email]', err));
         const settings = await readSettings();
         const ownerWa = (settings.whatsapp || '').replace(/\D/g, '');
         let notifyUrl = null;
